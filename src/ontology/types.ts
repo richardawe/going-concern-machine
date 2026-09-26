@@ -6,7 +6,7 @@ export interface CompanyPeriod { period: string; fiscalYear: number; facts: Reco
 export interface CompanyDataset { schemaVersion: 2; ticker: string; name: string; retrieved: string; provider: string; periods: CompanyPeriod[]; }
 export interface Classification { sector: SectorId; label: string; rationale: string; evidence: string; coverage: string; }
 export interface MachineNode extends Datum { id: string; label: string; meaning: string; role: 'core' | 'sector'; }
-export interface CausalEdge { id: string; from: string; to: string; relation: string; formula: string; lag: number; kind: 'accounting' | 'hypothesis'; }
+export interface CausalEdge { id: string; from: string; to: string; relation: string; formula: string; lag: number; kind: 'accounting' | 'hypothesis' | 'concept'; }
 export interface MachineDefinition { ticker: string; name: string; period: string; fiscalYear: number; classification: Classification; nodes: MachineNode[]; edges: CausalEdge[]; gauges: string[]; stages: string[]; moduleNodes: string[]; limitations: string[]; year: number; momentum: { value: number | null; parts: {label:string;contribution:number;formula:string}[]; reason?:string }; }
 export interface Control { id: string; label: string; min: number; max: number; step: number; defaultValue: number; unit: '%' | 'pp' | 'years' | 'days'; explanation: string; }
 export interface SectorModule { id: SectorId; label: string; gauges: string[]; stages: string[]; moduleNodes: string[]; controls: Control[]; edges: CausalEdge[]; limitations: string[]; }

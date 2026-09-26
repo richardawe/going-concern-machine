@@ -10,6 +10,7 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "data:refresh": "node --import tsx scripts/refresh-data.ts",
     "data:validate": "node --import tsx scripts/validate-data.ts",
+    "demo": "node --import tsx scripts/demo.ts",
     "test:browser": "node tests/browser.mjs"
   },
   "dependencies": {
