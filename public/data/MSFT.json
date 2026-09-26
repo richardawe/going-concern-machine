@@ -1,0 +1,215 @@
+{
+  "ticker": "MSFT",
+  "name": "Microsoft Corporation",
+  "currency": "USD",
+  "updated": "2026-09-26",
+  "provider": "Verified annual earnings snapshot",
+  "statements": [
+    {
+      "period": "2025-06-30",
+      "fiscalYear": 2025,
+      "facts": {
+        "revenue": {
+          "value": 281724000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "cogs": {
+          "value": 87831000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "grossProfit": {
+          "value": 193893000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "operatingProfit": {
+          "value": 128528000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "tax": {
+          "value": 21795000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "operatingCashFlow": {
+          "value": 136162000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2025-06-30"
+        },
+        "capex": {
+          "value": 64551000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2025-06-30"
+        },
+        "cash": {
+          "value": 30242000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2025-06-30"
+        },
+        "debt": {
+          "value": 43151000000,
+          "status": "CALCULATED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2025-06-30",
+          "calculation": "Current term debt + noncurrent term debt + commercial paper; excludes lease liabilities"
+        },
+        "equity": {
+          "value": 343479000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2025-06-30"
+        },
+        "rd": {
+          "value": 32488000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2025-06-30"
+        },
+        "dividends": {
+          "value": 24082000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2025-06-30"
+        },
+        "interestExpense": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2025-06-30"
+        },
+        "depreciation": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2025-06-30"
+        }
+      }
+    },
+    {
+      "period": "2024-06-30",
+      "fiscalYear": 2024,
+      "facts": {
+        "revenue": {
+          "value": 245122000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "cogs": {
+          "value": 74114000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "grossProfit": {
+          "value": 171008000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "operatingProfit": {
+          "value": 109433000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "tax": {
+          "value": 19651000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "operatingCashFlow": {
+          "value": 118548000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2024-06-30"
+        },
+        "capex": {
+          "value": 44477000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2024-06-30"
+        },
+        "cash": {
+          "value": 18315000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2024-06-30"
+        },
+        "debt": {
+          "value": 51630000000,
+          "status": "CALCULATED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2024-06-30",
+          "calculation": "Current term debt + noncurrent term debt + commercial paper; excludes lease liabilities"
+        },
+        "equity": {
+          "value": 268477000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/balance-sheets",
+          "period": "2024-06-30"
+        },
+        "rd": {
+          "value": 29510000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/income-statements",
+          "period": "2024-06-30"
+        },
+        "dividends": {
+          "value": 21771000000,
+          "status": "OBSERVED",
+          "source": "Microsoft Corporation FY2025 annual earnings statements",
+          "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/cash-flows",
+          "period": "2024-06-30"
+        },
+        "interestExpense": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2024-06-30"
+        },
+        "depreciation": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2024-06-30"
+        }
+      }
+    }
+  ]
+}

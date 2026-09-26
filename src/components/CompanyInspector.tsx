@@ -1,0 +1,15 @@
+import {useEffect,useRef} from 'react';
+import {X,ExternalLink} from 'lucide-react';
+import type {MachineDefinition} from '../ontology/types';
+import {getNode} from '../translation/construct';
+import {showValue} from './CompanyMachine';
+export default function CompanyInspector({machine:m,nodeId,close}:{machine:MachineDefinition;nodeId:string;close:()=>void}){
+ const ref=useRef<HTMLDialogElement>(null);useEffect(()=>{ref.current?.showModal();return()=>ref.current?.close()},[]);
+ const n=getNode(m,nodeId);const upstream=m.edges.filter(e=>e.to===nodeId),downstream=m.edges.filter(e=>e.from===nodeId);
+ return <dialog ref={ref} className="inspector" onCancel={close} onClick={e=>{if(e.target===ref.current)close()}}><div className="inspector-inner"><header><span className="eyebrow">{m.ticker} / COMPONENT INSPECTOR</span><button onClick={close} aria-label="Close inspector"><X size={18}/></button></header>
+ {nodeId==='classification'?<><h2>Why this machine?</h2><h3>{m.classification.label}</h3><p>{m.classification.rationale}</p><a href={m.classification.evidence} target="_blank" rel="noreferrer">Classification evidence <ExternalLink size={12}/></a><p>{m.classification.coverage}</p></>:<><h2>{n?.label||'Business momentum'}</h2><div className="inspection-value">{showValue(n)}</div><span className="data-tag">{n?.status||'UNKNOWN'}</span><p>{n?.meaning}</p><dl><dt>Period</dt><dd>{n?.period||m.period}</dd><dt>Source / confidence</dt><dd>{n?.url?<a href={n.url} target="_blank" rel="noreferrer">{n.source} <ExternalLink size={12}/></a>:n?.source||'No complete evidence'}</dd><dt>Calculation / missing evidence</dt><dd>{n?.calculation||n?.reason||'Direct observation from the source statement.'}</dd></dl>
+ {nodeId==='momentum'&&<><h3>Why is the flywheel changing speed?</h3>{m.momentum.value==null?<p>{m.momentum.reason}</p>:<><p>This is a narrow scenario indicator, not the full-business composite or an investment score.</p>{m.momentum.parts.map(p=><div className="contribution" key={p.label}><div><span>{p.label}</span><strong className={p.contribution>=0?'positive':'negative'}>{p.contribution>0?'+':''}{p.contribution.toFixed(2)}</strong></div><small>{p.formula}</small></div>)}</>}</>}
+ <h3>What feeds this component?</h3>{upstream.length?upstream.map(e=><div className="edge-detail" key={e.id}><strong>{getNode(m,e.from)?.label||e.from}</strong><p>{e.formula}</p><small>{e.kind==='hypothesis'?'MODEL HYPOTHESIS':'ACCOUNTING RELATION'} · {e.lag?`${e.lag}-year lag`:'Same period'}</small></div>):<p>No upstream accounting identity. This is an observation, assumption or unmeasured concept.</p>}
+ <h3>What does it affect?</h3>{downstream.length?downstream.map(e=><div className="edge-detail" key={e.id}><strong>{getNode(m,e.to)?.label||e.to}</strong><p>{e.formula}</p><small>{e.lag?`${e.lag}-year lag`:'Same period'} · {e.kind}</small></div>):<p>No outgoing equation in this release.</p>}</>}
+ <details><summary>Model scope and limitations</summary>{m.limitations.map(t=><p key={t}>{t}</p>)}</details></div></dialog>;
+}

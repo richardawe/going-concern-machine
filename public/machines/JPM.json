@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 2,
+  "ticker": "JPM",
+  "name": "JPMorgan Chase & Co.",
+  "retrieved": "2026-09-26",
+  "provider": "JPMorgan Chase FY2024 annual report · reported GAAP basis",
+  "periods": [
+    {
+      "period": "2024-12-31",
+      "fiscalYear": 2024,
+      "facts": {
+        "revenue": {
+          "value": 177556000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "nii": {
+          "value": 92583000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "fees": {
+          "value": 84973000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "opex": {
+          "value": 91797000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "provision": {
+          "value": 10678000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "tax": {
+          "value": 16610000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "netIncome": {
+          "value": 58471000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "deposits": {
+          "value": 2406032000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "loans": {
+          "value": 1347988000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "equity": {
+          "value": 344758000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "cet1": {
+          "value": 0.157,
+          "unit": "ratio",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "lcr": {
+          "value": 1.13,
+          "unit": "ratio",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "cet1Capital": {
+          "value": 275513000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "rwa": {
+          "value": 1757460000000,
+          "unit": "USD",
+          "period": "2024-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        }
+      }
+    },
+    {
+      "period": "2023-12-31",
+      "fiscalYear": 2023,
+      "facts": {
+        "revenue": {
+          "value": 158104000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "nii": {
+          "value": 89267000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "fees": {
+          "value": 68837000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "opex": {
+          "value": 87172000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "provision": {
+          "value": 9320000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "tax": {
+          "value": 12060000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "netIncome": {
+          "value": 49552000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "deposits": {
+          "value": 2400688000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "loans": {
+          "value": 1323706000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "equity": {
+          "value": 327878000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "cet1": {
+          "value": 0.15,
+          "unit": "ratio",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "lcr": {
+          "value": 1.13,
+          "unit": "ratio",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "cet1Capital": {
+          "value": 250585000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        },
+        "rwa": {
+          "value": 1671995000000,
+          "unit": "USD",
+          "period": "2023-12-31",
+          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
+          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
+          "status": "OBSERVED"
+        }
+      }
+    }
+  ]
+}

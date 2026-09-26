@@ -1,0 +1,32 @@
+name: Retrieve financial source updates
+on:
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: Comma-separated supported tickers
+        default: MSFT,WMT,JPM
+        required: true
+  schedule:
+    - cron: '17 7 * * 1'
+permissions:
+  contents: read
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Retrieve source facts for review
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          TICKERS: ${{ inputs.tickers || 'MSFT,WMT,JPM' }}
+        run: npm run data:refresh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: financial-source-updates
+          path: artifacts/refresh
+          retention-days: 30

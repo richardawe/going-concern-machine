@@ -1,0 +1,217 @@
+{
+  "ticker": "AAPL",
+  "name": "Apple Inc.",
+  "currency": "USD",
+  "updated": "2026-09-26",
+  "provider": "Verified annual earnings snapshot",
+  "statements": [
+    {
+      "period": "2025-09-27",
+      "fiscalYear": 2025,
+      "facts": {
+        "revenue": {
+          "value": 416161000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "cogs": {
+          "value": 220960000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "grossProfit": {
+          "value": 195201000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "operatingProfit": {
+          "value": 133050000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "tax": {
+          "value": 20719000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "operatingCashFlow": {
+          "value": 111482000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "capex": {
+          "value": 12715000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "cash": {
+          "value": 35934000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "debt": {
+          "value": 98657000000,
+          "status": "CALCULATED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27",
+          "calculation": "Current term debt + noncurrent term debt + commercial paper; excludes lease liabilities"
+        },
+        "equity": {
+          "value": 73733000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "depreciation": {
+          "value": 11698000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "rd": {
+          "value": 34550000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "dividends": {
+          "value": 15421000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2025-09-27"
+        },
+        "interestExpense": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2025-09-27"
+        }
+      }
+    },
+    {
+      "period": "2024-09-28",
+      "fiscalYear": 2024,
+      "facts": {
+        "revenue": {
+          "value": 391035000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "cogs": {
+          "value": 210352000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "grossProfit": {
+          "value": 180683000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "operatingProfit": {
+          "value": 123216000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "tax": {
+          "value": 29749000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "operatingCashFlow": {
+          "value": 118254000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "capex": {
+          "value": 9447000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "cash": {
+          "value": 29943000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "debt": {
+          "value": 106629000000,
+          "status": "CALCULATED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28",
+          "calculation": "Current term debt + noncurrent term debt + commercial paper; excludes lease liabilities"
+        },
+        "equity": {
+          "value": 56950000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "depreciation": {
+          "value": 11445000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "rd": {
+          "value": 31370000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "dividends": {
+          "value": 15234000000,
+          "status": "OBSERVED",
+          "source": "Apple Inc. FY2025 annual earnings statements",
+          "url": "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf",
+          "period": "2024-09-28"
+        },
+        "interestExpense": {
+          "value": null,
+          "status": "UNAVAILABLE",
+          "source": "Not separately extracted from this snapshot",
+          "period": "2024-09-28"
+        }
+      }
+    }
+  ]
+}

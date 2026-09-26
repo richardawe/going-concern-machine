@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "coverage": "Curated annual snapshots, not live or latest-period coverage",
+  "companies": [
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "periods": [
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-26"
+    },
+    {
+      "ticker": "WMT",
+      "name": "Walmart Inc.",
+      "periods": [
+        "2025-01-31",
+        "2024-01-31"
+      ],
+      "retrieved": "2026-09-26"
+    },
+    {
+      "ticker": "JPM",
+      "name": "JPMorgan Chase & Co.",
+      "periods": [
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-26"
+    }
+  ]
+}

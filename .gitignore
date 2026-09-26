@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env*
+!.env.example
+artifacts/
+.DS_Store
+
+public/machines/definitions/
