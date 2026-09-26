@@ -1,6 +1,14 @@
 # Going Concern Machine — revised build plan
 
-Status: implementation paused for V2 planning. The industrial UI and initial model are in progress; the app has not yet passed build or browser checks or been deployed.
+Status: **feature expansion frozen.** The current milestone is one canonical end-to-end demonstration, proven on MSFT and repeated unchanged on WMT and JPM:
+
+reported data → economic machine → inspectable causal model → one lever → visible propagation → five-year simulation → every change explained.
+
+- `src/simulation/equations.ts` is the forecast model. The simulator evaluates it, and the machine's computed links are generated from it, so the graph shown is exactly what runs. Links that are conceptual only are drawn but labelled as not simulated.
+- `src/simulation/explain.ts` compares a scenario with BASE. It attributes every changed component-year to the inputs of its own equation and follows the dominant effect back to the lever. It also says why components the lever reaches stay unchanged.
+- `src/simulation/demos.ts` defines one lever per company: MSFT CapEx intensity, WMT inventory days, JPM credit cost. In the app this is the seven-step *Canonical demonstration* rail.
+- `npm run demo -- --write` regenerates [docs/demos](docs/demos) from the published data. `tests/demo.test.ts` checks that every change reconciles and reaches the lever.
+- Suggested assumptions state their basis: they are either calibrated from a reported ratio or a neutral placeholder.
 
 ## Product target
 

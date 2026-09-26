@@ -45,5 +45,10 @@ export const concepts:Record<string,{label:string;meaning:string;unit:Unit}>={
  roic:{label:'ROIC',meaning:'Unknown unless a justified NOPAT measure and average operating capital are available; not applied to banks.',unit:'ratio'},
  fundingGap:{label:'Unfunded cash gap',meaning:'Negative forecast cash requirement; never auto-funded with invented borrowing.',unit:'USD'},
  retainedProfit:{label:'Retained profit flow',meaning:'Scenario net income less assumed dividends, not regulatory capital or cash flow.',unit:'USD'},
+ investmentLift:{label:'Investment lift',meaning:'Cumulative revenue uplift from additional CapEx after the adopted lag. A model hypothesis; zero unless the user adopts an investment response.',unit:'ratio'},
+ capexExcess:{label:'Additional CapEx',meaning:'CapEx above the reported opening level, as a share of opening revenue. Zero at the reported opening state by definition.',unit:'ratio'},
+ dividends:{label:'Dividends paid',meaning:'Reported cash dividends paid to shareholders; excludes share repurchases.',unit:'USD'},
+ distributions:{label:'Shareholder distributions',meaning:'Scenario cash paid out of positive free cash flow; never financed by invented borrowing.',unit:'USD'},
+ pretaxIncome:{label:'Pretax income',meaning:'Revenue less noninterest expense and credit provisions, before income tax.',unit:'USD'},
  momentum:{label:'Business momentum',meaning:'Transparent scenario index; unavailable where required observations or assumptions are missing.',unit:'index'},
 };
