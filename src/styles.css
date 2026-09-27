@@ -32,7 +32,7 @@ button:active:not(:disabled){transform:scale(.97)}
 .company-svg .lever{cursor:grab;outline:none;touch-action:none}
 .company-svg .lever:active{cursor:grabbing}
 .company-svg .lever-hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke}
-.company-svg .lever-track{fill:none;stroke:var(--n7);stroke-width:5;stroke-linecap:round}
+.company-svg .lever-track{fill:none;stroke:var(--n6);stroke-width:6;stroke-linecap:round}
 .company-svg .lever-factory{stroke:var(--accent2);stroke-width:3;stroke-linecap:round}
 .company-svg .lever-knob circle{fill:var(--n10);stroke:var(--n3);stroke-width:2.5;transition:transform var(--dur-press) var(--ease-out)}
 .company-svg .lever.moved .lever-knob circle{stroke:var(--accent2);fill:var(--n10)}
@@ -58,3 +58,8 @@ button:active:not(:disabled){transform:scale(.97)}
 @media (prefers-reduced-motion:reduce){button,.company-svg .sector-gear,.company-svg .lever-knob circle,.scenario-banner,.inspector[open],.assumption-dialog[open]{transition-property:opacity,filter,background-color;transform:none!important}}
 .delta-badge.up rect{stroke:var(--good1)}.company-svg .gear-number{fill:var(--n2)}
 .theme-switch{display:inline-flex;border:1px solid var(--n7);border-radius:3px;overflow:hidden}.theme-switch button{border:0;border-radius:0;padding:4px 9px;font:500 10px 'IBM Plex Mono',monospace;background:transparent}.theme-switch button[aria-pressed=true]{background:var(--n2);color:var(--n12)}
+.company-svg .lever-knob circle{stroke:var(--accent2)}
+.company-svg .lever-label{fill:var(--accent1);stroke:var(--n11)}
+/* Phones: the inspector becomes a bottom sheet that rises from the edge it is attached to */
+@media (max-width:640px){.inspector{margin:auto auto 0;width:100%;max-width:100%;max-height:78vh;border-radius:14px 14px 0 0;border-width:1px 0 0}
+ @starting-style{.inspector[open]{opacity:1;transform:translateY(24px)}}}

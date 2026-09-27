@@ -7,11 +7,30 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route('http://gcm.test/**',async route=>{const url=new URL(route.request().url());const part=url.pathname.replace(/^\/going-concern-machine\//,'').replace(/^\//,'');const file=path.resolve('dist',part||'index.html');if(!file.startsWith(path.resolve('dist')+path.sep)){await route.abort();return}try{const body=await readFile(file);await route.fulfill({body,contentType:file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html'})}catch{await route.fulfill({status:404,body:'Not found'})}});
  await page.goto('http://gcm.test/going-concern-machine/');await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
+ // Theme switch: pins light/dark on <html>, survives a reload, and System hands control back to the OS.
+ await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'Dark',exact:true}).click();
+ assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark');
+ await page.reload();await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();
+ assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark','theme choice persists');
+ await page.screenshot({path:'artifacts/msft-dark.png'});
+ await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'System',exact:true}).click();
+ assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-theme')),false);
+ // Levers on the machine: keyboard pull starts a scenario at once, reports the value, and propagates.
+ {const lever=page.locator('g.lever[aria-label="CapEx / revenue"]');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%; reported setting 22\.9%/);
+  await lever.focus();for(let i=0;i<75;i++)await lever.press('ArrowRight');
+  assert.match(await lever.getAttribute('aria-valuetext'),/^30\.4%/);
+  await page.locator('.scenario-banner').getByText('lever changed from the reported settings').waitFor();
+  await page.getByText('Y1 PROPAGATION').waitFor();await page.getByText('Scenario started').waitFor();
+  await lever.press('0');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%/,'0 returns to the reported setting');
+  await page.locator('.scenario-banner').getByRole('button',{name:'Back to reported'}).click();
+  await page.getByText('ACTUAL COMPANY',{exact:true}).waitFor();assert.equal(await page.locator('.scenario-banner').count(),0);}
+ await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
  await mkdir('artifacts',{recursive:true});
  // Canonical demonstration, repeated for each verified business model.
  for(const [ticker,label,lever,changed] of [['MSFT','Software + cloud','CapEx / revenue','Capital investment'],['WMT','Retail','Inventory days','Inventory reservoir'],['JPM','Banking','Credit provision / loans','Credit-loss provision']]){
-  await page.getByRole('button',{name:`${ticker} ${label}`,exact:true}).click();await page.getByRole('region',{name:'Canonical demonstration'}).getByText(`CANONICAL DEMONSTRATION / ${ticker}`).waitFor();
+  await page.getByRole('button',{name:`${ticker} ${label}`,exact:true}).click();await page.getByRole('region',{name:'Canonical demonstration'}).getByText(`GUIDED TOUR / ${ticker}`).waitFor();
   const rail=page.getByRole('region',{name:'Canonical demonstration'});
+  assert.equal(await rail.locator('.demo-body').count(),0,'the tour starts collapsed under the machine');await rail.getByRole('tab',{name:/Reported data/}).click();
   assert.ok(await rail.getByRole('link').count()>3,`${ticker}: reported data needs source links`);
   await rail.getByRole('tab',{name:/Causal model/}).click();assert.ok(await rail.locator('.equation-list li').count()>10);
   await rail.getByRole('tab',{name:/Pull one lever/}).click();await rail.getByRole('button',{name:new RegExp(`^Pull lever: ${lever.replace(/[/]/g,'\\/')}`)}).click();
@@ -41,10 +60,10 @@ try{
  // Typed ticker → automatic SEC translation, same end-to-end demonstration
  await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('AAPL');await page.getByRole('button',{name:'Construct',exact:true}).click();
  await page.getByRole('group',{name:'AAPL General company · Electronic Computers economic machine'}).waitFor();await page.getByText('AUTOMATIC · UNVERIFIED').waitFor();
- {const rail=page.getByRole('region',{name:'Canonical demonstration'});assert.ok(await rail.getByRole('link').count()>5,'AAPL figures need SEC source links');
+ {const rail=page.getByRole('region',{name:'Canonical demonstration'});await rail.getByRole('tab',{name:/Reported data/}).click();assert.ok(await rail.getByRole('link').count()>5,'AAPL figures need SEC source links');
   await rail.getByRole('tab',{name:/Pull one lever/}).click();await rail.getByRole('button',{name:/^Pull lever: CapEx \/ revenue/}).click();await page.getByText('Y1 PROPAGATION').waitFor();
   await page.screenshot({path:'artifacts/aapl-desktop.png',fullPage:true});await page.getByRole('button',{name:'Reset',exact:true}).click();}
  await page.setViewportSize({width:390,height:844});
- await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('NVDA');await page.getByRole('button',{name:'Construct',exact:true}).click();await page.getByRole('alert').filter({hasText:'is not published yet'}).waitFor();
+ await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('ZZZZ');await page.getByRole('button',{name:'Construct',exact:true}).click();await page.getByRole('alert').filter({hasText:'is not published yet'}).waitFor();
  assert.deepEqual(errors,[]);console.log('Browser flow passed. Screenshots in artifacts/.');
 }finally{await browser.close()}
