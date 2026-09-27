@@ -1,0 +1,72 @@
+name: Publish company machines
+# Weekly (and on demand): translate SEC filings for the S&P 500 list, commit the datasets that pass the
+# quality gates, and redeploy Pages. On pull requests it runs a small live sample and commits nothing.
+on:
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: Space-separated tickers to publish (leave blank for the whole S&P 500 list)
+        required: false
+        default: ''
+  pull_request:
+    paths:
+      - scripts/publish-sec.ts
+      - src/data/sec.ts
+      - data/universe/**
+      - .github/workflows/publish-companies.yml
+permissions:
+  contents: read
+concurrency:
+  group: publish-companies-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Translate SEC filings
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          EVENT: ${{ github.event_name }}
+          TICKERS: ${{ inputs.tickers }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            npm run data:publish -- AAPL NVDA KO XOM JNJ HD BAC BRK.B O MSFT
+          elif [ -n "$TICKERS" ]; then
+            if ! [[ "$TICKERS" =~ ^[A-Za-z0-9.\ -]+$ ]]; then echo "Tickers may contain only letters, digits, dots, dashes and spaces."; exit 1; fi
+            npm run data:publish -- $TICKERS
+          else
+            npm run data:publish -- --universe data/universe/sp500.json
+          fi
+      - name: Check every published machine
+        run: npm test && npm run data:validate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: publish-report
+          path: artifacts/refresh
+          retention-days: 30
+      - name: Commit datasets and redeploy
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add public/machines/*.json
+          if git diff --cached --quiet; then echo "No dataset changed."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Publish company machines from SEC filings ($(date -u +%F))"
+          git push
+          # Pushes made with the workflow token do not start other workflows, so start the Pages deploy explicitly.
+          gh workflow run pages.yml --ref "${GITHUB_REF_NAME}"
