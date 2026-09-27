@@ -15,7 +15,7 @@ export function ChangeDetail({x,c,inspect}:{x:Experiment;c:Change;inspect:(id:st
   <p className="root-path"><span>ROOT CAUSE</span>{rootPath(x,c).map((s,i)=><span key={i}>{i>0&&' ← '}{'node' in s?`${s.label} Y${s.year} ${showDelta(s.delta,s.unit)}`:<b>{s.label}{isLeverRef(s.ref)?' (lever)':''}</b>}</span>)}</p></div>;
 }
 export default function Demonstration({opening,module,demo,x,year,step,setStep,applyDemo,run,replay,inspect,setYear}:{opening:MachineDefinition;module:SectorModule;demo?:Demo;x:Experiment|null;year:number;step:number;setStep:(n:number)=>void;applyDemo:()=>void;run:()=>void;replay:()=>void;inspect:(id:string)=>void;setYear:(n:number)=>void}){
- const shownYear=year||1,basis=suggestedBasis(opening),eqs=equations[opening.classification.sector],reported=opening.nodes.filter(n=>(n.status==='OBSERVED'||(n.status==='CALCULATED'&&n.inputs))&&!(n.id==='capital'&&opening.classification.sector!=='banking'));
+ const shownYear=year||1,basis=suggestedBasis(opening),eqs=equations[opening.classification.sector],reported=opening.nodes.filter(n=>(n.status==='OBSERVED'||n.status==='ESTIMATED'||(n.status==='CALCULATED'&&n.inputs))&&!(n.id==='capital'&&opening.classification.sector!=='banking'));
  const needLever=<p className="demo-hint">Pull the lever first (step 4). Explanations compare your scenario with BASE, which shares every other assumption.</p>;
  const yearChips=<div className="year-chips" role="group" aria-label="Explained year">{Array.from({length:HORIZON},(_,i)=><button key={i} aria-pressed={shownYear===i+1} onClick={()=>setYear(i+1)}>Y{i+1}</button>)}</div>;
  const body=[

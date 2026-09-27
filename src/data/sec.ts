@@ -5,8 +5,9 @@ import { automaticClassification } from '../translation/classify';
 export interface SecFact { val: number; start?: string; end: string; filed: string; form: string; accn: string; fy?: number; fp?: string; }
 export interface SecCompanyFacts { cik: number; entityName: string; facts: { 'us-gaap'?: Record<string, { units?: Record<string, SecFact[]> }> }; }
 export interface SecSubmission { cik: string; name: string; sic: string; sicDescription: string; }
-type Rule = { tags: string[]; instant?: boolean };
-const r = (tags: string[], instant = false): Rule => ({ tags, instant });
+// `largest`: companies sometimes tag a component under the generic name, so take the biggest candidate (e.g. J&J's R&D).
+type Rule = { tags: string[]; instant?: boolean; largest?: boolean };
+const r = (tags: string[], instant = false, largest = false): Rule => ({ tags, instant, largest });
 const industrial: Record<string, Rule> = {
  revenue: r(['RevenueFromContractWithCustomerExcludingAssessedTax', 'Revenues', 'SalesRevenueNet', 'RevenueFromContractWithCustomerIncludingAssessedTax']),
  cogs: r(['CostOfGoodsAndServicesSold', 'CostOfRevenue', 'CostOfGoodsSold']),
@@ -14,7 +15,7 @@ const industrial: Record<string, Rule> = {
  operatingProfit: r(['OperatingIncomeLoss']),
  operatingCashFlow: r(['NetCashProvidedByUsedInOperatingActivities']),
  capex: r(['PaymentsToAcquirePropertyPlantAndEquipment', 'PaymentsToAcquireProductiveAssets']),
- rd: r(['ResearchAndDevelopmentExpense', 'ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost']),
+ rd: r(['ResearchAndDevelopmentExpense', 'ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost'], false, true),
  dividends: r(['PaymentsOfDividends', 'PaymentsOfDividendsCommonStock']),
  tax: r(['IncomeTaxExpenseBenefit']),
  netIncome: r(['NetIncomeLoss']),
@@ -38,6 +39,15 @@ const bank: Record<string, Rule> = {
  equity: r(['StockholdersEquity'], true),
 };
 export const secRules = (sector: SectorId) => sector === 'banking' ? bank : industrial;
+// Used only to estimate operating profit when a company reports no operating-income line.
+const totalCosts = r(['CostsAndExpenses']);
+const pretax = r(['IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments']);
+/** Industries whose economics need their own module; they are not published on the general core. */
+export function unsupportedIndustry(sic: number): string | null {
+ if (sic >= 6310 && sic <= 6411) return 'insurance needs its own sector module (premiums, claims, reserves)';
+ if (sic === 6798) return 'real estate investment trusts need their own sector module (property, rents, FFO)';
+ return null;
+}
 const annualForms = new Set(['10-K', '10-K/A']);
 const days = (f: SecFact) => f.start ? (Date.parse(f.end) - Date.parse(f.start)) / 864e5 : 0;
 const isAnnual = (f: SecFact) => annualForms.has(f.form) && Number.isFinite(f.val) && days(f) > 330 && days(f) < 380;
@@ -47,6 +57,7 @@ export const fiscalYearOf = (end: string) => { const [y, m, d] = end.split('-').
 export class DataQualityError extends Error { constructor(public ticker: string, public reasons: string[]) { super(`${ticker}: ${reasons.join('; ')}`); } }
 
 function pick(facts: SecCompanyFacts, rule: Rule, end: string, cik: number): Datum | undefined {
+ if (rule.largest) { const all = rule.tags.map(t => pick(facts, { tags: [t], instant: rule.instant }, end, cik)).filter((d): d is Datum => !!d); return all.sort((a, b) => b.value! - a.value!)[0]; }
  for (const tag of rule.tags) {
   const rows = usd(facts, tag).filter(f => annualForms.has(f.form) && f.end === end && Number.isFinite(f.val) && (rule.instant ? !f.start : isAnnual(f)));
   rows.sort((a, b) => b.filed.localeCompare(a.filed));
@@ -55,6 +66,8 @@ function pick(facts: SecCompanyFacts, rule: Rule, end: string, cik: number): Dat
  }
 }
 export function secToDataset(ticker: string, facts: SecCompanyFacts, sub: SecSubmission, retrieved: string, periods = 3): CompanyDataset {
+ const unsupported = unsupportedIndustry(Number(sub.sic));
+ if (unsupported) throw new DataQualityError(ticker, [`${sub.sicDescription}: ${unsupported}`]);
  const classification = automaticClassification(sub.sic, sub.sicDescription, String(Number(sub.cik)));
  const rules = secRules(classification.sector), anchor = classification.sector === 'banking' ? rules.nii : rules.revenue;
  const ends = [...new Set(anchor.tags.flatMap(t => usd(facts, t).filter(isAnnual).map(f => f.end)))].sort().reverse().slice(0, periods);
@@ -62,12 +75,21 @@ export function secToDataset(ticker: string, facts: SecCompanyFacts, sub: SecSub
  const out: CompanyPeriod[] = ends.map(end => {
   const row: Record<string, Datum> = {};
   for (const [id, rule] of Object.entries(rules)) { const d = pick(facts, rule, end, facts.cik); if (d) row[id] = d; }
+  if (classification.sector !== 'banking' && !row.operatingProfit && row.revenue) { const est = estimateOperatingProfit(facts, end, row.revenue); if (est) row.operatingProfit = est; }
   if (classification.sector === 'banking' && !row.revenue && row.nii && row.fees) row.revenue = { value: row.nii.value! + row.fees.value!, unit: 'USD', status: 'CALCULATED', period: end, source: 'SEC XBRL annual facts', calculation: 'Net interest income + noninterest income', url: row.nii.url };
   return { period: end, fiscalYear: fiscalYearOf(end), facts: row };
  });
  const reasons = checkDataset(out, classification.sector);
  if (reasons.length) throw new DataQualityError(ticker, reasons);
  return { schemaVersion: 2, ticker, name: facts.entityName, retrieved, provider: 'SEC EDGAR XBRL company facts · automatic translation', periods: out, classification };
+}
+/** No operating-income line: revenue − total costs and expenses, marked ESTIMATED with its formula. */
+function estimateOperatingProfit(facts: SecCompanyFacts, end: string, revenue: Datum): Datum | undefined {
+ const note = 'No operating income is reported, so this may include non-operating items such as interest, investment gains or other income.';
+ const costs = pick(facts, totalCosts, end, facts.cik);
+ if (costs) return { value: revenue.value! - costs.value!, unit: 'USD', status: 'ESTIMATED', period: end, inputs: ['revenue'], url: costs.url, source: `Derived from ${revenue.source.split(' · ')[0]} and ${costs.source}`, calculation: `Revenue − total costs and expenses (us-gaap:CostsAndExpenses). ${note}` };
+ const before = pick(facts, pretax, end, facts.cik);
+ if (before) return { value: before.value!, unit: 'USD', status: 'ESTIMATED', period: end, inputs: ['revenue'], url: before.url, source: `Derived from ${before.source}`, calculation: `Revenue − total costs and expenses, taken as reported pretax income from continuing operations (revenue less all costs and expenses). ${note}` };
 }
 /** Publication gates: identities must hold and the latest period must carry the facts the core machine needs. */
 export function checkDataset(periods: CompanyPeriod[], sector: SectorId): string[] {
@@ -76,10 +98,11 @@ export function checkDataset(periods: CompanyPeriod[], sector: SectorId): string
  for (const p of periods) {
   if (years.has(p.fiscalYear)) reasons.push(`two annual periods map to fiscal year ${p.fiscalYear}`);
   years.add(p.fiscalYear);
-  const rev = v(p, 'revenue'), cogs = v(p, 'cogs'), gp = v(p, 'grossProfit'), op = v(p, 'operatingProfit');
+  const rev = v(p, 'revenue'), cogs = v(p, 'cogs'), gp = v(p, 'grossProfit') ?? (rev != null && cogs != null ? rev - cogs : null), op = v(p, 'operatingProfit');
   if (rev != null && rev <= 0) reasons.push(`${p.period}: revenue is not positive`);
-  if (rev != null && cogs != null && gp != null && Math.abs(rev - cogs - gp) > .005 * rev) reasons.push(`${p.period}: gross profit ≠ revenue − cost of revenue`);
+  if (rev != null && cogs != null && v(p, 'grossProfit') != null && Math.abs(rev - cogs - v(p, 'grossProfit')!) > .005 * rev) reasons.push(`${p.period}: gross profit ≠ revenue − cost of revenue`);
   if (rev != null && op != null && op > rev) reasons.push(`${p.period}: operating profit exceeds revenue`);
+  if (gp != null && op != null && op > gp * 1.005) reasons.push(`${p.period}: operating profit exceeds gross profit (would imply negative operating costs)`);
   for (const k of ['capex', 'cash', 'inventory', 'deposits', 'loans']) { const x = v(p, k); if (x != null && x < 0) reasons.push(`${p.period}: ${k} is negative`); }
   if (sector === 'banking') { const n = v(p, 'nii'), f = v(p, 'fees'); if (rev != null && n != null && f != null && Math.abs(n + f - rev) > .01 * rev) reasons.push(`${p.period}: revenue ≠ net interest income + noninterest income`); }
  }

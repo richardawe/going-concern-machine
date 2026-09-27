@@ -59,3 +59,25 @@ test('banks that report CECL-era credit-loss tags still get a provision figure',
  assert.equal(d.classification!.sector,'banking');assert.equal(d.periods[0].facts.provision.value,5.6e9);assert.match(d.periods[0].facts.provision.source,/CreditLossExpenseReversal/);
  assert.equal(d.periods[0].facts.revenue.status,'CALCULATED','revenue is derived as NII + noninterest income when not tagged');
 });
+const synth=(tags:Record<string,number>,instant:string[]=[])=>({cik:9,entityName:'Test Co',facts:{'us-gaap':Object.fromEntries(Object.entries(tags).map(([t,val])=>[t,{units:{USD:[{val,end:'2025-12-31',...(instant.includes(t)?{}:{start:'2025-01-01'}),filed:'2026-02-20',form:'10-K',accn:'0000000009-26-000001'}]}}]))}}) as SecCompanyFacts;
+const core={RevenueFromContractWithCustomerExcludingAssessedTax:100e9,CostOfGoodsAndServicesSold:40e9,NetCashProvidedByUsedInOperatingActivities:30e9,PaymentsToAcquirePropertyPlantAndEquipment:8e9,CashAndCashEquivalentsAtCarryingValue:15e9};
+const general={cik:'9',name:'Test Co',sic:'2911',sicDescription:'Petroleum Refining'};
+test('no operating-income line: operating profit is estimated as revenue − total costs, labelled and never observed',()=>{
+ const a=secToDataset('TC',synth({...core,CostsAndExpenses:88e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27').periods[0].facts.operatingProfit;
+ assert.equal(a.value,12e9);assert.equal(a.status,'ESTIMATED');assert.match(a.calculation!,/Revenue − total costs and expenses/);assert.match(a.calculation!,/may include non-operating items/);
+ const b=secToDataset('TC',synth({...core,IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest:25e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27').periods[0].facts.operatingProfit;
+ assert.equal(b.value,25e9);assert.equal(b.status,'ESTIMATED');assert.match(b.calculation!,/pretax income/);
+ const m=constructMachine(secToDataset('TC',synth({...core,CostsAndExpenses:88e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27'));
+ assert.equal(getNode(m,'operatingProfit')!.status,'ESTIMATED');assert.equal(getNode(m,'opex')!.status,'ESTIMATED','anything derived from an estimate stays an estimate');
+ assert.throws(()=>secToDataset('TC',synth({...core,CostsAndExpenses:30e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27'),/exceeds gross profit/);
+ assert.throws(()=>secToDataset('TC',synth(core,['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27'),/lacks operatingProfit/);
+});
+test('insurers and REITs are refused until they have their own sector modules',()=>{
+ const f=synth({...core,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']);
+ assert.throws(()=>secToDataset('INS',f,{...general,sic:'6331',sicDescription:'Fire, Marine & Casualty Insurance'},'2026-09-27'),/insurance needs its own sector module/);
+ assert.throws(()=>secToDataset('RT',f,{...general,sic:'6798',sicDescription:'Real Estate Investment Trusts'},'2026-09-27'),/real estate investment trusts need their own sector module/);
+});
+test('R&D takes the full line when a company tags only a component under the generic name',()=>{
+ const d=secToDataset('TC',synth({...core,OperatingIncomeLoss:20e9,ResearchAndDevelopmentExpense:.109e9,ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost:14.665e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27');
+ assert.equal(d.periods[0].facts.rd.value,14.665e9);assert.match(d.periods[0].facts.rd.source,/ExcludingAcquiredInProcessCost/);
+});
