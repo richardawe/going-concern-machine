@@ -44,6 +44,7 @@ button:active:not(:disabled){transform:scale(.97)}
 /* Instant scenario banner */
 .scenario-banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 12px;margin:6px 0;border:1px solid var(--n7);background:var(--n9);font-size:12px;opacity:1;transform:none;transition:opacity var(--dur-pop) var(--ease-out),transform var(--dur-pop) var(--ease-out)}
 @starting-style{.scenario-banner{opacity:0;transform:translateY(-4px)}}
+.scenario-banner{min-height:40px}.scenario-banner.idle{color:var(--n4)}.scenario-banner.idle .scenario-chip{background:none;color:var(--n4);border:1px solid var(--n6)}
 .scenario-banner b{font:600 13px 'IBM Plex Mono',monospace}
 .scenario-chip{font:600 9px 'IBM Plex Mono',monospace;letter-spacing:.8px;background:var(--n2);color:var(--n10);padding:3px 7px}
 /* Guided tour collapsed under the machine */

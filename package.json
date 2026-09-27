@@ -12,7 +12,8 @@
     "data:validate": "node --import tsx scripts/validate-data.ts",
     "demo": "node --import tsx scripts/demo.ts",
     "data:publish": "node --import tsx scripts/publish-sec.ts",
-    "test:browser": "node tests/browser.mjs"
+    "test:browser": "node tests/browser.mjs",
+    "demo:record": "node scripts/record-demo.mjs"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.2",
