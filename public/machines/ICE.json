@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 2,
+  "ticker": "ICE",
+  "name": "Intercontinental Exchange, Inc.",
+  "retrieved": "2026-09-27",
+  "provider": "SEC EDGAR XBRL company facts · automatic translation",
+  "periods": [
+    {
+      "period": "2025-12-31",
+      "fiscalYear": 2025,
+      "facts": {
+        "revenue": {
+          "value": 12640000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingProfit": {
+          "value": 4929000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:OperatingIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingCashFlow": {
+          "value": 4662000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "capex": {
+          "value": 373000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "dividends": {
+          "value": 1105000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsOfDividendsCommonStock · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "tax": {
+          "value": 976000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "netIncome": {
+          "value": 3315000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "cash": {
+          "value": 837000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "equity": {
+          "value": 28915000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        }
+      }
+    },
+    {
+      "period": "2024-12-31",
+      "fiscalYear": 2024,
+      "facts": {
+        "revenue": {
+          "value": 11761000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingProfit": {
+          "value": 4309000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:OperatingIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingCashFlow": {
+          "value": 4609000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "capex": {
+          "value": 406000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "dividends": {
+          "value": 1039000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsOfDividendsCommonStock · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "tax": {
+          "value": 826000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "netIncome": {
+          "value": 2754000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "cash": {
+          "value": 844000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "equity": {
+          "value": 27647000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        }
+      }
+    },
+    {
+      "period": "2023-12-31",
+      "fiscalYear": 2023,
+      "facts": {
+        "revenue": {
+          "value": 9903000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingProfit": {
+          "value": 3694000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:OperatingIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "operatingCashFlow": {
+          "value": 3542000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "capex": {
+          "value": 190000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "dividends": {
+          "value": 955000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:PaymentsOfDividendsCommonStock · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "tax": {
+          "value": 456000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "netIncome": {
+          "value": 2368000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "cash": {
+          "value": 899000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2026-02-05",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194926000004/"
+        },
+        "equity": {
+          "value": 25717000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2025-02-06",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571949/000157194925000003/"
+        }
+      }
+    }
+  ],
+  "classification": {
+    "sector": "general",
+    "label": "General company · Security & Commodity Brokers, Dealers, Exchanges & Services",
+    "verified": false,
+    "sic": "6200",
+    "rationale": "Classified automatically from SEC industry code 6200 (Security & Commodity Brokers, Dealers, Exchanges & Services). No sector module covers this industry yet, so the machine runs on the universal economic core only. Not reviewed by a person.",
+    "evidence": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1571949",
+    "coverage": "Automatic translation from SEC XBRL annual facts; fields that are not tagged consistently stay UNKNOWN."
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 2,
+  "ticker": "COHR",
+  "name": "COHERENT CORP.",
+  "retrieved": "2026-09-27",
+  "provider": "SEC EDGAR XBRL company facts · automatic translation",
+  "periods": [
+    {
+      "period": "2026-06-30",
+      "fiscalYear": 2026,
+      "facts": {
+        "revenue": {
+          "value": 7118181000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cogs": {
+          "value": 4449141000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServicesSold · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "operatingCashFlow": {
+          "value": 79514000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "capex": {
+          "value": 1102909000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "rd": {
+          "value": 722952000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:ResearchAndDevelopmentExpense · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "tax": {
+          "value": 60849000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "netIncome": {
+          "value": 804998000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "inventoryInvestment": {
+          "value": 1183000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInInventories · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cash": {
+          "value": 1162018000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "equity": {
+          "value": 10903495000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "ppe": {
+          "value": 2999343000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "inventory": {
+          "value": 2581043000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-06-30",
+          "source": "SEC XBRL us-gaap:InventoryNet · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "operatingProfit": {
+          "value": 847733000,
+          "unit": "USD",
+          "status": "ESTIMATED",
+          "period": "2026-06-30",
+          "inputs": [
+            "revenue"
+          ],
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/",
+          "source": "Derived from SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax and SEC XBRL us-gaap:CostsAndExpenses · 10-K filed 2026-08-14",
+          "calculation": "Revenue − total costs and expenses (us-gaap:CostsAndExpenses). No operating income is reported, so this may include non-operating items such as interest, investment gains or other income."
+        }
+      }
+    },
+    {
+      "period": "2025-06-30",
+      "fiscalYear": 2025,
+      "facts": {
+        "revenue": {
+          "value": 5810115000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cogs": {
+          "value": 3766793000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServicesSold · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "operatingCashFlow": {
+          "value": 633600000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "capex": {
+          "value": 440836000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "rd": {
+          "value": 581924000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:ResearchAndDevelopmentExpense · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "tax": {
+          "value": 64124000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "netIncome": {
+          "value": 49364000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "inventoryInvestment": {
+          "value": 202728000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInInventories · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cash": {
+          "value": 909200000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "equity": {
+          "value": 5644514000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "ppe": {
+          "value": 1877507000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "inventory": {
+          "value": 1437636000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-06-30",
+          "source": "SEC XBRL us-gaap:InventoryNet · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "operatingProfit": {
+          "value": 94181000,
+          "unit": "USD",
+          "status": "ESTIMATED",
+          "period": "2025-06-30",
+          "inputs": [
+            "revenue"
+          ],
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/",
+          "source": "Derived from SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax and SEC XBRL us-gaap:CostsAndExpenses · 10-K filed 2026-08-14",
+          "calculation": "Revenue − total costs and expenses (us-gaap:CostsAndExpenses). No operating income is reported, so this may include non-operating items such as interest, investment gains or other income."
+        }
+      }
+    },
+    {
+      "period": "2024-06-30",
+      "fiscalYear": 2024,
+      "facts": {
+        "revenue": {
+          "value": 4707688000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cogs": {
+          "value": 3251724000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServicesSold · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "operatingProfit": {
+          "value": 96121000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:OperatingIncomeLoss · 10-K filed 2024-08-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031824000016/"
+        },
+        "operatingCashFlow": {
+          "value": 545731000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:NetCashProvidedByUsedInOperatingActivities · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "capex": {
+          "value": 346816000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "rd": {
+          "value": 478788000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:ResearchAndDevelopmentExpense · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "tax": {
+          "value": 11117000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "netIncome": {
+          "value": -156154000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "inventoryInvestment": {
+          "value": 23196000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInInventories · 10-K filed 2026-08-14",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000020/"
+        },
+        "cash": {
+          "value": 926033000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:CashAndCashEquivalentsAtCarryingValue · 10-K filed 2025-08-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031825000014/"
+        },
+        "equity": {
+          "value": 5210115000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2025-08-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031825000014/"
+        },
+        "inventory": {
+          "value": 1286404000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-06-30",
+          "source": "SEC XBRL us-gaap:InventoryNet · 10-K filed 2025-08-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031825000014/"
+        }
+      }
+    }
+  ],
+  "classification": {
+    "sector": "general",
+    "label": "General company · Optical Instruments & Lenses",
+    "verified": false,
+    "sic": "3827",
+    "rationale": "Classified automatically from SEC industry code 3827 (Optical Instruments & Lenses). No sector module covers this industry yet, so the machine runs on the universal economic core only. Not reviewed by a person.",
+    "evidence": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=820318",
+    "coverage": "Automatic translation from SEC XBRL annual facts; fields that are not tagged consistently stay UNKNOWN."
+  }
+}

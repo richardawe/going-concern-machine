@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 2,
+  "ticker": "BAC",
+  "name": "BofA Finance LLC",
+  "retrieved": "2026-09-27",
+  "provider": "SEC EDGAR XBRL company facts · automatic translation",
+  "periods": [
+    {
+      "period": "2025-12-31",
+      "fiscalYear": 2025,
+      "facts": {
+        "nii": {
+          "value": 60096000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:InterestIncomeExpenseNet · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "fees": {
+          "value": 53001000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestIncome · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "revenue": {
+          "value": 113097000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "opex": {
+          "value": 69727000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestExpense · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "provision": {
+          "value": 5595000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "tax": {
+          "value": 7186000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "netIncome": {
+          "value": 30509000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "deposits": {
+          "value": 2018729000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "equity": {
+          "value": 303243000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        }
+      }
+    },
+    {
+      "period": "2024-12-31",
+      "fiscalYear": 2024,
+      "facts": {
+        "nii": {
+          "value": 56060000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:InterestIncomeExpenseNet · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "fees": {
+          "value": 49796000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestIncome · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "revenue": {
+          "value": 105856000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "opex": {
+          "value": 66812000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestExpense · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "provision": {
+          "value": 5935000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "tax": {
+          "value": 6250000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "netIncome": {
+          "value": 26973000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "deposits": {
+          "value": 1965467000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "equity": {
+          "value": 293963000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        }
+      }
+    },
+    {
+      "period": "2023-12-31",
+      "fiscalYear": 2023,
+      "facts": {
+        "nii": {
+          "value": 56931000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:InterestIncomeExpenseNet · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "fees": {
+          "value": 45838000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestIncome · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "revenue": {
+          "value": 102769000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "opex": {
+          "value": 65845000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:NoninterestExpense · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "provision": {
+          "value": 4725000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "tax": {
+          "value": 6225000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:IncomeTaxExpenseBenefit · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "netIncome": {
+          "value": 26305000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        },
+        "deposits": {
+          "value": 1923827000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2025-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085825000139/"
+        },
+        "equity": {
+          "value": 290209000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/70858/000007085826000157/"
+        }
+      }
+    }
+  ],
+  "classification": {
+    "sector": "banking",
+    "label": "Banking + credit · National Commercial Banks",
+    "verified": false,
+    "sic": "6021",
+    "rationale": "Classified automatically from SEC industry code 6021 (National Commercial Banks). Mapped to the banking + credit module. Not reviewed by a person.",
+    "evidence": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=70858",
+    "coverage": "Automatic translation from SEC XBRL annual facts; fields that are not tagged consistently stay UNKNOWN."
+  }
+}
