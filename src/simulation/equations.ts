@@ -74,5 +74,5 @@ const banking: Equation[] = [
  momentum(true),
 ];
 
-export const equations: Record<SectorId, Equation[]> = { 'software-cloud': industrial(false), retail: industrial(true), banking };
+export const equations: Record<SectorId, Equation[]> = { 'software-cloud': industrial(false), retail: industrial(true), banking, general: industrial(false) };
 export const equationFor = (sector: SectorId, target: string) => equations[sector].find(e => e.target === target);

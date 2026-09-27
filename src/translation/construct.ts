@@ -6,14 +6,14 @@ import { classify } from './classify';
 export function validateDataset(input:unknown):asserts input is CompanyDataset {
  const d=input as CompanyDataset;
  if(!d||d.schemaVersion!==2||typeof d.ticker!=='string'||typeof d.name!=='string'||!Array.isArray(d.periods)||!d.periods.length)throw new Error('Invalid published company dataset.');
- classify(d.ticker);
+ classify(d.ticker,d);
  const dates=new Set<string>();
  for(const p of d.periods){if(!/^\d{4}-\d{2}-\d{2}$/.test(p.period)||dates.has(p.period)||!Number.isInteger(p.fiscalYear)||!p.facts)throw new Error('Invalid or duplicated reporting period.');dates.add(p.period);
  for(const [id,f] of Object.entries(p.facts)){if(!f||!['USD','ratio','count','multiple','index'].includes(f.unit)||!['OBSERVED','CALCULATED','ESTIMATED','USER ASSUMPTION','UNKNOWN'].includes(f.status)||f.period!==p.period||typeof f.source!=='string'||(f.value!==null&&!Number.isFinite(f.value)))throw new Error('Invalid fact unit, value or provenance.');if((f.status==='UNKNOWN'&&f.value!==null)||(concepts[id]&&concepts[id].unit!==f.unit))throw new Error('Invalid fact status or concept unit.');if(f.status==='OBSERVED'&&(f.value===null||!f.url||!/^https:\/\//.test(f.url)))throw new Error('Observed facts require a value and a source URL.');}
  }
 }
 export function constructMachine(dataset:CompanyDataset,periodIndex=0):MachineDefinition {
- validateDataset(dataset);const classification=classify(dataset.ticker),module=sectors[classification.sector];const selected=dataset.periods[periodIndex];if(!selected)throw new Error('Reporting period unavailable.');
+ validateDataset(dataset);const classification=classify(dataset.ticker,dataset),module=sectors[classification.sector];const selected=dataset.periods[periodIndex];if(!selected)throw new Error('Reporting period unavailable.');
  const {period,fiscalYear}=selected;const facts:Record<string,Datum>=structuredClone(selected.facts);
  const derive=(id:string,inputs:string[],fn:(...n:number[])=>number,calculation:string)=>{const rows=inputs.map(k=>facts[k]);if(rows.some(f=>f?.value==null))return;const value=fn(...rows.map(f=>f.value!));if(!Number.isFinite(value))return;facts[id]={value,unit:concepts[id]?.unit||'USD',status:'CALCULATED',source:rows.map(f=>f.source).filter((v,i,a)=>a.indexOf(v)===i).join('; '),period,inputs,calculation,url:rows.find(r=>r.url)?.url};};
  const prior=dataset.periods.find(p=>p.fiscalYear===fiscalYear-1);

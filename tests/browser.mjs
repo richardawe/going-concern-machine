@@ -37,6 +37,14 @@ try{
  await page.getByRole('button',{name:'Inspect CET1 ratio',exact:true}).dispatchEvent('click');assert.ok(await page.getByRole('dialog').getByText('UNKNOWN',{exact:true}).count());await page.getByRole('button',{name:'Close inspector'}).click();
  await page.getByRole('button',{name:'Compare machines',exact:true}).click();assert.equal(await page.locator('svg.company-svg').count(),2);await page.getByRole('button',{name:'Compare machines',exact:true}).click();
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'artifacts/mobile.png',fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Page must not overflow horizontally');
- await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('NVDA');await page.getByRole('button',{name:'Construct',exact:true}).click();await page.getByRole('alert').filter({hasText:'does not yet have a verified sector translation'}).waitFor();
+ await page.setViewportSize({width:1440,height:1000});
+ // Typed ticker → automatic SEC translation, same end-to-end demonstration
+ await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('AAPL');await page.getByRole('button',{name:'Construct',exact:true}).click();
+ await page.getByRole('group',{name:'AAPL General company · Electronic Computers economic machine'}).waitFor();await page.getByText('AUTOMATIC · UNVERIFIED').waitFor();
+ {const rail=page.getByRole('region',{name:'Canonical demonstration'});assert.ok(await rail.getByRole('link').count()>5,'AAPL figures need SEC source links');
+  await rail.getByRole('tab',{name:/Pull one lever/}).click();await rail.getByRole('button',{name:/^Pull lever: CapEx \/ revenue/}).click();await page.getByText('Y1 PROPAGATION').waitFor();
+  await page.screenshot({path:'artifacts/aapl-desktop.png',fullPage:true});await page.getByRole('button',{name:'Reset',exact:true}).click();}
+ await page.setViewportSize({width:390,height:844});
+ await page.getByLabel('LOAD A BUSINESS',{exact:true}).fill('NVDA');await page.getByRole('button',{name:'Construct',exact:true}).click();await page.getByRole('alert').filter({hasText:'is not published yet'}).waitFor();
  assert.deepEqual(errors,[]);console.log('Browser flow passed. Screenshots in artifacts/.');
 }finally{await browser.close()}

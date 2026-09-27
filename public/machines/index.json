@@ -1,24 +1,18 @@
 {
   "schemaVersion": 2,
-  "coverage": "Curated annual snapshots, not live or latest-period coverage",
+  "coverage": "Verified curated snapshots (MSFT, WMT, JPM) plus automatic translations of SEC annual filings; not live or latest-quarter data",
   "companies": [
     {
-      "ticker": "MSFT",
-      "name": "Microsoft Corporation",
+      "ticker": "AAPL",
+      "name": "Apple Inc.",
       "periods": [
-        "2025-06-30",
-        "2024-06-30"
+        "2025-09-27",
+        "2024-09-28",
+        "2023-09-30"
       ],
-      "retrieved": "2026-09-26"
-    },
-    {
-      "ticker": "WMT",
-      "name": "Walmart Inc.",
-      "periods": [
-        "2025-01-31",
-        "2024-01-31"
-      ],
-      "retrieved": "2026-09-26"
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
     },
     {
       "ticker": "JPM",
@@ -27,7 +21,31 @@
         "2024-12-31",
         "2023-12-31"
       ],
-      "retrieved": "2026-09-26"
+      "retrieved": "2026-09-26",
+      "verified": true,
+      "sector": "banking"
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "periods": [
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-26",
+      "verified": true,
+      "sector": "software-cloud"
+    },
+    {
+      "ticker": "WMT",
+      "name": "Walmart Inc.",
+      "periods": [
+        "2025-01-31",
+        "2024-01-31"
+      ],
+      "retrieved": "2026-09-26",
+      "verified": true,
+      "sector": "retail"
     }
   ]
 }
