@@ -39,7 +39,8 @@
           "status": "OBSERVED",
           "period": "2026-01-31",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-03-31",
-          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 885000000,
@@ -117,7 +118,8 @@
           "status": "OBSERVED",
           "period": "2025-02-01",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-03-31",
-          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 883000000,
@@ -195,7 +197,8 @@
           "status": "OBSERVED",
           "period": "2024-02-03",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-03-31",
-          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 796000000,

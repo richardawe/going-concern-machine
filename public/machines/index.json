@@ -87,6 +87,18 @@
       "sector": "general"
     },
     {
+      "ticker": "ADP",
+      "name": "Automatic Data Processing, Inc.",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "ADSK",
       "name": "Autodesk, Inc.",
       "periods": [
@@ -137,6 +149,18 @@
     {
       "ticker": "AKAM",
       "name": "Akamai Technologies, Inc",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "ALB",
+      "name": "ALBEMARLE CORPORATION",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -221,6 +245,18 @@
     {
       "ticker": "AMGN",
       "name": "Amgen Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "AMP",
+      "name": "AMERIPRISE FINANCIAL, INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -351,6 +387,18 @@
       "sector": "general"
     },
     {
+      "ticker": "AXP",
+      "name": "AMERICAN EXPRESS CO",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "AZO",
       "name": "AUTOZONE INC",
       "periods": [
@@ -423,6 +471,30 @@
       "sector": "retail"
     },
     {
+      "ticker": "BDX",
+      "name": "BECTON, DICKINSON AND COMPANY",
+      "periods": [
+        "2025-09-30",
+        "2024-09-30",
+        "2023-09-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "BEN",
+      "name": "FRANKLIN RESOURCES INC",
+      "periods": [
+        "2025-09-30",
+        "2024-09-30",
+        "2023-09-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "BF.B",
       "name": "BROWN FORMAN CORP",
       "periods": [
@@ -435,8 +507,32 @@
       "sector": "general"
     },
     {
+      "ticker": "BIIB",
+      "name": "BIOGEN INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "BKNG",
       "name": "Booking Holdings Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "BKR",
+      "name": "Baker Hughes Company",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -639,6 +735,18 @@
       "sector": "general"
     },
     {
+      "ticker": "CF",
+      "name": "CF INDUSTRIES HOLDINGS, INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "CFG",
       "name": "CITIZENS FINANCIAL GROUP INC/RI",
       "periods": [
@@ -759,6 +867,18 @@
       "sector": "retail"
     },
     {
+      "ticker": "CMI",
+      "name": "CUMMINS INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "CNP",
       "name": "CENTERPOINT ENERGY INC",
       "periods": [
@@ -843,6 +963,18 @@
       "sector": "general"
     },
     {
+      "ticker": "CPRT",
+      "name": "COPART, INC.",
+      "periods": [
+        "2025-07-31",
+        "2024-07-31",
+        "2023-07-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "retail"
+    },
+    {
       "ticker": "CRH",
       "name": "CRH public limited company",
       "periods": [
@@ -915,6 +1047,18 @@
       "sector": "general"
     },
     {
+      "ticker": "CSX",
+      "name": "CSX CORPORATION",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "CTAS",
       "name": "Cintas Corporation",
       "periods": [
@@ -975,6 +1119,18 @@
       "sector": "retail"
     },
     {
+      "ticker": "CVX",
+      "name": "Chevron Corp",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "DAL",
       "name": "DELTA AIR LINES, INC.",
       "periods": [
@@ -989,6 +1145,18 @@
     {
       "ticker": "DASH",
       "name": "DOORDASH, INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "DD",
+      "name": "DUPONT DE NEMOURS, INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -1083,12 +1251,48 @@
       "sector": "general"
     },
     {
+      "ticker": "DHR",
+      "name": "DANAHER CORPORATION",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "DIS",
       "name": "WALT DISNEY CO/",
       "periods": [
         "2025-09-27",
         "2024-09-28",
         "2023-09-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "DLTR",
+      "name": "DOLLAR TREE, INC.",
+      "periods": [
+        "2026-01-31",
+        "2025-02-01",
+        "2024-02-03"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "retail"
+    },
+    {
+      "ticker": "DOV",
+      "name": "DOVER Corp",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -1117,6 +1321,18 @@
       "retrieved": "2026-09-27",
       "verified": false,
       "sector": "general"
+    },
+    {
+      "ticker": "DRI",
+      "name": "DARDEN RESTAURANTS, INC.",
+      "periods": [
+        "2026-05-31",
+        "2025-05-25",
+        "2024-05-26"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "retail"
     },
     {
       "ticker": "DUK",
@@ -1203,6 +1419,18 @@
       "sector": "general"
     },
     {
+      "ticker": "ED",
+      "name": "CONSOLIDATED EDISON INC",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "EFX",
       "name": "EQUIFAX INC",
       "periods": [
@@ -1227,8 +1455,44 @@
       "sector": "general"
     },
     {
+      "ticker": "EL",
+      "name": "Estee Lauder Companies Inc",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "EME",
       "name": "EMCOR Group, Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "EMR",
+      "name": "EMERSON ELECTRIC CO.",
+      "periods": [
+        "2025-09-30",
+        "2024-09-30",
+        "2023-09-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "EOG",
+      "name": "EOG RESOURCES, INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -1371,6 +1635,18 @@
       "sector": "general"
     },
     {
+      "ticker": "FANG",
+      "name": "Diamondback Energy, Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "FAST",
       "name": "FASTENAL CO",
       "periods": [
@@ -1467,6 +1743,18 @@
       "sector": "general"
     },
     {
+      "ticker": "FIS",
+      "name": "Fidelity National Information Services, Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "FISV",
       "name": "FISERV, INC.",
       "periods": [
@@ -1497,6 +1785,30 @@
         "2025-12-31",
         "2024-12-31",
         "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "FOX",
+      "name": "Fox Corporation",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "FOXA",
+      "name": "Fox Corporation",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -1541,6 +1853,78 @@
     {
       "ticker": "GD",
       "name": "GENERAL DYNAMICS CORPORATION",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GDDY",
+      "name": "GoDaddy Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GE",
+      "name": "GENERAL ELECTRIC CO",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GEHC",
+      "name": "GE HEALTHCARE TECHNOLOGIES INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GEN",
+      "name": "Gen Digital Inc.",
+      "periods": [
+        "2026-04-03",
+        "2025-03-28",
+        "2024-03-29"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GEV",
+      "name": "GE Vernova Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "GILD",
+      "name": "GILEAD SCIENCES, INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -1611,6 +1995,18 @@
       "sector": "general"
     },
     {
+      "ticker": "GPC",
+      "name": "GENUINE PARTS CO",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "GPN",
       "name": "GLOBAL PAYMENTS INC.",
       "periods": [
@@ -1659,6 +2055,18 @@
       "sector": "general"
     },
     {
+      "ticker": "HAS",
+      "name": "HASBRO, INC.",
+      "periods": [
+        "2025-12-28",
+        "2024-12-29",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "HBAN",
       "name": "Huntington Bancshares Incorporated",
       "periods": [
@@ -1695,6 +2103,18 @@
       "sector": "retail"
     },
     {
+      "ticker": "HII",
+      "name": "HUNTINGTON INGALLS INDUSTRIES, INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "HLT",
       "name": "Hilton Worldwide Holdings Inc.",
       "periods": [
@@ -1709,6 +2129,18 @@
     {
       "ticker": "HON",
       "name": "Honeywell International Inc",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "HOOD",
+      "name": "Robinhood Markets, Inc.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -1749,6 +2181,30 @@
         "2025-10-26",
         "2024-10-27",
         "2023-10-29"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "HSIC",
+      "name": "HENRY SCHEIN, INC.",
+      "periods": [
+        "2025-12-27",
+        "2024-12-28",
+        "2023-12-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "HSY",
+      "name": "HERSHEY CO",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -1839,6 +2295,30 @@
       "sector": "general"
     },
     {
+      "ticker": "ILMN",
+      "name": "ILLUMINA, INC.",
+      "periods": [
+        "2025-12-28",
+        "2024-12-29",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "INCY",
+      "name": "INCYTE CORPORATION",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "INTC",
       "name": "INTEL CORP",
       "periods": [
@@ -1857,6 +2337,18 @@
         "2026-07-31",
         "2025-07-31",
         "2024-07-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "INVH",
+      "name": "Invitation Homes Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -1965,6 +2457,30 @@
         "2025-08-31",
         "2024-08-31",
         "2023-08-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "JCI",
+      "name": "JOHNSON CONTROLS INTERNATIONAL PLC",
+      "periods": [
+        "2025-09-30",
+        "2024-09-30",
+        "2023-09-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "JKHY",
+      "name": "JACK HENRY & ASSOCIATES, INC.",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -2198,6 +2714,30 @@
       "sector": "general"
     },
     {
+      "ticker": "LLY",
+      "name": "ELI LILLY AND COMPANY",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "LNT",
+      "name": "ALLIANT ENERGY CORP",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "LOW",
       "name": "LOWES COMPANIES INC",
       "periods": [
@@ -2216,6 +2756,18 @@
         "2026-06-28",
         "2025-06-29",
         "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "LULU",
+      "name": "lululemon athletica inc.",
+      "periods": [
+        "2026-02-01",
+        "2025-02-02",
+        "2024-01-28"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -2354,6 +2906,18 @@
       "sector": "general"
     },
     {
+      "ticker": "MDLZ",
+      "name": "Mondelez International, Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "MDT",
       "name": "Medtronic plc",
       "periods": [
@@ -2396,6 +2960,18 @@
         "2025-11-30",
         "2024-11-30",
         "2023-11-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "MMM",
+      "name": "3M CO",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -2531,6 +3107,18 @@
       "retrieved": "2026-09-27",
       "verified": false,
       "sector": "banking"
+    },
+    {
+      "ticker": "MTD",
+      "name": "Mettler-Toledo International Inc.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
     },
     {
       "ticker": "MU",
@@ -2725,6 +3313,30 @@
       "sector": "general"
     },
     {
+      "ticker": "NWS",
+      "name": "NEWS CORPORATION",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "NWSA",
+      "name": "NEWS CORPORATION",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "NXPI",
       "name": "NXP Semiconductors N.V.",
       "periods": [
@@ -2751,6 +3363,18 @@
     {
       "ticker": "OKE",
       "name": "ONEOK INC /NEW/",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "OMC",
+      "name": "OMNICOM GROUP INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -2905,6 +3529,18 @@
       "sector": "general"
     },
     {
+      "ticker": "PG",
+      "name": "The Procter & Gamble Company",
+      "periods": [
+        "2026-06-30",
+        "2025-06-30",
+        "2024-06-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "PH",
       "name": "PARKER-HANNIFIN CORPORATION",
       "periods": [
@@ -2953,8 +3589,32 @@
       "sector": "general"
     },
     {
+      "ticker": "PNR",
+      "name": "Pentair plc",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "PNW",
       "name": "PINNACLE WEST CAPITAL CORP",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "PODD",
+      "name": "INSULET CORPORATION",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -3144,6 +3804,18 @@
       "sector": "general"
     },
     {
+      "ticker": "ROP",
+      "name": "ROPER TECHNOLOGIES, INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "ROST",
       "name": "Ross Stores, Inc.",
       "periods": [
@@ -3192,6 +3864,18 @@
       "sector": "general"
     },
     {
+      "ticker": "SBUX",
+      "name": "Starbucks Corporation",
+      "periods": [
+        "2025-09-28",
+        "2024-09-29",
+        "2023-10-01"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "retail"
+    },
+    {
       "ticker": "SCHW",
       "name": "SCHWAB CHARLES CORP",
       "periods": [
@@ -3214,6 +3898,18 @@
       "retrieved": "2026-09-27",
       "verified": false,
       "sector": "retail"
+    },
+    {
+      "ticker": "SJM",
+      "name": "J M SMUCKER Co",
+      "periods": [
+        "2026-04-30",
+        "2025-04-30",
+        "2024-04-30"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
     },
     {
       "ticker": "SMCI",
@@ -3294,6 +3990,18 @@
         "2025-12-31",
         "2024-12-31",
         "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "STE",
+      "name": "STERIS plc",
+      "periods": [
+        "2026-03-31",
+        "2025-03-31",
+        "2024-03-31"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -3468,6 +4176,18 @@
       "sector": "general"
     },
     {
+      "ticker": "TGT",
+      "name": "Target Corporation",
+      "periods": [
+        "2026-01-31",
+        "2025-02-01",
+        "2024-02-03"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "retail"
+    },
+    {
       "ticker": "TJX",
       "name": "The TJX Companies, Inc.",
       "periods": [
@@ -3618,6 +4338,18 @@
         "2025-12-31",
         "2024-12-31",
         "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "TXT",
+      "name": "Textron Inc.",
+      "periods": [
+        "2026-01-03",
+        "2024-12-28",
+        "2023-12-30"
       ],
       "retrieved": "2026-09-27",
       "verified": false,
@@ -3828,6 +4560,30 @@
       "sector": "general"
     },
     {
+      "ticker": "VZ",
+      "name": "VERIZON COMMUNICATIONS INC",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "WAB",
+      "name": "WESTINGHOUSE AIR BRAKE TECHNOLOGIES CORPORATION",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "WAT",
       "name": "Waters Corporation",
       "periods": [
@@ -3876,6 +4632,18 @@
       "sector": "general"
     },
     {
+      "ticker": "WEC",
+      "name": "WEC ENERGY GROUP, INC.",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
       "ticker": "WFC",
       "name": "WELLS        FARGO & COMPANY/MN",
       "periods": [
@@ -3890,6 +4658,18 @@
     {
       "ticker": "WM",
       "name": "WASTE MANAGEMENT INC",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "WMB",
+      "name": "WILLIAMS COMPANIES, INC.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -4021,6 +4801,18 @@
     {
       "ticker": "ZBRA",
       "name": "Zebra Technologies Corporation",
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "retrieved": "2026-09-27",
+      "verified": false,
+      "sector": "general"
+    },
+    {
+      "ticker": "ZTS",
+      "name": "Zoetis Inc.",
       "periods": [
         "2025-12-31",
         "2024-12-31",

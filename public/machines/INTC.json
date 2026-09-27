@@ -333,6 +333,15 @@
           "source": "SEC XBRL us-gaap:IncreaseDecreaseInInventories · 10-K filed 2026-01-23",
           "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086326000011/"
         },
+        "cash": {
+          "value": 7079000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-30",
+          "source": "SEC XBRL us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents · 10-K filed 2026-01-23",
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086326000011/",
+          "calculation": "Includes restricted cash: the company does not report cash and cash equivalents separately, so this overstates freely available cash."
+        },
         "equity": {
           "value": 105590000000,
           "unit": "USD",

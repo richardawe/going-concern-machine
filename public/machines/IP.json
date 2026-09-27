@@ -39,7 +39,8 @@
           "status": "OBSERVED",
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-02-27",
-          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/"
+          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 977000000,
@@ -153,7 +154,8 @@
           "status": "OBSERVED",
           "period": "2024-12-31",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-02-27",
-          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/"
+          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 643000000,
@@ -267,7 +269,8 @@
           "status": "OBSERVED",
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:PaymentsToAcquireProductiveAssets · 10-K filed 2026-02-27",
-          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/"
+          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/",
+          "calculation": "Reported as payments for productive assets, which can include intangible assets as well as property and equipment."
         },
         "dividends": {
           "value": 642000000,
@@ -300,6 +303,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:IncreaseDecreaseInInventories · 10-K filed 2026-02-27",
           "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143426000055/"
+        },
+        "cash": {
+          "value": 1113000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents · 10-K filed 2025-02-21",
+          "url": "https://www.sec.gov/Archives/edgar/data/51434/000005143425000013/",
+          "calculation": "Includes restricted cash: the company does not report cash and cash equivalents separately, so this overstates freely available cash."
         },
         "equity": {
           "value": 8355000000,
