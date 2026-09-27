@@ -17,3 +17,42 @@
 .data-tag.verified-tag{border-color:#6f8f5a;color:#46663a}.data-tag.auto-tag{border-color:#c09336;color:#8a6420;border-style:dashed}
 .company-svg .ghost-part{opacity:.75}.company-svg .ghost-part:hover{opacity:1}.company-svg .ghost-label{font:500 7.5px 'IBM Plex Mono',monospace;fill:#7c826d;letter-spacing:.3px}.company-svg .ghost-caption{font:8.5px 'IBM Plex Mono',monospace;fill:#8a8f79;letter-spacing:.8px}.company-svg .reported-only{fill:#8e937e}.ghost-dot{width:6px;height:6px;border:1px dashed #9aa08a;border-radius:50%}
 .company-svg .estimated-label{font:600 6.5px 'IBM Plex Mono',monospace;fill:#a8671d;letter-spacing:.6px}
+/* ---- Motion system (Emil Kowalski's rules: purpose, frequency, strong ease-out, exits faster than entries) ---- */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);--ease-drawer:cubic-bezier(.32,.72,0,1);--dur-press:140ms;--dur-tip:150ms;--dur-pop:200ms;--dur-drawer:300ms;--dur-exit:180ms}
+button{transition:background-color .15s ease,transform var(--dur-press) var(--ease-out)}
+button:active:not(:disabled){transform:scale(.97)}
+@media (hover:none){button:hover{background-color:revert-layer}}
+/* Causal motion: parts light up in equation order (60ms stagger) and can be interrupted by the next pull. */
+.causal-highlight{animation:none}
+.company-svg .sector-gear{transition:filter 240ms var(--ease-out)}
+.company-svg .sector-gear.causal-highlight{filter:drop-shadow(0 0 7px #c06b34);transition-delay:calc(var(--i,0) * 60ms)}
+/* Decorative loops removed: a stalled machine is shown by a steady warning glow, not a wobble. */
+.stressed-rotor{animation:none;filter:drop-shadow(0 0 10px #a04e3999)}
+/* Levers mounted on gears */
+.company-svg .lever{cursor:grab;outline:none;touch-action:none}
+.company-svg .lever:active{cursor:grabbing}
+.company-svg .lever-hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke}
+.company-svg .lever-track{fill:none;stroke:#b9b59d;stroke-width:5;stroke-linecap:round}
+.company-svg .lever-factory{stroke:#b68b34;stroke-width:3;stroke-linecap:round}
+.company-svg .lever-knob circle{fill:#f6f2e4;stroke:#5a6a46;stroke-width:2.5;transition:transform var(--dur-press) var(--ease-out)}
+.company-svg .lever.moved .lever-knob circle{stroke:#c06b34;fill:#fff4e2}
+.company-svg .lever.moved .lever-track{stroke:#d7b98a}
+.company-svg .lever:focus-visible .lever-track{stroke:#397683}
+.company-svg .lever:active .lever-knob circle{transform:scale(.92)}
+@media (hover:hover) and (pointer:fine){.company-svg .lever.active .lever-knob circle{transform:scale(1.15)}}
+.company-svg .lever-label{font:600 9.5px 'IBM Plex Mono',monospace;fill:#8c5a24;paint-order:stroke;stroke:#f0ecdf;stroke-width:3px}
+/* Instant scenario banner */
+.scenario-banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 12px;margin:6px 0;border:1px solid #c5b68c;background:#f3ead0;font-size:12px;opacity:1;transform:none;transition:opacity var(--dur-pop) var(--ease-out),transform var(--dur-pop) var(--ease-out)}
+@starting-style{.scenario-banner{opacity:0;transform:translateY(-4px)}}
+.scenario-banner b{font:600 13px 'IBM Plex Mono',monospace}
+.scenario-chip{font:600 9px 'IBM Plex Mono',monospace;letter-spacing:.8px;background:#344d3d;color:#f4eede;padding:3px 7px}
+/* Guided tour collapsed under the machine */
+.demo-rail>header{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.demo-rail.collapsed{margin-top:10px}.demo-rail.collapsed>header{border-bottom:0;padding:6px 12px}
+.demo-rail.collapsed nav button{padding:5px 8px;font-size:11px}
+.demo-hide{margin-left:auto}
+/* Dialogs enter from their resting place; exits are faster */
+.inspector[open],.assumption-dialog[open]{opacity:1;transform:none;transition:opacity var(--dur-drawer) var(--ease-drawer),transform var(--dur-drawer) var(--ease-drawer)}
+@starting-style{.inspector[open]{opacity:0;transform:translateX(16px)}.assumption-dialog[open]{opacity:0;transform:scale(.97)}}
+.gcm-toast{font-family:'DM Sans',Arial,sans-serif}
+@media (prefers-reduced-motion:reduce){button,.company-svg .sector-gear,.company-svg .lever-knob circle,.scenario-banner,.inspector[open],.assumption-dialog[open]{transition-property:opacity,filter,background-color;transform:none!important}}
