@@ -1,10 +1,11 @@
-export type SectorId = 'software-cloud' | 'retail' | 'banking';
+export type SectorId = 'software-cloud' | 'retail' | 'banking' | 'general';
 export type Status = 'OBSERVED' | 'CALCULATED' | 'ESTIMATED' | 'USER ASSUMPTION' | 'UNKNOWN';
 export type Unit = 'USD' | 'ratio' | 'count' | 'multiple' | 'index';
 export interface Datum { value: number | null; unit: Unit; status: Status; source: string; url?: string; period: string; calculation?: string; inputs?: string[]; reason?: string; }
 export interface CompanyPeriod { period: string; fiscalYear: number; facts: Record<string, Datum>; }
-export interface CompanyDataset { schemaVersion: 2; ticker: string; name: string; retrieved: string; provider: string; periods: CompanyPeriod[]; }
-export interface Classification { sector: SectorId; label: string; rationale: string; evidence: string; coverage: string; }
+export interface CompanyDataset { schemaVersion: 2; ticker: string; name: string; retrieved: string; provider: string; periods: CompanyPeriod[]; classification?: Classification; }
+/** `verified` means a person checked the sector mapping and data; automatic ones come from SEC codes and tags. */
+export interface Classification { sector: SectorId; label: string; rationale: string; evidence: string; coverage: string; verified: boolean; sic?: string; }
 export interface MachineNode extends Datum { id: string; label: string; meaning: string; role: 'core' | 'sector'; }
 export interface CausalEdge { id: string; from: string; to: string; relation: string; formula: string; lag: number; kind: 'accounting' | 'hypothesis' | 'concept'; }
 export interface MachineDefinition { ticker: string; name: string; period: string; fiscalYear: number; classification: Classification; nodes: MachineNode[]; edges: CausalEdge[]; gauges: string[]; stages: string[]; moduleNodes: string[]; limitations: string[]; year: number; momentum: { value: number | null; parts: {label:string;contribution:number;formula:string}[]; reason?:string }; }

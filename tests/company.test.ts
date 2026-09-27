@@ -33,5 +33,5 @@ test('shock starts in selected year; full momentum remains a stated narrower sce
  const m=constructMachine(data('MSFT')),sc=suggestedScenario(m);sc.adopted=true;const base=simulateCompany(m,sc);sc.shocks=[{id:'s',year:3,kind:'demand'}];const shocked=simulateCompany(m,sc);assert.deepEqual(shocked.slice(0,3),base.slice(0,3));assert.ok(n(shocked[3],'revenue')<n(base[3],'revenue'));for(const s of shocked.slice(1)){if(s.momentum.value!=null)near(s.momentum.value,s.momentum.parts.reduce((n,p)=>n+p.contribution,0));}
 });
 test('invalid import, missing fact, stale baseline and unsupported ticker are rejected',()=>{
- const m=constructMachine(data('MSFT')),sc=suggestedScenario(m);assert.ok(validateCompanyScenario(sc,m));sc.values.growth=Infinity;assert.equal(validateCompanyScenario(sc,m),false);assert.throws(()=>classify('NVDA'),/not yet/);const d=data('MSFT');d.periods[0].facts.revenue.period='wrong';assert.throws(()=>validateDataset(d),/Invalid/);
+ const m=constructMachine(data('MSFT')),sc=suggestedScenario(m);assert.ok(validateCompanyScenario(sc,m));sc.values.growth=Infinity;assert.equal(validateCompanyScenario(sc,m),false);assert.throws(()=>classify('NVDA'),/not published yet/);const d=data('MSFT');d.periods[0].facts.revenue.period='wrong';assert.throws(()=>validateDataset(d),/Invalid/);
 });

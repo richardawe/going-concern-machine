@@ -10,6 +10,8 @@ reported data → economic machine → inspectable causal model → one lever �
 - `npm run demo -- --write` regenerates [docs/demos](docs/demos) from the published data. `tests/demo.test.ts` checks that every change reconciles and reaches the lever.
 - Suggested assumptions state their basis: they are either calibrated from a reported ratio or a neutral placeholder.
 
+**Ticker input (phase 1 done: AAPL).** Any published ticker loads from `public/machines/`. `scripts/publish-sec.ts` (`npm run data:publish`) translates SEC EDGAR annual XBRL facts into the same dataset format (`src/data/sec.ts`). Each company is classified by its SEC industry code: banks and retailers get their modules, and everything else gets the universal-core *general company* module. Every automatic company carries an AUTOMATIC · UNVERIFIED badge, and every figure links to its filing. Quality gates refuse broken translations. Next: a weekly Action that publishes the S&P 500 (needs the `SEC_USER_AGENT` repository secret).
+
 ## Product target
 
 Enter a ticker → construct an explainable company-specific machine → inspect its economics → change assumptions → simulate the consequences.
