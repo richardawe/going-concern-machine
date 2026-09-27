@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './theme.css';
 import './styles.css';
 class ErrorBoundary extends React.Component<{children:React.ReactNode},{error:boolean}> {
  state={error:false};static getDerivedStateFromError(){return {error:true}}
