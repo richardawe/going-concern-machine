@@ -12,9 +12,12 @@ import { constructMachine, validateDataset } from '../src/translation/construct'
 import type { CompanyDataset } from '../src/ontology/types';
 
 const args = process.argv.slice(2), offline = args.includes('--fixtures'), save = args.includes('--save-fixtures');
-const universeAt = args.indexOf('--universe'), universePath = universeAt >= 0 ? args[universeAt + 1] : null;
-const universe = universePath ? (JSON.parse(await readFile(universePath, 'utf8')) as { companies: { ticker: string; cik: number }[] }).companies : [];
+type Listed = { ticker: string; cik: number; annualReportsCik?: number };
+const readList = async (path: string) => (JSON.parse(await readFile(path, 'utf8')) as { companies: Listed[] }).companies;
+const universeAt = args.indexOf('--universe'), universe = universeAt >= 0 ? await readList(args[universeAt + 1]) : [];
 const tickers = [...new Set([...args.filter((a, i) => !a.startsWith('--') && (universeAt < 0 || i !== universeAt + 1)).map(t => t.toUpperCase()), ...universe.map(c => c.ticker.toUpperCase())])];
+// The curated list's CIKs win over SEC's ticker map, which can point a ticker at a new holding company with no filings yet.
+const known = [...universe, ...(existsSync('data/universe/sp500.json') ? await readList('data/universe/sp500.json') : [])];
 const agent = process.env.SEC_USER_AGENT;
 if (!offline && (!agent || !agent.includes('@'))) throw Error('Set SEC_USER_AGENT to an application name and contact email (SEC requires it), or pass --fixtures.');
 if (!tickers.length) throw Error('Name at least one ticker.');
@@ -28,7 +31,7 @@ async function sec<T>(url: string): Promise<T> {
 }
 let cikMap: Record<string, number> | null = null;
 async function cikFor(ticker: string) {
- const listed = universe.find(c => c.ticker.toUpperCase() === ticker); if (listed) return listed.cik;
+ const listed = known.find(c => c.ticker.toUpperCase() === ticker); if (listed) return listed.annualReportsCik ?? listed.cik;
  cikMap ??= Object.fromEntries(Object.values(await sec<Record<string, { cik_str: number; ticker: string }>>('https://www.sec.gov/files/company_tickers.json')).map(r => [r.ticker.toUpperCase(), r.cik_str]));
  const cik = cikMap[ticker] ?? cikMap[ticker.replace(/\./g, '-')]; if (!cik) throw Error(`${ticker}: not found in SEC’s ticker list`); return cik;
 }

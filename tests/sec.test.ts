@@ -52,3 +52,10 @@ test('AAPL runs the same end-to-end demonstration: every change reconciles and t
  assert.equal(demo.lever,'capexRatio');assert.match(demo.question,/Apple Inc\./);assert.equal(x.levers.length,1);assert.ok(x.changes.length>10);
  for(const c of x.changes){assert.ok(Math.abs(c.contributions.reduce((s,p)=>s+p.effect,0)+c.interaction-c.delta)<=1e-6*Math.max(1,Math.abs(c.delta)));const last=rootPath(x,c).at(-1)!;assert.ok('ref' in last&&isLeverRef(last.ref));}
 });
+test('banks that report CECL-era credit-loss tags still get a provision figure',()=>{
+ const f=(val:number,instant=false)=>({units:{USD:[{val,end:'2025-12-31',...(instant?{}:{start:'2025-01-01'}),filed:'2026-02-20',form:'10-K',accn:'0000000001-26-000001'}]}});
+ const facts:SecCompanyFacts={cik:1,entityName:'Test Bank',facts:{'us-gaap':{InterestIncomeExpenseNet:f(60e9),NoninterestIncome:f(40e9),NoninterestExpense:f(65e9),FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal:f(5.6e9),NetIncomeLoss:f(22e9),IncomeTaxExpenseBenefit:f(7e9),Deposits:f(2e12,true),LoansAndLeasesReceivableNetReportedAmount:f(1e12,true),StockholdersEquity:f(3e11,true)}}};
+ const d=secToDataset('TB',facts,{cik:'1',name:'Test Bank',sic:'6021',sicDescription:'National Commercial Banks'},'2026-09-27');
+ assert.equal(d.classification!.sector,'banking');assert.equal(d.periods[0].facts.provision.value,5.6e9);assert.match(d.periods[0].facts.provision.source,/CreditLossExpenseReversal/);
+ assert.equal(d.periods[0].facts.revenue.status,'CALCULATED','revenue is derived as NII + noninterest income when not tagged');
+});

@@ -937,7 +937,9 @@
   {
    "ticker": "XOM",
    "name": "ExxonMobil",
-   "cik": 2115436
+   "cik": 2115436,
+   "annualReportsCik": 34088,
+   "why": "ExxonMobil Holdings Corp (2115436) became the registrant in 2026 and has not filed a 10-K yet; annual reports are under Exxon Mobil Corp (34088)."
   },
   {
    "ticker": "FFIV",

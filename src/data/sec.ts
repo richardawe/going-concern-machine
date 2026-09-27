@@ -29,7 +29,8 @@ const bank: Record<string, Rule> = {
  fees: r(['NoninterestIncome']),
  revenue: r(['Revenues']),
  opex: r(['NoninterestExpense']),
- provision: r(['ProvisionForLoanLeaseAndOtherLosses', 'ProvisionForLoanAndLeaseLosses', 'ProvisionForCreditLosses']),
+ // Banks moved to CECL-era tags after 2021; the loan credit-loss expense is the closest consistent provision figure.
+ provision: r(['ProvisionForLoanLeaseAndOtherLosses', 'ProvisionForLoanAndLeaseLosses', 'ProvisionForCreditLosses', 'ProvisionForLoanLossesExpensed', 'FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal']),
  tax: r(['IncomeTaxExpenseBenefit']),
  netIncome: r(['NetIncomeLoss']),
  deposits: r(['Deposits'], true),
