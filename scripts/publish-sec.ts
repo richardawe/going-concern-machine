@@ -1,6 +1,7 @@
 // Publishes automatically translated company machines from SEC EDGAR.
 //   SEC_USER_AGENT="App contact@example.com" npm run data:publish -- AAPL [--save-fixtures]
 //   npm run data:publish -- AAPL --fixtures        (offline, from tests/fixtures/sec)
+//   npm run data:publish -- --universe data/universe/sp500.json   (every company in a list)
 // Verified companies are never overwritten. A company that fails a quality gate is skipped with its reasons,
 // and whatever was published for it before stays in place.
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -11,7 +12,9 @@ import { constructMachine, validateDataset } from '../src/translation/construct'
 import type { CompanyDataset } from '../src/ontology/types';
 
 const args = process.argv.slice(2), offline = args.includes('--fixtures'), save = args.includes('--save-fixtures');
-const tickers = args.filter(a => !a.startsWith('--')).map(t => t.toUpperCase());
+const universeAt = args.indexOf('--universe'), universePath = universeAt >= 0 ? args[universeAt + 1] : null;
+const universe = universePath ? (JSON.parse(await readFile(universePath, 'utf8')) as { companies: { ticker: string; cik: number }[] }).companies : [];
+const tickers = [...new Set([...args.filter((a, i) => !a.startsWith('--') && (universeAt < 0 || i !== universeAt + 1)).map(t => t.toUpperCase()), ...universe.map(c => c.ticker.toUpperCase())])];
 const agent = process.env.SEC_USER_AGENT;
 if (!offline && (!agent || !agent.includes('@'))) throw Error('Set SEC_USER_AGENT to an application name and contact email (SEC requires it), or pass --fixtures.');
 if (!tickers.length) throw Error('Name at least one ticker.');
@@ -25,8 +28,9 @@ async function sec<T>(url: string): Promise<T> {
 }
 let cikMap: Record<string, number> | null = null;
 async function cikFor(ticker: string) {
+ const listed = universe.find(c => c.ticker.toUpperCase() === ticker); if (listed) return listed.cik;
  cikMap ??= Object.fromEntries(Object.values(await sec<Record<string, { cik_str: number; ticker: string }>>('https://www.sec.gov/files/company_tickers.json')).map(r => [r.ticker.toUpperCase(), r.cik_str]));
- const cik = cikMap[ticker]; if (!cik) throw Error(`${ticker}: not found in SEC’s ticker list`); return cik;
+ const cik = cikMap[ticker] ?? cikMap[ticker.replace(/\./g, '-')]; if (!cik) throw Error(`${ticker}: not found in SEC’s ticker list`); return cik;
 }
 async function load(ticker: string): Promise<{ facts: SecCompanyFacts; sub: SecSubmission; retrieved: string }> {
  const file = `tests/fixtures/sec/${ticker}.json`;
@@ -42,7 +46,9 @@ const indexPath = 'public/machines/index.json';
 const index = JSON.parse(await readFile(indexPath, 'utf8')) as { schemaVersion: 2; coverage: string; companies: Record<string, unknown>[] };
 const report: { ticker: string; status: string; reasons?: string[] }[] = [];
 await mkdir('tests/fixtures/sec', { recursive: true });
+let done = 0;
 for (const ticker of tickers) {
+ if (++done % 25 === 0) console.log(`… ${done}/${tickers.length}`);
  if (companyRegistry[ticker]) { report.push({ ticker, status: 'skipped: verified dataset is curated by hand' }); continue; }
  try {
   const { facts, sub, retrieved } = await load(ticker);
@@ -63,4 +69,9 @@ await writeFile(indexPath, JSON.stringify(index, null, 2) + '\n');
 await mkdir('artifacts/refresh', { recursive: true });
 await writeFile('artifacts/refresh/publish-report.json', JSON.stringify(report, null, 2) + '\n');
 for (const r of report) console.log(`${r.ticker}: ${r.status}${r.reasons ? ' — ' + r.reasons.join('; ') : ''}`);
+const count = (p: string) => report.filter(r => r.status.startsWith(p)).length;
+const summary = [`### Company machines · ${today}`, '', `Published ${count('published')} · skipped ${count('skipped')} (verified) · not published ${count('failed')} of ${report.length}.`, '',
+ ...(count('failed') ? ['| Ticker | Status | Why |', '| --- | --- | --- |', ...report.filter(r => r.status.startsWith('failed')).map(r => `| ${r.ticker} | ${r.status} | ${(r.reasons ?? []).join('; ').replace(/\|/g, '/')} |`)] : [])].join('\n');
+await writeFile('artifacts/refresh/publish-report.md', summary + '\n');
+if (process.env.GITHUB_STEP_SUMMARY) await writeFile(process.env.GITHUB_STEP_SUMMARY, summary + '\n', { flag: 'a' });
 if (report.every(r => r.status.startsWith('failed'))) process.exitCode = 1;
