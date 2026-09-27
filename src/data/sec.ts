@@ -13,14 +13,14 @@ const industrial: Record<string, Rule> = {
  cogs: r(['CostOfGoodsAndServicesSold', 'CostOfRevenue', 'CostOfGoodsSold']),
  grossProfit: r(['GrossProfit']),
  operatingProfit: r(['OperatingIncomeLoss']),
- operatingCashFlow: r(['NetCashProvidedByUsedInOperatingActivities']),
- capex: r(['PaymentsToAcquirePropertyPlantAndEquipment', 'PaymentsToAcquireProductiveAssets']),
+ operatingCashFlow: r(['NetCashProvidedByUsedInOperatingActivities', 'NetCashProvidedByUsedInOperatingActivitiesContinuingOperations']),
+ capex: r(['PaymentsToAcquirePropertyPlantAndEquipment', 'PaymentsToAcquireProductiveAssets', 'PaymentsToAcquireOtherPropertyPlantAndEquipment', 'PaymentsToAcquireOilAndGasPropertyAndEquipment', 'PaymentsToAcquireOilAndGasProperty', 'PaymentsToAcquireOtherProductiveAssets', 'PaymentsForConstructionInProcess']),
  rd: r(['ResearchAndDevelopmentExpense', 'ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost'], false, true),
  dividends: r(['PaymentsOfDividends', 'PaymentsOfDividendsCommonStock']),
  tax: r(['IncomeTaxExpenseBenefit']),
  netIncome: r(['NetIncomeLoss']),
  inventoryInvestment: r(['IncreaseDecreaseInInventories']),
- cash: r(['CashAndCashEquivalentsAtCarryingValue'], true),
+ cash: r(['CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents'], true),
  equity: r(['StockholdersEquity'], true),
  ppe: r(['PropertyPlantAndEquipmentNet'], true),
  inventory: r(['InventoryNet'], true),
@@ -39,6 +39,17 @@ const bank: Record<string, Rule> = {
  equity: r(['StockholdersEquity'], true),
 };
 export const secRules = (sector: SectorId) => sector === 'banking' ? bank : industrial;
+// A fallback tag measures something slightly different from the standard one; the difference is stated on the figure.
+const fallbackNotes: Record<string, string> = {
+ CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents: 'Includes restricted cash: the company does not report cash and cash equivalents separately, so this overstates freely available cash.',
+ NetCashProvidedByUsedInOperatingActivitiesContinuingOperations: 'Continuing operations only: cash flow from discontinued operations is excluded.',
+ PaymentsToAcquireProductiveAssets: 'Reported as payments for productive assets, which can include intangible assets as well as property and equipment.',
+ PaymentsToAcquireOtherPropertyPlantAndEquipment: 'Reported as payments for (other) property, plant and equipment; the standard CapEx line is not tagged.',
+ PaymentsToAcquireOilAndGasPropertyAndEquipment: 'Reported as payments for oil and gas property and equipment, the company’s main capital spending line.',
+ PaymentsToAcquireOilAndGasProperty: 'Reported as payments for oil and gas property, the company’s main capital spending line.',
+ PaymentsToAcquireOtherProductiveAssets: 'Reported as payments for other productive assets; the standard CapEx line is not tagged.',
+ PaymentsForConstructionInProcess: 'Reported as payments for construction in progress, the company’s main capital spending line.',
+};
 // Used only to estimate operating profit when a company reports no operating-income line.
 const totalCosts = r(['CostsAndExpenses']);
 const pretax = r(['IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments']);
@@ -62,7 +73,7 @@ function pick(facts: SecCompanyFacts, rule: Rule, end: string, cik: number): Dat
   const rows = usd(facts, tag).filter(f => annualForms.has(f.form) && f.end === end && Number.isFinite(f.val) && (rule.instant ? !f.start : isAnnual(f)));
   rows.sort((a, b) => b.filed.localeCompare(a.filed));
   const f = rows[0];
-  if (f) return { value: f.val, unit: 'USD', status: 'OBSERVED', period: end, source: `SEC XBRL us-gaap:${tag} · ${f.form} filed ${f.filed}`, url: `https://www.sec.gov/Archives/edgar/data/${cik}/${f.accn.replace(/-/g, '')}/` };
+  if (f) return { value: f.val, unit: 'USD', status: 'OBSERVED', period: end, source: `SEC XBRL us-gaap:${tag} · ${f.form} filed ${f.filed}`, url: `https://www.sec.gov/Archives/edgar/data/${cik}/${f.accn.replace(/-/g, '')}/`, ...(fallbackNotes[tag] ? { calculation: fallbackNotes[tag] } : {}) };
  }
 }
 export function secToDataset(ticker: string, facts: SecCompanyFacts, sub: SecSubmission, retrieved: string, periods = 3): CompanyDataset {

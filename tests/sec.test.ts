@@ -81,3 +81,10 @@ test('R&D takes the full line when a company tags only a component under the gen
  const d=secToDataset('TC',synth({...core,OperatingIncomeLoss:20e9,ResearchAndDevelopmentExpense:.109e9,ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost:14.665e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27');
  assert.equal(d.periods[0].facts.rd.value,14.665e9);assert.match(d.periods[0].facts.rd.source,/ExcludingAcquiredInProcessCost/);
 });
+test('fallback tags recover missing cash, cash flow and CapEx, and say how they differ',()=>{
+ const {CashAndCashEquivalentsAtCarryingValue:_c,NetCashProvidedByUsedInOperatingActivities:_o,PaymentsToAcquirePropertyPlantAndEquipment:_p,...rest}=core;
+ const d=secToDataset('TC',synth({...rest,OperatingIncomeLoss:20e9,CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents:15e9,NetCashProvidedByUsedInOperatingActivitiesContinuingOperations:30e9,PaymentsToAcquireOtherProductiveAssets:8e9},['CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents']),general,'2026-09-27').periods[0].facts;
+ assert.match(d.cash.calculation!,/Includes restricted cash/);assert.match(d.operatingCashFlow.calculation!,/Continuing operations only/);assert.match(d.capex.calculation!,/other productive assets/);
+ const std=secToDataset('TC',synth({...core,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27').periods[0].facts;
+ assert.equal(std.cash.calculation,undefined,'standard tags carry no caveat');
+});
