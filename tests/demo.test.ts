@@ -45,7 +45,7 @@ test('an unchanged but reachable node says why (MSFT: no revenue benefit without
  const y=explainExperiment(m,withResponse.base,withResponse.lever),rev=y.changes.filter(c=>c.node==='revenue');assert.ok(rev.length&&rev[0].year===1+Math.round(base.values.investmentLag),'revenue moves only after the investment lag');
 });
 test('suggested assumptions are calibrated only from reported ratios and say so',()=>{
- const m=constructMachine(data('MSFT')),s=suggestedScenario(m);assert.equal(s.values.capexRatio,+(64551/281724*100).toFixed(1));assert.equal(s.values.distribution,+(24082/(136162-64551)*100).toFixed(1));assert.equal(s.values.growth,sectors['software-cloud'].controls.find(c=>c.id==='growth')!.defaultValue);
- const bank=constructMachine(data('JPM')),b=suggestedScenario(bank);assert.equal(b.values.creditCost,+(10678/1347988*100).toFixed(2));
+ const m=constructMachine(data('MSFT')),s=suggestedScenario(m);assert.equal(s.values.capexRatio,+(115948/331839*100).toFixed(1));assert.equal(s.values.distribution,+(26445/(182935-115948)*100).toFixed(1));assert.equal(s.values.growth,sectors['software-cloud'].controls.find(c=>c.id==='growth')!.defaultValue);
+ const bank=constructMachine(data('JPM')),b=suggestedScenario(bank);assert.equal(b.values.creditCost,+(14212/1493429*100).toFixed(2));
  assert.deepEqual(simulateCompany(m,s),[m],'unadopted suggestions do not forecast');
 });

@@ -123,6 +123,8 @@ await wait(1400);
 
 mark('// 2. Inspect');
 // 2. Inspect: where each number came from, and how it is wired
+// Figures in captions are read from the machine, so a data refresh never leaves a stale number on screen.
+const shownValue = selector => page.locator(selector).first().evaluate(g => (g.querySelector('.gear-number, .module-value')?.textContent || '').trim());
 const inspectPart = async (selector, caption, sub, scrollTo) => {
  await hud.caption('2 / INSPECT', caption, sub);
  await click(page.locator(selector).first(), 550);
@@ -131,9 +133,9 @@ const inspectPart = async (selector, caption, sub, scrollTo) => {
  else await wait(700);
  await page.keyboard.press('Escape'); await wait(350);
 };
-await inspectPart(gear('Revenue'), 'Revenue: $281.7bn', 'The value, the 10-K it came from, and the equation that drives it forward.', 'Forecast equation');
+await inspectPart(gear('Revenue'), `Revenue: ${await shownValue(gear('Revenue'))}`, 'The value, the 10-K it came from, and the equation that drives it forward.', 'Forecast equation');
 await inspectPart('.company-svg g.machine-hit[aria-label="Inspect Intelligent Cloud"]', 'Cloud: a reported segment', 'Shown as reported. It is not projected separately, and the app says so.', 'What feeds');
-await inspectPart('.company-svg g.machine-hit[aria-label="Inspect R&D expense"]', 'R&D: $32.5bn', 'It is part of operating costs. The link is drawn but not simulated separately.', 'What does it affect');
+await inspectPart('.company-svg g.machine-hit[aria-label="Inspect R&D expense"]', `R&D: ${await shownValue('.company-svg g.machine-hit[aria-label="Inspect R&D expense"]')}`, 'It is part of operating costs. The link is drawn but not simulated separately.', 'What does it affect');
 await inspectPart(gear('Capital'), 'Capital: the cash the machine keeps', 'Prior cash + free cash flow − distributions. No debt financing is invented.', 'Forecast equation');
 
 mark('// 3. One');
@@ -170,7 +172,7 @@ const walk = [
  [3, gear('Operating cash flow'), null, 'Cash generation', 'The change in operating profit × cash conversion reaches operating cash flow.'],
  [4, gear('Capital investment'), null, 'Investment capacity', 'CapEx is a share of revenue, so less revenue means less infrastructure spend.'],
  [5, '.company-svg .ghost-part[aria-label="Inspect Productive capacity"]', 'NOT MEASURED', 'Future productive capacity', 'No filing measures capacity, so it is drawn as a ghost and not simulated.'],
- [6, '.company-svg g.machine-hit[aria-label="Inspect Operating cash flow"]', null, 'Machine state', 'The flywheel speed is operating cash flow compared with FY2025.'],
+ [6, '.company-svg g.machine-hit[aria-label="Inspect Operating cash flow"]', null, 'Machine state', 'The flywheel speed is operating cash flow compared with the reported year.'],
 ];
 for (const [i, sel, fixed, t, s] of walk) {
  const label = sel.match(/Inspect ([^"]+)"/)?.[1];

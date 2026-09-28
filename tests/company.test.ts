@@ -11,11 +11,11 @@ test('all three companies construct economically distinct sector machines with p
  assert.equal(getNode(machines[0],'arr')?.value,null);assert.equal(getNode(machines[0],'churn')?.value,null);assert.equal(getNode(machines[1],'traffic')?.value,null);assert.equal(getNode(machines[2],'freeCashFlow'),undefined);assert.equal(getNode(machines[2],'roic'),undefined);
 });
 test('derived measures use explicit accounting relationships, not invented values',()=>{
- const retail=constructMachine(data('WMT'));near(n(retail,'freeCashFlow'),(36443-23783)*1e6);near(n(retail,'inventoryTurns'),511753/((56435+54892)/2));
+ const retail=constructMachine(data('WMT'));near(n(retail,'freeCashFlow'),(41565-26642)*1e6);near(n(retail,'inventoryTurns'),535395/((58851+56435)/2));
  const bank=constructMachine(data('JPM'));near(n(bank,'revenue'),n(bank,'nii')+n(bank,'fees'));near(n(bank,'netIncome'),n(bank,'revenue')-n(bank,'opex')-n(bank,'provision')-n(bank,'tax'));near(n(bank,'capital'),n(bank,'cet1Capital'));
 });
 test('history does not invent missing prior periods or change reported dates',()=>{
- const d=data('WMT');const older=constructMachine(d,1);assert.equal(older.period,'2024-01-31');assert.equal(getNode(older,'inventoryTurns')?.value,null);assert.equal(getNode(older,'revenueGrowth')?.value,null);assert.notEqual(fingerprint(d,d.periods[0].period),fingerprint(d,d.periods[1].period));
+ const d=data('WMT');const older=constructMachine(d,1);assert.equal(older.period,'2025-01-31');assert.equal(getNode(older,'inventoryTurns')?.value,null);assert.equal(getNode(older,'revenueGrowth')?.value,null);assert.notEqual(fingerprint(d,d.periods[0].period),fingerprint(d,d.periods[1].period));
 });
 test('forecasts are gated on explicit adoption and do not mutate reported data',()=>{
  for(const ticker of ['MSFT','WMT','JPM']){const d=data(ticker),before=JSON.stringify(d),m=constructMachine(d),sc=suggestedScenario(m);assert.equal(simulateCompany(m,sc).length,1);sc.adopted=true;const history=simulateCompany(m,sc);assert.equal(history.length,HORIZON+1);assert.deepEqual(history[0],m);assert.equal(JSON.stringify(d),before);assert.ok(history[1].nodes.every(n=>n.status!=='OBSERVED'));assert.deepEqual(history,simulateCompany(m,sc));}
