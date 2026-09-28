@@ -1,0 +1,178 @@
+# Going Concern Machine: CEO Mode, build plan
+
+A new, separate mode built on the existing machine: **you are the CEO of a fictional business.** You get a situation, make a decision, and the machine plays the future forward to show what that decision did. It is a training tool for judging the impact of decisions. It is **strictly hypothetical**. The companies are fictional, and it gives no advice about real companies or investments.
+
+> Scenario → Decide → Play forward → See the impact → Debrief → Next decision
+
+This mode sits beside the company-analysis product and does not replace it. It reuses the engine, the machine visuals and the SEC data that already exist.
+
+---
+
+## 1. Review: what exists and what we can reuse
+
+| Asset | Where | Reuse in CEO mode |
+| --- | --- | --- |
+| **Hypothetical-business engine**: annual steps; 12 allocation levers (R&D, product, people, marketing, sales, infrastructure, automation, maintenance, acquisitions, debt repayment, dividends, reserves); 8 productive stocks with **investment lags** and decay; customers/churn/CAC; cash, debt, equity, ROIC; shocks | `src/model/engine.ts`, `config.ts`, `investment.ts`, `types.ts` | **Core of the game engine.** It already models "decision now, benefit later". It needs a people/HR subsystem, pricing, financing actions and events (§4). |
+| **Momentum composite**: transparent, weighted and inspectable | `src/model/momentum.ts` | Becomes the "flywheel speed" and one input to the scorecard. |
+| **Equation registry + change explainer**: attributes every change to the inputs of its own equation and traces it back to the lever | `src/simulation/equations.ts`, `explain.ts` | The pattern for the **debrief** ("why did FCF fall in year 3?"). Phase 1 uses decision-level attribution. Node-level attribution follows once the engine is on the registry. |
+| **Machine visuals**: flywheel, gears, pipes, cash reservoir, capital battery, brakes, gauges, inspector, light/dark theme | `src/components/Machine.tsx`, `Gauge.tsx`, `Inspector.tsx`, `theme.css`, `styles.css` | Used unchanged as the "play forward" view. Animation already encodes state. |
+| **Shocks**: demand −20%, rates +300 bps, churn ×2, COGS +15%, CAC +40%, recession, regulation, productivity, price | `src/model/engine.ts` (`withShocks`) | Become **scenario events** that arrive mid-campaign. |
+| **SEC dataset**: 402 companies, usually 3 fiscal years each. Fields: revenue, tax, operating profit, CFO, CapEx and cash (~388); equity (375); net income (367); PPE (308); dividends (286); COGS (281); inventory (274); R&D (202); every company has an SIC code. Sectors: 359 general, 27 retail, 13 banks. | `public/machines/*.json`, `data/universe/sp500.json` | **Calibrates fictional archetypes** (§3): realistic margins, capital intensity, R&D intensity, inventory days, growth and payout by industry, plus peer ranges for the debrief. No real names are shown. |
+| Scenario storage and import/export, BASE/BULL/BEAR/CUSTOM containers | `src/state.ts` | The pattern for save games and exported results. |
+| Static Pages + Actions pipeline, tests, browser tests, demo recorder | `.github/workflows`, `tests/`, `scripts/` | Unchanged. A new script builds archetypes during the data workflow. |
+
+**Gaps for a training tool**
+
+1. **No people/HR system.** "People" is only a budget line into a human-capital stock. We need headcount, pay, morale, attrition, hiring ramp and layoffs.
+2. **No pricing decision.** Only `priceGrowth` exists, and it has no demand response. We need price elasticity and competitor response.
+3. **No financing decisions.** There is no way to raise debt or equity, buy back shares, or change credit terms. Cash shortfalls are exposed (`liquidityGap`) but nothing can respond to them.
+4. **No discrete decisions.** All levers are continuous. Training needs choices with trade-offs, e.g. *"Cut 10% of staff"* or *"Acquire the rival for $40M"*.
+5. **No turn structure.** Today the user sets levers and runs 10 years. We need turns: decide, play 1 year, react.
+6. **No counterfactual or assessment.** Nothing compares "what you did" with "doing nothing" or a reference decision.
+7. **No uncertainty.** The engine is fully deterministic, so luck cannot be separated from judgement.
+
+---
+
+## 2. Product design
+
+### The loop (one campaign ≈ 15–20 minutes)
+
+1. **Briefing.** The company card shows the fictional name, sector archetype, current machine state, a board memo describing the situation, and 2–3 learning objectives. These are hidden until the debrief or shown up front, depending on trainer mode.
+2. **Decision turn.** The player picks one **decision card** from 2–4 options and may fine-tune up to three **levers** within a budget. Each card shows its stated costs, not its hidden second-order effects.
+3. **Play forward.** The machine animates one year: cash flows, reservoirs fill or drain, the flywheel speeds up or slows down. Deterministic **headlines** fire at thresholds, e.g. "Engineers leave for rival" when attrition exceeds 20% or "Bank tightens covenant" when interest cover is below 2×.
+4. **Impact panel.** Shows the KPI deltas against the **"no decision" counterfactual** for this year, plus effects still in the pipeline ("R&D investment matures in 2 years").
+5. **Repeat** for 5–8 years. Events arrive on the scenario's timeline.
+6. **Debrief** (§5).
+
+### Decision levers by function
+
+| Function | Continuous levers | Example decision cards |
+| --- | --- | --- |
+| **Finance** | Dividend payout, cash reserve target, debt repayment | Raise $X debt at Y%; raise equity (dilution); buy back shares; sell a division; factor receivables |
+| **HR / People** | Headcount growth, pay vs market, training spend | Hire 50 engineers; 10% layoffs; pay freeze; retention bonuses; outsource support |
+| **Product / R&D** | R&D % of revenue, product spend | Launch a new product (2-year lag); kill a legacy line; technical-debt sprint |
+| **Sales & Marketing** | Marketing, sales, price change | Price cut / price rise; enter a new market; loyalty programme |
+| **Operations** | Maintenance, infrastructure, automation, inventory days | Automate the plant (CapEx now, cost later); new warehouse; switch supplier |
+| **Strategy** | Reinvestment rate (master lever) | Acquire a competitor; pivot; hold course |
+
+Each card compiles to **lever deltas + one-off cash effects + delayed effects + risk flags**. A card is data, not code.
+
+---
+
+## 3. Reusing the SEC data: fictional archetypes
+
+`scripts/build-archetypes.ts` runs inside the existing data workflow and writes `public/ceo/archetypes.json`.
+
+- Group the 402 companies by SIC into ~8 archetypes: *Software & internet, Semis & hardware, Consumer brands, Retail, Industrial manufacturing, Healthcare & pharma, Energy & utilities, Business services.* Banks are excluded from v1 because their machine is different.
+- For each archetype, compute **p25 / median / p75** of: gross margin, operating margin, CapEx/revenue, R&D/revenue, inventory days, revenue growth, cash/revenue, payout ratio and PPE/revenue. Record the number of companies (n) and the list of source tickers for audit.
+- **A fictional company = one archetype + a seeded draw inside its ranges, rescaled** to a playable size ($20M–$2B revenue). It gets a generated name (e.g. *Northwind Devices*, *Kestrel Freight*) so it cannot be identified as a real firm.
+- Provenance stays honest. Every starting value is labelled **"CALIBRATED: [archetype] median of n SEC filers, FY2023–25"** or **"GAME ASSUMPTION"**. We do not have customer counts, headcount or morale, so these are marked as game assumptions, never as data.
+- **The debrief uses peer ranges.** For example: "Your operating margin ended at 4%; archetype p25–p75 is 9–18%."
+
+Acceptance: archetypes rebuild deterministically from `public/machines`. Every value has an n and a source. A validator refuses archetypes built from fewer than 8 companies.
+
+---
+
+## 4. Engine extensions (`src/ceo/engine/`)
+
+Wrap and extend `model/engine.ts` rather than fork it. Keep the rules of the original brief: deterministic, explicit equations, lags, no LLM in calculations, and a separate rendering layer.
+
+1. **People subsystem.** State: `headcount`, `avgPay`, `morale` (0–1 stock), `attrition`, `hiringPipeline`, `productivityPerHead`.
+   - Morale goes up with pay vs market, training and growth. It goes down with layoffs, pay freezes and overload (revenue per head above the archetype p75).
+   - Attrition = base + k × (1 − morale).
+   - New hires ramp over 2–4 quarters, modelled as a fraction of annual productivity.
+   - Layoffs: severance cash now, opex saving next year, a morale shock and a human-capital stock loss.
+   - Links to the existing `human` stock and to opex.
+2. **Pricing and demand.** An archetype-specific price elasticity, plus competitor response as a scenario parameter (probability and size of a matching cut). A price change affects revenue, volume, churn and brand.
+3. **Financing actions.** Debt issue (rate spread rises with leverage), equity issue (tracked as dilution and ownership %), buybacks, covenants (interest cover or leverage threshold → event), and liquidity-gap handling. A negative cash position triggers a forced emergency-financing event with a penalty; nothing is funded silently.
+4. **Discrete decisions compiler.** `applyDecision(state, assumptions, card)` returns lever deltas, one-off flows and entries for the delayed-effect queue. The queue generalizes the existing investment-lag queue.
+5. **Events.** Generalize `withShocks` into timed, conditional events: a scheduled year, a trigger (e.g. `morale < 0.4`), or a seeded probability.
+6. **Seeded uncertainty.** A small noise layer on demand growth, competitor response and event probability, using a seeded PRNG (e.g. mulberry32). The same seed and the same decisions always give the same result. The engine also supports **N-seed runs** for the debrief's luck-vs-judgement band.
+7. **Turn API.** `step(game, decision) → { game, yearTrace, headlines }`, plus `counterfactual(game, alternative)`, which replays from the same seed.
+
+Acceptance: unit tests for accounting identities (cash roll-forward, equity roll-forward), lag timing, determinism given a seed, and layoff/morale/attrition directionality. Runs to date in `tests/model.test.ts` keep passing unchanged.
+
+---
+
+## 5. Assessment and debrief (the training value)
+
+- **Counterfactuals.** Replay the same seed with (a) **status quo**, i.e. no decisions, and (b) the case's **reference decision path**, if the author supplied one. Show the three paths on one chart for revenue, FCF, cash, ROIC − WACC, headcount/morale and momentum.
+- **Decision attribution.** For each decision taken, replay the campaign *without that decision* and report its marginal impact on each KPI, e.g. "Your year-2 layoff added +$3.1M FCF in year 3 but cost −$5.4M revenue by year 5 through attrition and product delays." Then trace the causal path through the machine using the existing cascade/explain styling.
+- **Scorecard.** Five dimensions shown separately: **Value creation** (ROIC spread), **Survival/liquidity** (min runway, covenant breaches), **Growth**, **People health** (morale, regretted attrition) and **Customer health** (retention, brand). Case-specific weights give an overall grade (A–E) and a transparent "Board confidence" meter. Every number is inspectable, following the momentum approach.
+- **Luck vs judgement.** Run the player's decisions over 50 seeds and show the outcome range: "You scored B; your decisions score B− to A across 50 possible worlds, so this result was about average luck."
+- **Lessons.** Short debrief notes written by the case author, keyed to the decisions taken and the thresholds hit. There is no LLM in the loop for v1.
+- **Export.** Download a JSON and printable (HTML → PDF) report for trainers: case, seed, decisions, scores and attribution. Results are in browser storage only; there is no backend.
+
+---
+
+## 6. Scenario/case format
+
+Cases are JSON files in `public/ceo/cases/`, checked by `scripts/validate-cases.ts`.
+
+```jsonc
+{
+  "id": "price-war",
+  "title": "The Price War",
+  "archetype": "retail",
+  "seed": 1207,
+  "years": 6,
+  "briefing": "A discount rival has entered your top three regions…",
+  "objectives": ["Protect long-run value, not just this year's share", "Keep runway above 12 months"],
+  "start": { "overrides": { "cashToRevenue": 0.06 } },
+  "events": [{ "year": 1, "kind": "competitorPriceCut", "size": -0.15 }],
+  "turns": [{ "year": 1, "cards": ["matchPrice", "holdAndBuildBrand", "differentiateProduct", "cutCostsToFund"] }],
+  "reference": ["holdAndBuildBrand"],
+  "scoring": { "value": 0.3, "survival": 0.25, "growth": 0.15, "people": 0.15, "customers": 0.15 },
+  "debrief": [{ "if": "took:matchPrice", "note": "Matching price protected volume but…" }]
+}
+```
+
+**Starter cases (v1 target: 6)**
+
+1. **The Price War** (Retail). Match, hold, differentiate or cut costs.
+2. **Talent Exodus** (Software). Attrition spike: raise pay, hire contractors, cut scope or ride it out.
+3. **Cash Crunch** (Industrial). Rates +300 bps, heavy inventory: cut CapEx, factor receivables, raise equity or lay off staff.
+4. **Growth at Any Cost?** (Software). The board wants growth: buy customers with marketing, or fix retention first.
+5. **The Automation Bet** (Manufacturing). CapEx now vs headcount cost later, plus the people-side impact.
+6. **Dividend Pressure** (Consumer brands). Shareholders want payout, the product line is ageing. Then a recession arrives.
+
+A **Sandbox** mode lets the player choose any archetype with no case: free play with every lever and any shock.
+
+---
+
+## 7. UI and architecture
+
+- **Route:** `#/ceo`, a new entry in `App.tsx`. The company workbench stays the default. Add a "CEO mode" switch in both directions.
+- **New code:** `src/ceo/` containing `engine/` (§4), `cases/` (loader + types), `assessment/` (§5) and `ui/`.
+  - UI screens: `CaseSelect`, `Briefing`, `DecisionDesk` (cards + levers + budget meter), `PlayForward` (wraps the existing `Machine` + `Gauge`), `ImpactPanel`, `Debrief`.
+- **Reuse** `Machine.tsx` through the existing `presentation.ts` / `machineView` mapping. Add an HR "people reservoir" and a morale gauge to the machine as a new component, not a rewrite.
+- **Layers stay separate:** data (archetypes, cases) → engine → game state → visualization. No calculations in components.
+- **Save:** browser storage under `gcm:ceo:v1:*`, wrapped in try/catch, with import/export.
+- **Hosting:** unchanged. Everything is static on GitHub Pages, and archetypes are built by Actions.
+
+---
+
+## 8. Delivery phases
+
+| Phase | Scope | Done when |
+| --- | --- | --- |
+| **0. Decisions** (½ day) | Answer the open questions (§9). Freeze the case JSON schema. | Schema and one case written on paper |
+| **1. Archetypes** | `build-archetypes.ts`, validator, `public/ceo/archetypes.json`, fictional-company generator | 8 archetypes with n ≥ 8, tests pass, provenance shown |
+| **2. Engine v1** | People subsystem, pricing elasticity, financing actions, decision compiler, events, seeded PRNG, turn API | Identity, lag and determinism tests pass; existing tests unchanged |
+| **3. Playable loop** | Route, case select, briefing, decision desk, play-forward on the existing machine, impact panel; **one case end-to-end (Price War)** | A full campaign is playable in the browser; browser test covers it |
+| **4. Assessment** | Counterfactuals, decision attribution, scorecard, 50-seed luck band, debrief notes, report export | The debrief explains every KPI change back to a decision |
+| **5. Content** | The remaining 5 cases + Sandbox; balance pass (no dominant card; the reference path beats status quo on median seed) | A balance script runs all card combos × seeds and flags dominant strategies |
+| **6. Polish** | Headlines, animations for decisions entering the machine, mobile focus mode, demo recording, docs | Demo video of a full campaign; mobile playable |
+| **Later** | Quarterly turns; node-level explain by porting the engine onto the equation registry; trainer case editor; cohort results via an artifact database; optional LLM-written flavour text (never numbers) | — |
+
+**Recommended first slice:** phases 1–3 for a single case, so the loop can be tested for fun before we invest in assessment and content.
+
+---
+
+## 9. Open questions
+
+1. **Turn length.** Annual turns (fits the current engine; recommended for v1) or quarterly (more realistic, a bigger engine change)?
+2. **Audience.** Self-directed players, or trainer-led cohorts that need comparable scores and exportable results?
+3. **Objective visibility.** Show learning objectives before play (coaching) or only at the debrief (assessment)?
+4. **Real companies.** Fully fictional as planned, or also an optional "run a real company" mode using the verified MSFT/WMT/JPM machines?
+5. **Branding.** Keep it inside Going Concern Machine as "CEO mode", or give it its own title and landing page?
