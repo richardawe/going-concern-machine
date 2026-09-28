@@ -10,7 +10,7 @@ import { dimensions, type Decision, type Game, type YearRecord } from '../types'
 type Metric = { id: string; label: string; value: (r: YearRecord) => number; format: (n: number) => string };
 
 type Challenger = { name?: string; decisions: Decision[] };
-export default function Debrief({ game, share, challenger, again, quit }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig }; challenger?: Challenger; again: () => void; quit: () => void }) {
+export default function Debrief({ game, share, challenger, again, quit }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig; assignment?: { id: string; title: string } }; challenger?: Challenger; again: () => void; quit: () => void }) {
   const [result, setResult] = useState<Result | null>(null), [judgement, setJudgement] = useState<Judgement | null>(null), [rival, setRival] = useState<Judgement | null>(null);
   // Scoring runs in a worker; without worker support it falls back to the page, after a first paint.
   useEffect(() => {
@@ -64,6 +64,8 @@ export default function Debrief({ game, share, challenger, again, quit }: { game
         </ul>
       </div>
     </div>
+
+    {share.assignment && <SubmitResults game={game} share={share} assignment={share.assignment} />}
 
     <div className="debrief-grid">
       <section aria-labelledby="objectives-title" className="objectives">
@@ -160,7 +162,7 @@ function Luck({ you, nothing, actual }: { you: number[]; nothing: number[]; actu
   </section>;
 }
 
-function ShareChallenge({ game, share }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig } }) {
+function ShareChallenge({ game, share }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig; assignment?: { id: string; title: string } } }) {
   const [open, setOpen] = useState(false), [name, setName] = useState(''), [status, setStatus] = useState('');
   const url = challengeUrl(encodeChallenge({ caseId: game.caseDef.id, choice: share.choice, sandbox: share.sandbox, decisions: game.decisions, name, revenue: game.start.baseline.state.revenue }, game.caseDef));
   const copy = async () => { try { await navigator.clipboard.writeText(url); setStatus('Link copied. Send it to a friend.'); } catch { setStatus('Copy the link below.'); } };
@@ -187,5 +189,23 @@ function Rivalry({ game, challenger, you, rival, spaceScores }: { game: Game; ch
         <tr><th scope="row">Outcome</th><td>{gradeFor(rank(you.score))} · score {you.score}</td><td>{gradeFor(rank(theirScore))} · score {theirScore}</td></tr>
         {game.decisions.map((_, i) => <tr key={i}><th scope="row">Year {i + 1}</th><td>{describeDecision(game, i)}</td><td>{describeDecision(theirGame, i)}</td></tr>)}
       </tbody></table>
+  </section>;
+}
+
+/** For a class assignment: the student names themselves and hands in a results link. The instructor's page replays the
+ * decisions in it, so the grades cannot be edited on the way. */
+function SubmitResults({ game, share, assignment }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig }; assignment: { id: string; title: string } }) {
+  const [name, setName] = useState(''), [status, setStatus] = useState('');
+  const url = name.trim() ? challengeUrl(encodeChallenge({ caseId: game.caseDef.id, choice: share.choice, sandbox: share.sandbox, decisions: game.decisions, name, revenue: game.start.baseline.state.revenue, assignment: assignment.id }, game.caseDef)) : '';
+  const copy = async () => { try { await navigator.clipboard.writeText(url); setStatus('Copied. Paste it into your course\u2019s submission box.'); } catch { setStatus('Copy the link below and paste it into your course\u2019s submission box.'); } };
+  return <section className="submit-results" aria-labelledby="submit-title">
+    <h3 id="submit-title" className="panel-title">HAND IN: {assignment.title.toUpperCase()}</h3>
+    <p>Enter your name as your instructor will recognise it, then copy your results link and submit it the way your course asks (for example the assignment box in your learning platform).</p>
+    <div className="submit-row">
+      <label>Your name<input value={name} maxLength={30} onChange={e => { setName(e.target.value); setStatus(''); }} placeholder="First and last name" /></label>
+      <button className="primary-button" disabled={!url} onClick={copy}><Link2 size={14} /> Copy results link</button>
+    </div>
+    {url && <input className="share-url" aria-label="Results link" readOnly value={url} onFocus={e => e.currentTarget.select()} />}
+    <small role="status">{status || 'Your results link contains your decisions and name, nothing else. Your instructor\u2019s page recomputes your grades from it.'}</small>
   </section>;
 }

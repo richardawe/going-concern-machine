@@ -16,6 +16,13 @@ Open **CEO mode** from the company workbench, or go to `#/ceo`. What works today
   - A one-line verdict combines the two: *sound decisions, unlucky outcome*, *a lucky result*, and so on.
   - Scoring runs in a Web Worker (`src/ceo/debrief.worker.ts`), so the page stays responsive; the judgement grade fills in about a second after the rest of the debrief.
   - Demand noise was raised from 3% to 5% a year so that luck is large enough to matter; every case still balances.
+- **Instructor view** (`#/ceo/instructor`).
+  - An instructor creates a class assignment link that fixes the scenario and company, so every student plays the same world.
+  - Students see a class banner, play, and hand in a results link from their debrief through the course's usual submission box. A name is required.
+  - The instructor pastes the links, or loads a .txt or .csv file, and grades the class. Every grade is recomputed from the decisions, so a link cannot claim a result.
+  - Results: summary tiles, a judgement-vs-outcome chart with the lucky and unlucky zones, a sortable table with each student's decisions, what the class chose each year with the average judgement of each choice, and a spreadsheet-safe CSV export.
+  - Links from other scenarios, other assignments or edited codes are listed with a reason. Duplicate names are flagged.
+  - The judgement benchmark is computed once per class (`judgementBenchmark` + `judgeAgainst` in `src/ceo/assess.ts`), so each student costs about a dozen replays. Grading runs in a Web Worker (`src/ceo/cohort.worker.ts`), and nothing is uploaded.
 - **Shareable challenges.**
   - *Challenge a friend* in the debrief copies a link (`#/ceo?challenge=…`). It carries the case, the company (fictional industry and seed, or ticker), any Sandbox shocks, the player's decisions and an optional name.
   - The link never carries scores: the recipient's browser replays the decisions, so a result cannot be faked. `src/ceo/challenge.ts` validates every field and rejects out-of-range or tampered links.

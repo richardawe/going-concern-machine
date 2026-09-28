@@ -178,6 +178,14 @@ fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}
 .share-panel input{padding:7px 8px;border:1px solid var(--n6);border-radius:3px;background:var(--n11);color:var(--ink);min-width:0}
 .share-panel .share-url{grid-column:1/-1;font:10px 'IBM Plex Mono',monospace}
 .share-panel small{grid-column:1/-1;font-size:11px;color:var(--n4)}
+.ceo-nav{display:flex;gap:18px;align-items:center}
+.submit-results{margin:18px 0 0;padding:16px 18px;border:2px solid var(--accent1);border-radius:4px;background:var(--n11)}
+.submit-results p{font-size:13px;line-height:1.55;margin:0 0 10px;color:var(--n3)}
+.submit-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px}
+.submit-row label{display:flex;flex-direction:column;gap:4px;font-size:10px;color:var(--n4);flex:1;min-width:200px;max-width:340px}
+.submit-row input,.submit-results .share-url{padding:7px 8px;border:1px solid var(--n6);border-radius:3px;background:var(--n11);color:var(--ink);min-width:0}
+.submit-results .share-url{width:100%;font:10px 'IBM Plex Mono',monospace;margin-bottom:6px}
+.submit-results small{font-size:11px;color:var(--n4)}
 .rivalry{padding:18px 0;border-top:1px solid var(--line)}
 .rivalry-verdict{font:600 18px 'Archivo',Arial,sans-serif;margin:4px 0 10px}
 .rivalry .impact-table td,.rivalry .impact-table thead th{text-align:left}
@@ -186,3 +194,36 @@ fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}
 @media(max-width:1100px){.ceo-workspace{grid-template-columns:1fr}.ceo-panel{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.ceo-panel>.panel-title{grid-column:1/-1}.desk-grid,.year-result,.debrief-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.company-choice,.ceo-briefing{grid-template-columns:1fr}.ceo-status{grid-template-columns:1fr}.ceo-panel{grid-template-columns:1fr}.lever-grid{grid-template-columns:1fr}.verdict{flex-direction:column;align-items:flex-start}.grades{gap:10px}.grade-tile{width:auto;flex:1}.grade{width:78px;height:78px;font-size:42px}.memo{padding:18px}.memo h2{font-size:27px}.select-label select{min-width:0;width:100%}.choice-row>*{flex:1}.desk-actions{flex-direction:column-reverse;align-items:stretch}.challenge-banner{grid-template-columns:1fr}.challenge-actions{align-items:stretch}.share-panel{grid-template-columns:1fr}.luck-row{grid-template-columns:90px 1fr 44px}}
 @media(prefers-reduced-motion:reduce){.grade.pending{animation:none}.running-overlay i::after{animation:none;transform:none}.meter i,.bar i{transition:none}}
+/* Instructor view */
+.instructor-lead{font-size:14px;line-height:1.6;max-width:80ch;color:var(--n3);margin:0 0 16px}
+.instructor-card{border:1px solid var(--n7);background:var(--n10);border-radius:4px;padding:18px;margin-bottom:18px}
+.builder-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
+.builder-grid label,.paste-label{display:flex;flex-direction:column;gap:4px;font-size:10px;color:var(--n4)}
+.builder-grid input,.builder-grid select,.paste-label textarea{padding:7px 8px;border:1px solid var(--n6);border-radius:3px;background:var(--n11);color:var(--ink);font:13px 'DM Sans',Arial,sans-serif;min-width:0}
+.paste-label textarea{font:11px 'IBM Plex Mono',monospace;resize:vertical}
+.builder-preview{font-size:13px;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.instructor-card .share-url{display:block;width:100%;margin:10px 0 4px;padding:7px 8px;border:1px solid var(--n6);border-radius:3px;background:var(--n11);color:var(--ink);font:10px 'IBM Plex Mono',monospace}
+.instructor-card small{font-size:11px;color:var(--n4)}
+.review-actions{display:flex;gap:8px;justify-content:flex-end;margin:10px 0}
+.cohort{margin-top:14px}
+.cohort-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-top:3px double var(--n7);padding-top:14px}
+.cohort-head h3{font:600 20px 'Archivo',Arial,sans-serif;margin:4px 0 0}
+.cohort-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.cohort-tiles div{border:1px solid var(--n7);border-radius:3px;padding:10px 12px;background:var(--n11)}
+.cohort-tiles dt{font-size:10px;color:var(--n4)}.cohort-tiles dd{margin:4px 0 0;font:600 20px 'Archivo',Arial,sans-serif;font-variant-numeric:tabular-nums}
+.scatter{margin:8px 0 18px}
+.scatter .zone{fill:var(--n8);opacity:.45}
+.scatter .zone-label{font:500 10px 'DM Sans',Arial,sans-serif;fill:var(--n4)}
+.scatter .axis-title{font:500 10px 'DM Sans',Arial,sans-serif;fill:var(--n4)}
+.student-dot{fill:var(--accent1);stroke:var(--n11);stroke-width:2;cursor:pointer}
+.student-dot:focus-visible{outline:none;stroke:var(--sec1);stroke-width:3}
+.cohort-table-wrap{overflow-x:auto;margin-bottom:16px}
+.cohort-table td,.cohort-table th{text-align:left;white-space:nowrap}
+.cohort-table .decision-cell{white-space:normal;min-width:140px;font-size:11px;color:var(--n3)}
+.sort-button{border:0;background:none;padding:0;font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit}
+.dup{color:var(--warn1);font-size:10px}
+.patterns{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.patterns caption{text-align:left;font:600 12px 'Archivo',Arial,sans-serif;padding:4px 0}
+.patterns td,.patterns th{text-align:left}
+.rejected{margin-top:12px;font-size:12px}
+@media(max-width:760px){.cohort-tiles{grid-template-columns:1fr 1fr}.review-actions{flex-direction:column}.cohort-head{flex-direction:column;align-items:flex-start}.ceo-nav{flex-direction:column;align-items:flex-end;gap:6px}}

@@ -76,5 +76,39 @@ try {
  for (let year = 1; year <= 5; year++) { await page.getByRole('button', { name: `Play year ${year}` }).click(); if (year === 3) await page.getByText('Your bank demands 20% of your debt back').first().waitFor(); await page.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click(); }
  await page.locator('.verdict-facts').getByText(/1,000 sampled card strategies/).waitFor({ timeout: 30000 }); await page.getByLabel(/^Judgement grade [A-E]$/).waitFor({ timeout: 30000 });
  await page.screenshot({ path: 'artifacts/ceo-sandbox-debrief.png' });
+ // Instructor view: create an assignment, two students play and hand in, the instructor grades the class.
+ {
+  const serve = async ctx => { await ctx.route('http://gcm.test/**', async route => { const url = new URL(route.request().url()); const part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, ''); const file = path.resolve('dist', part || 'index.html'); try { const body = await readFile(file); await route.fulfill({ body, contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' }) } catch { await route.fulfill({ status: 404, body: 'Not found' }) } }); return ctx; };
+  const fresh = async () => { const ctx = await serve(await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true })); const p = await ctx.newPage(); p.on('pageerror', e => errors.push(e.message)); return p; };
+  const teacher = await fresh();
+  await teacher.goto('http://gcm.test/going-concern-machine/#/ceo'); await teacher.getByRole('link', { name: 'Instructor view' }).click();
+  await teacher.getByRole('heading', { name: 'Instructor view' }).waitFor();
+  await teacher.getByLabel('Assignment title').fill('Week 4: Price War'); await teacher.getByText(/Every student will run .* · Retail · fictional/).waitFor();
+  await teacher.getByRole('button', { name: 'Create assignment link' }).click();
+  const assignmentLink = await teacher.getByLabel('Assignment link').inputValue(); assert.match(assignmentLink, /#\/ceo\?assignment=/);
+  const handIn = async (name, firstCard) => {
+   const s = await fresh(); await s.goto(assignmentLink); await s.getByRole('heading', { name: 'Class assignment: Week 4: Price War' }).waitFor();
+   await s.getByRole('button', { name: 'Start the assignment' }).click(); await s.getByText(/Class assignment:.*Week 4: Price War/).waitFor();
+   await s.getByRole('button', { name: /Take the chair/ }).click();
+   for (let year = 1; year <= 5; year++) { if (year === 1 && firstCard) await s.getByText(firstCard).click(); await s.getByRole('button', { name: `Play year ${year}` }).click(); await s.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click(); }
+   await s.getByRole('heading', { name: /HAND IN: WEEK 4/ }).waitFor({ timeout: 30000 });
+   assert.ok(await s.getByRole('button', { name: 'Copy results link' }).isDisabled(), 'a name is required');
+   await s.getByLabel('Your name').fill(name); const link = await s.getByLabel('Results link').inputValue();
+   if (name === 'Ada') await s.screenshot({ path: 'artifacts/ceo-hand-in.png' });
+   await s.context().close(); return link;
+  };
+  const ada = await handIn('Ada', 'Hold prices; invest in service and loyalty'), bo = await handIn('Bo', 'Match the discounter’s prices');
+  await teacher.getByLabel(/Results links/).fill(`${ada}\n${bo}\nnot-a-real-code-but-long-enough-to-look-like-one-xxxxxxxx`);
+  await teacher.getByRole('button', { name: 'Grade the class' }).click();
+  await teacher.locator('.cohort-table tbody tr').nth(1).waitFor({ timeout: 30000 });
+  assert.equal(await teacher.locator('.cohort-table tbody tr').count(), 2); assert.equal(await teacher.locator('.student-dot').count(), 2);
+  await teacher.getByText('1 link not graded').waitFor();
+  assert.equal(await teacher.locator('.cohort-table tbody tr').first().locator('th').innerText(), 'Ada', 'sorted by judgement, the reference-style play leads');
+  await teacher.locator('.student-dot').first().hover(); await teacher.locator('.scatter .chart-tip').waitFor();
+  await teacher.screenshot({ path: 'artifacts/ceo-instructor.png', fullPage: true });
+  const [download] = await Promise.all([teacher.waitForEvent('download'), teacher.getByRole('button', { name: 'Export CSV' }).click()]);
+  const csv = await readFile(await download.path(), 'utf8'); assert.match(csv, /^Student,Judgement grade/); assert.match(csv, /\nAda,/);
+  await teacher.context().close();
+ }
  assert.deepEqual(errors, []); console.log('CEO browser flow passed. Screenshots in artifacts/.');
 } finally { await browser.close() }

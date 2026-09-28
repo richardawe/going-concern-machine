@@ -7,7 +7,8 @@ import { cases } from '../src/ceo/cases';
 import { defaultLevers, play, statusQuo } from '../src/ceo/game';
 import { debrief, describeDecision, gameScore, judgement, JUDGEMENT_WORLDS, verdict, MAX_STRATEGIES, referenceDecisions, strategySpace, undoDecision } from '../src/ceo/assess';
 import { resolveCase, SANDBOX_ID, SANDBOX_YEARS, sandboxCase } from '../src/ceo/sandbox';
-import { challengeFromHash, decodeChallenge, encodeChallenge } from '../src/ceo/challenge';
+import { challengeFromHash, decodeAssignment, decodeChallenge, encodeAssignment, encodeChallenge } from '../src/ceo/challenge';
+import { cohortCsv, parseSubmissions, scoreCohort } from '../src/ceo/cohort';
 import type { CompanyDataset } from '../src/ontology/types';
 import type { Game } from '../src/ceo/types';
 
@@ -174,4 +175,46 @@ test('challenge links round-trip exactly and reject anything tampered with', () 
   const sc = sandboxCase(sandbox), sd = statusQuo(game.start, SANDBOX_YEARS).map((d, i) => ({ ...d, card: i === 1 ? 'layoffs' : null }));
   const s2 = decodeChallenge(encodeChallenge({ caseId: SANDBOX_ID, choice: { kind: 'fictional', archetype: 'industrial', seed: 5 }, sandbox, decisions: sd, revenue: 1 }, sc))!;
   assert.deepEqual(s2.sandbox, sandbox); assert.equal(s2.decisions[1].card, 'layoffs');
+});
+
+test('assignments round-trip and never pass for a results code (or the other way round)', () => {
+  const a = { id: 'wk4-abc1', title: '  Week 4: The Price War ', caseId: 'price-war', choice: { kind: 'fictional' as const, archetype: 'retail' as const, seed: 42 } };
+  const code = encodeAssignment(a), back = decodeAssignment(code)!;
+  assert.equal(back.title, 'Week 4: The Price War'); assert.equal(back.id, 'wk4-abc1'); assert.deepEqual(back.choice, a.choice);
+  assert.equal(decodeChallenge(code), null, 'an assignment is not a results code');
+  const game = newGame('price-war'), result = encodeChallenge({ caseId: 'price-war', choice: a.choice, decisions: game.decisions, name: 'Sam', revenue: 1, assignment: a.id }, game.caseDef);
+  assert.equal(decodeAssignment(result), null, 'a results code is not an assignment');
+  assert.equal(decodeChallenge(result)!.assignment, a.id);
+  assert.equal(decodeAssignment(encodeAssignment({ ...a, id: 'bad id!' })), null);
+});
+
+test('cohort: grades a class from pasted links, matches each student’s own grades, and rejects the rest', () => {
+  const game = newGame('price-war'), choice = { kind: 'fictional' as const, archetype: 'retail' as const, seed: 1207 };
+  const assignment = { id: 'class-1', title: 'Week 4', caseId: 'price-war', choice };
+  const players = [
+    { name: 'Ada', decisions: referenceDecisions(game) },
+    { name: '=HYPERLINK("x")', decisions: game.decisions },
+    { name: 'Bo', decisions: game.decisions.map((d, i) => ({ ...d, card: i === 0 ? 'matchPrice' : null })) },
+  ];
+  const link = (p: typeof players[number], extra: Partial<Parameters<typeof encodeChallenge>[0]> = {}) => `https://x.test/#/ceo?challenge=${encodeChallenge({ caseId: 'price-war', choice, decisions: p.decisions, name: p.name, revenue: 1, assignment: 'class-1', ...extra }, game.caseDef)}`;
+  const other = newGame('talent-exodus');
+  const text = [`Submitted by Ada: ${link(players[0])}`, link(players[1]), link(players[2]), 'garbage-that-is-long-enough-to-look-like-a-code-0123456789',
+    link(players[0], { assignment: 'someone-else' }),
+    `https://x.test/#/ceo?challenge=${encodeChallenge({ caseId: 'talent-exodus', choice, decisions: other.decisions, name: 'Cy', revenue: 1 }, other.caseDef)}`].join('\n');
+  const parsed = parseSubmissions(text, assignment);
+  assert.equal(parsed.submissions.length, 3); assert.equal(parsed.rejected.length, 3);
+  assert.deepEqual(parsed.rejected.map(r => r.entry), [4, 5, 6]);
+  const cohort = scoreCohort(game.start, game.caseDef, parsed.submissions);
+  assert.equal(cohort.rows.length, 3);
+  for (const [i, p] of players.entries()) {
+    const own = { ...game, decisions: p.decisions };
+    assert.equal(cohort.rows[i].judgement.percentile, judgement(own).percentile, `${p.name}: class judgement = own debrief judgement`);
+    assert.equal(cohort.rows[i].outcome.score, gameScore(own).overall);
+  }
+  assert.ok(cohort.rows[0].judgement.percentile > cohort.rows[2].judgement.percentile, 'the reference path out-judges matching the price cut');
+  assert.equal(cohort.patterns.length, 5); assert.equal(cohort.patterns[0].choices.reduce((n, c) => n + c.count, 0), 3);
+  const csv = cohortCsv(cohort);
+  assert.match(csv.split('\n')[0], /^Student,Judgement grade/);
+  assert.ok(csv.includes(`"'=HYPERLINK(""x"")"`), 'formula-looking names are neutralised');
+  assert.equal(parseSubmissions('', assignment).submissions.length, 0);
 });

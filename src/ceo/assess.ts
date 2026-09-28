@@ -124,8 +124,11 @@ export interface Judgement {
  * average across those worlds, and your average is ranked among them. The outcome grade asks "how did it turn out?";
  * this asks "how good were the choices, given what could have happened?"
  */
-export function judgement(game: Game): Judgement {
-  const n = game.decisions.length, base = statusQuo(game.start, n);
+/** Everything judgement needs that does not depend on the player's decisions: the worlds and every strategy's average
+ * across them. Computed once per world, it lets a whole class be graded with a dozen replays per student. */
+export interface JudgementBenchmark { seeds: number[]; scored: { cards: (string | null)[]; expected: number }[]; statusQuo: number; reference: number; sampled: boolean }
+export function judgementBenchmark(game: Game): JudgementBenchmark {
+  const n = game.caseDef.turns.length, base = statusQuo(game.start, n);
   const seeds = [game.seed, ...Array.from({ length: JUDGEMENT_WORLDS - 1 }, (_, k) => worldSeed(game, k))];
   const expected = (decisions: Decision[]) => seeds.reduce((x, seed) => x + gameScore({ ...game, decisions, seed }).overall, 0) / seeds.length;
   const options = Array.from({ length: n }, (_, i) => [null, ...(game.caseDef.turns.find(t => t.year === i + 1)?.cards.map(c => c.id) ?? [])]);
@@ -134,11 +137,16 @@ export function judgement(game: Game): Judgement {
   if (sampled) for (let k = 0; k < JUDGEMENT_STRATEGIES; k++) paths.push(options.map((o, i) => o[Math.floor(uniform(game.seed, 'judgement', k, i) * o.length)]));
   else { const walk = (i: number, cards: (string | null)[]) => { if (i === n) paths.push(cards); else for (const id of options[i]) walk(i + 1, [...cards, id]); }; walk(0, []); }
   const scored = paths.map(cards => ({ cards, expected: expected(base.map((d, j) => ({ ...d, card: cards[j] }))) }));
-  const mine = expected(game.decisions), below = scored.filter(p => p.expected < mine).length, equal = scored.filter(p => p.expected === mine).length;
-  const percentile = (below + equal / 2) / scored.length;
-  const best = scored.reduce((a, b) => b.expected > a.expected ? b : a);
-  return { percentile, grade: gradeFor(percentile), expected: mine, statusQuo: expected(base), reference: expected(referenceDecisions(game)), best, worlds: seeds.length, strategies: scored.length, sampled };
+  return { seeds, scored, statusQuo: expected(base), reference: expected(referenceDecisions({ ...game, decisions: base })), sampled };
 }
+export function judgeAgainst(game: Game, bench: JudgementBenchmark): Judgement {
+  const mine = bench.seeds.reduce((x, seed) => x + gameScore({ ...game, seed }).overall, 0) / bench.seeds.length;
+  const below = bench.scored.filter(p => p.expected < mine).length, equal = bench.scored.filter(p => p.expected === mine).length;
+  const percentile = (below + equal / 2) / bench.scored.length;
+  const best = bench.scored.reduce((a, b) => b.expected > a.expected ? b : a);
+  return { percentile, grade: gradeFor(percentile), expected: mine, statusQuo: bench.statusQuo, reference: bench.reference, best, worlds: bench.seeds.length, strategies: bench.scored.length, sampled: bench.sampled };
+}
+export const judgement = (game: Game): Judgement => judgeAgainst(game, judgementBenchmark(game));
 
 /** How judgement and outcome combine, in the words a coach would use. */
 export function verdict(judgementPercentile: number, outcomePercentile: number): { title: string; detail: string } {
