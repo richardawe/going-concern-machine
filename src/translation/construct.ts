@@ -1,7 +1,7 @@
 import { concepts } from '../ontology/catalog';
 import { unknown, type CompanyDataset, type Datum, type MachineDefinition } from '../ontology/types';
 import { computedEdges, sectors } from '../sectors';
-import { totalCostEquations } from '../simulation/equations';
+import { equationsFor, totalCostEquations } from '../simulation/equations';
 import { classify } from './classify';
 
 export function validateDataset(input:unknown):asserts input is CompanyDataset {
@@ -36,10 +36,13 @@ export function constructMachine(dataset:CompanyDataset,periodIndex=0):MachineDe
  const total=classification.sector!=='banking'&&facts.grossProfit?.value==null&&facts.revenue?.value!=null&&facts.operatingProfit?.value!=null;
  if(total)derive('totalCosts',['revenue','operatingProfit'],(r,o)=>r-o,'Total revenue − operating profit. The filing reports no cost-of-sales line, so there is no gross profit to split these costs by');
  const stages=total?module.stages.map(k=>k==='grossProfit'?'totalCosts':k):module.stages,gauges=total?module.gauges.map(k=>k==='grossMargin'?'totalCosts':k):module.gauges;
- const edges=total?[...computedEdges(totalCostEquations),...module.edges.filter(e=>e.kind==='concept')]:structuredClone(module.edges);
- const limitations=total?[...module.limitations,'No cost-of-sales line is reported, so gross profit and gross margin stay UNKNOWN. The machine runs on total operating costs (revenue − operating profit), which keep their reported share of revenue; the margin lever moves that share, and operating cost growth does not apply.'+(classification.sector==='retail'?' Inventory days need cost of sales, so inventory is shown as reported and not projected.':'')]:module.limitations;
+ // A retailer with no inventory level or inventory cash flow cannot run the inventory reservoir; it is shown as reported.
+ const staticInventory=!total&&classification.sector==='retail'&&(facts.inventory?.value==null||facts.inventoryInvestment?.value==null||facts.cogs?.value==null);
+ const edges=total?[...computedEdges(totalCostEquations),...module.edges.filter(e=>e.kind==='concept')]:staticInventory?[...computedEdges(equationsFor({inventoryBasis:'reported',classification})),...module.edges.filter(e=>e.kind==='concept')]:structuredClone(module.edges);
+ const inventoryNote='The filing reports no usable inventory level or inventory cash flow, so the inventory reservoir is shown as reported and not projected; the inventory days lever does not apply.';
+ const limitations=staticInventory?[...module.limitations,inventoryNote]:total?[...module.limitations,'No cost-of-sales line is reported, so gross profit and gross margin stay UNKNOWN. The machine runs on total operating costs (revenue − operating profit), which keep their reported share of revenue; the margin lever moves that share, and operating cost growth does not apply.'+(classification.sector==='retail'?' Inventory days need cost of sales, so inventory is shown as reported and not projected.':'')]:module.limitations;
  const all=[...new Set([...stages,...module.moduleNodes,...gauges,...edges.flatMap(e=>[e.from,e.to]),...Object.keys(facts).filter(k=>k in concepts),'momentum'])];
  const nodes=all.map(id=>{const concept=concepts[id]||{label:id,meaning:'Supporting model input',unit:'USD' as const};return {id,...concept,...(facts[id]||unknown(concept.unit,period)),role:module.moduleNodes.includes(id)?'sector' as const:'core' as const};});
- return {...(total?{costBasis:'total' as const}:{}),ticker:dataset.ticker,name:dataset.name,period,fiscalYear,classification,nodes,edges,gauges,stages,moduleNodes:module.moduleNodes,limitations:[...limitations,classification.coverage],year:0,momentum:{value:null,parts:[],reason:'Reported financials do not establish customer retention, productive stocks or a complete momentum model. UNKNOWN is not zero.'}};
+ return {...(total?{costBasis:'total' as const}:{}),...(staticInventory?{inventoryBasis:'reported' as const}:{}),ticker:dataset.ticker,name:dataset.name,period,fiscalYear,classification,nodes,edges,gauges,stages,moduleNodes:module.moduleNodes,limitations:[...limitations,classification.coverage],year:0,momentum:{value:null,parts:[],reason:'Reported financials do not establish customer retention, productive stocks or a complete momentum model. UNKNOWN is not zero.'}};
 }
 export const getNode=(m:MachineDefinition,key:string)=>m.nodes.find(n=>n.id===key);

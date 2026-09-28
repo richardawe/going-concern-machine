@@ -118,3 +118,21 @@ test('a machine that cannot run a scenario is identified as inspect-only, with t
  assert.match(whyInspectOnly(m)!,/Loan assets is UNKNOWN/);
  assert.equal(whyInspectOnly(constructMachine(build())),null);
 });
+test('banks that tag loans as CECL financing receivables get a loan book, and a reserve release is a valid setting',()=>{
+ const f=(val:number,instant=false)=>({units:{USD:[{val,end:'2025-12-31',...(instant?{}:{start:'2025-01-01'}),filed:'2026-02-20',form:'10-K',accn:'0000000001-26-000001'}]}});
+ const tags=(loans:Record<string,unknown>)=>({cik:1,entityName:'Test Bank',facts:{'us-gaap':{InterestIncomeExpenseNet:f(6e9),NoninterestIncome:f(4e9),NoninterestExpense:f(6e9),ProvisionForCreditLosses:f(-.03e9),NetIncomeLoss:f(3e9),IncomeTaxExpenseBenefit:f(1e9),Deposits:f(300e9,true),StockholdersEquity:f(40e9,true),...loans}}}) as SecCompanyFacts;
+ const sub={cik:'1',name:'Test Bank',sic:'6022',sicDescription:'State Commercial Banks'};
+ const net=secToDataset('TB',tags({FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss:f(80e9,true),FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss:f(81e9,true)}),sub,'2026-09-27').periods[0].facts.loans;
+ assert.equal(net.value,80e9,'net of the allowance comes first');assert.equal(net.calculation,undefined);
+ const gross=secToDataset('TB',tags({FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss:f(81e9,true)}),sub,'2026-09-27').periods[0].facts.loans;
+ assert.equal(gross.value,81e9);assert.match(gross.calculation!,/before the allowance for credit losses/);
+ const m=constructMachine(secToDataset('TB',tags({FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss:f(80e9,true)}),sub,'2026-09-27'));
+ assert.ok(suggestedScenario(m).values.creditCost<0,'calibrated to the reported release');assert.equal(whyInspectOnly(m),null);
+});
+test('a retailer with no inventory data runs without the inventory reservoir instead of refusing',()=>{
+ const m=constructMachine(secToDataset('RT',synth({...core,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),{...general,sic:'5812',sicDescription:'Retail-Eating Places'},'2026-09-27'));
+ assert.equal(m.classification.sector,'retail');assert.equal(m.inventoryBasis,'reported');assert.equal(whyInspectOnly(m),null);
+ assert.ok(!controlsFor(m).some(c=>c.id==='inventoryDays'));assert.ok(m.limitations.some(l=>/inventory reservoir is shown as reported/.test(l)));
+ const withStock=constructMachine(secToDataset('RT',synth({...core,OperatingIncomeLoss:20e9,RetailRelatedInventoryMerchandise:5e9,IncreaseDecreaseInRetailRelatedInventories:.2e9},['CashAndCashEquivalentsAtCarryingValue','RetailRelatedInventoryMerchandise']),{...general,sic:'5331',sicDescription:'Retail-Variety Stores'},'2026-09-27'));
+ assert.equal(withStock.inventoryBasis,undefined,'retail inventory tags feed the reservoir');assert.equal(getNode(withStock,'inventory')!.value,5e9);assert.equal(whyInspectOnly(withStock),null);
+});

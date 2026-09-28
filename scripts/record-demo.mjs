@@ -1,7 +1,7 @@
 // Records the canonical 60–90 second demonstration from the built app (dist/) and encodes it to MP4.
 // Everything on screen is the real app driving the real model; the script only adds captions, a visible
 // cursor and a spotlight that follows the propagation order the explainer reports.
-//   npm run build && FFMPEG=/path/to/ffmpeg node scripts/record-demo.mjs [--theme dark|light] [--out artifacts/demo]
+//   npm run build && FFMPEG=/path/to/ffmpeg node scripts/record-demo.mjs [--theme dark|light] [--out artifacts/demo] [--music]
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -87,7 +87,8 @@ const hud = {
  }, [selector, tag, pad]),
 };
 const wait = ms => page.waitForTimeout(ms);
-const T0 = Date.now(), mark = l => process.env.REC_TIMING && console.log(((Date.now() - T0) / 1000).toFixed(1).padStart(6), l);
+// Section marks: wall-clock times, converted to video time after recording to time the soundtrack.
+const T0 = Date.now(), marks = {}, mark = l => { marks[l] = Date.now(); if (process.env.REC_TIMING) console.log(((Date.now() - T0) / 1000).toFixed(1).padStart(6), l); };
 let mouse = { x: VW / 2, y: VH / 2 };
 // Time-based easing, so a move lasts `ms` however slow each protocol round trip is while the screencast runs.
 async function moveTo(x, y, ms = 650) { const from = { ...mouse }, t0 = Date.now(); for (;;) { const k = Math.min(1, (Date.now() - t0) / ms), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; await page.mouse.move(from.x + (x - from.x) * e, from.y + (y - from.y) * e); if (k === 1) break; } mouse = { x, y }; }
@@ -100,7 +101,8 @@ const hubValue = () => page.evaluate(() => document.querySelector('.company-svg 
 // ---------- Screencast ----------
 const cdp = await page.context().newCDPSession(page);
 const shots = [];
-cdp.on('Page.screencastFrame', async f => { shots.push({ t: f.metadata.timestamp, data: f.data }); try { await cdp.send('Page.screencastFrameAck', { sessionId: f.sessionId }); } catch {} });
+let firstFrameWall = 0;
+cdp.on('Page.screencastFrame', async f => { if (!shots.length) firstFrameWall = Date.now(); shots.push({ t: f.metadata.timestamp, data: f.data }); try { await cdp.send('Page.screencastFrameAck', { sessionId: f.sessionId }); } catch {} });
 await hud.card(`<div class="k">ECONOMIC SYSTEMS LAB</div><h1>The Going Concern Machine</h1><p>A public company's own filings, rebuilt as a working economic machine.</p><p>Pull one lever. Watch it propagate. Every change explained.</p>`);
 await page.mouse.move(mouse.x, mouse.y);
 await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 90, maxWidth: W, maxHeight: H, everyNthFrame: 1 });
@@ -213,9 +215,11 @@ mark('// 6. JPMorgan');
 // 6. JPMorgan: the money shot
 await click(page.locator('.company-picker').getByRole('button', { name: /^JPM/ }), 800);
 await page.getByRole('group', { name: /^JPM .* economic machine$/ }).waitFor();
+mark('JPM on screen');
 await hud.caption('SAME CORE · RADICALLY DIFFERENT MACHINE', 'JPMorgan: deposits in, credit out', 'Deposits are funding, not revenue. Credit provisions replace CapEx, and CET1 capital replaces the cash tank.');
 await moveTo(1220, 812, 600); await wait(4600);
 await hud.hideCaption();
+mark('end card');
 await hud.card(`<div class="k">ONE UNIVERSAL CORE · SECTOR MODULES</div><h1>Every company is a machine.</h1><p>402 S&amp;P 500 companies, built from SEC filings. Nothing invented, and every change explained.</p><div class="u">richardawe.github.io/going-concern-machine</div>`);
 await wait(3800);
 mark("await cdp.send('Page.stopScreencast');");
@@ -232,5 +236,16 @@ for (let i = 0; i < shots.length; i++) {
 list.push(`file 'f${String(shots.length - 1).padStart(5, '0')}.jpg'`);
 await writeFile(path.join(frames, 'list.txt'), list.join('\n'));
 const mp4 = path.join(out, `going-concern-machine-demo-${theme}.mp4`);
-execFileSync(ffmpeg, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(frames, 'list.txt'), '-vf', `fps=30,scale=${W}:${H}:flags=lanczos,format=yuv420p`, '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-movflags', '+faststart', mp4], { stdio: 'inherit' });
+execFileSync(ffmpeg, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(frames, 'list.txt'), '-vf', `fps=30,scale=${W}:${H}:flags=lanczos,setsar=1,format=yuv420p`, '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-movflags', '+faststart', mp4], { stdio: 'inherit' });
 console.log(`${shots.length} frames, ${(shots.at(-1).t - shots[0].t).toFixed(1)}s → ${mp4}`);
+
+// --music: synthesise the soundtrack (scripts/demo-music.py, needs numpy) timed to this recording's sections, and mux it.
+if (process.argv.includes('--music')) {
+ const at = l => Math.max(0, (marks[l] - firstFrameWall) / 1000).toFixed(2), length = (shots.at(-1).t - shots[0].t + 1 / 30).toFixed(2);
+ const sections = ['// 2. Inspect', '// 3. One', '// Walk the', '// 4. RUN', '// Explain one', '// 5. Reset', 'JPM on screen', 'end card'].map(at);
+ console.log('soundtrack sections at', sections.join(', '));
+ const wav = path.join(out, 'music.wav'), withMusic = mp4.replace(/\.mp4$/, '-music.mp4');
+ execFileSync('python3', ['scripts/demo-music.py', wav, '--length', length, '--marks', ['0', ...sections].join(',')], { stdio: 'inherit' });
+ execFileSync(ffmpeg, ['-y', '-loglevel', 'error', '-i', mp4, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', `loudnorm=I=-14:TP=-1.5:LRA=11,afade=t=out:st=${(+length - 2).toFixed(2)}:d=2`, '-c:a', 'aac', '-b:a', '192k', '-ar', '44100', '-shortest', '-movflags', '+faststart', withMusic], { stdio: 'inherit' });
+ console.log(`with soundtrack → ${withMusic}`);
+}
