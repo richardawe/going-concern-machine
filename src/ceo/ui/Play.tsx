@@ -6,7 +6,7 @@ import Inspector from '../../components/Inspector';
 import { clamp } from '../../model/config';
 import { machineView, money, percent } from '../../presentation';
 import { gameScore } from '../assess';
-import { defaultLevers, play } from '../game';
+import { defaultLevers, findCard, play } from '../game';
 import type { Decision, Game, Levers, YearRecord } from '../types';
 import DecisionDesk from './DecisionDesk';
 
@@ -25,7 +25,7 @@ export default function Play({ game, decide, finish, quit }: { game: Game; decid
   useEffect(() => {
     if (phase !== 'running') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = setTimeout(() => setPhase('result'), reduced ? 0 : 1100); return () => clearTimeout(t);
+    const t = setTimeout(() => setPhase('result'), reduced ? 0 : 1600); return () => clearTimeout(t);
   }, [phase]);
   const shown = phase === 'running' ? records[played - 1] : last;
   const base = game.start.baseline, c = base.currency, view = machineView(shown.state, base);
@@ -49,8 +49,8 @@ export default function Play({ game, decide, finish, quit }: { game: Game; decid
 
     <div className="ceo-workspace">
       <div className="ceo-machine">
-        <Machine state={shown.state} baseline={base} view={view} motion inspect={setInspect} />
-        {phase === 'running' && <div className="running-overlay" role="status"><span>PLAYING YEAR {played}…</span><i /></div>}
+        <Machine state={shown.state} baseline={base} view={view} motion inspect={setInspect} cascade={phase === 'running'} />
+        {phase === 'running' && <div className="running-overlay" role="status"><span>PLAYING YEAR {played}…</span><small>{findCard(game, played, game.decisions[played - 1]?.card ?? null)?.title ?? 'Holding course'} enters the machine</small><i /></div>}
       </div>
       <aside className="instrument-panel ceo-panel" aria-label="Instruments">
         <h2 className="panel-title">YEAR {shown.year} INSTRUMENTS</h2>

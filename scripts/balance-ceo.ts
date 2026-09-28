@@ -18,7 +18,7 @@ for(const c of cases){
  for(const start of starts){
   const n=c.turns.length,base:Game={start,caseDef:c,seed:c.seed,decisions:statusQuo(start,n)};
   const sq=gameScore(base),ref=gameScore({...base,decisions:referenceDecisions(base)});
-  const paths=strategySpace(base).map(p=>({ids:p.cards,overall:p.overall})).reverse();
+  const paths=strategySpace(base).paths.map(p=>({ids:p.cards,overall:p.overall})).reverse();
   const pct=(x:number)=>(paths.filter(p=>p.overall<x).length+.5*paths.filter(p=>p.overall===x).length)/paths.length;
   const beat=paths.filter(p=>p.overall>sq.overall).length/paths.length;
   console.log(`${c.id.padEnd(14)} ${start.name.slice(0,22).padEnd(22)} nothing ${String(sq.overall).padStart(3)} ${gradeFor(pct(sq.overall))} · reference ${String(ref.overall).padStart(3)} ${gradeFor(pct(ref.overall))} · best ${paths[0].overall} [${paths[0].ids.map(x=>x??'-').join(', ')}] · worst ${paths.at(-1)!.overall} · ${(beat*100).toFixed(0)}% of ${paths.length} paths beat nothing${ref.overall<=sq.overall?'  ⚠ reference ≤ nothing':''}`);

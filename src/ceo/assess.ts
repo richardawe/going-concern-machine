@@ -1,5 +1,6 @@
 import { clamp, ratio } from '../model/config';
 import { defaultLevers, findCard, play, statusQuo } from './game';
+import { uniform } from './random';
 import { dimensions, type Decision, type Dimension, type Game, type Levers, type YearRecord } from './types';
 
 // The debrief. Every score is a published formula over the played years, and every comparison replays the same seed,
@@ -41,18 +42,19 @@ export interface Outcome { label: string; records: YearRecord[]; card: Scorecard
 export interface Attribution { year: number; title: string; delta: { overall: number; revenue: number; cash: number; cumulativeFcf: number; morale: number } }
 export interface Debrief { you: Outcome; statusQuo: Outcome; reference: Outcome; attribution: Attribution[]; luck: { you: number[]; statusQuo: number[] }; lessons: string[];
   /** Where your result ranks among every card strategy the case allows (default levers), in the same world. */
-  space: { scores: number[]; best: { overall: number; cards: (string | null)[] }; percentile: number; grade: string } }
+  space: { scores: number[]; best: { overall: number; cards: (string | null)[] }; percentile: number; grade: string; total: number; sampled: boolean } }
 
-/** Every path through the cards, played with default levers. */
+export const MAX_STRATEGIES = 1500;
+/** Every path through the cards, played with default levers; above MAX_STRATEGIES paths, a fixed random sample. */
 export function strategySpace(game: Game) {
-  const n = game.decisions.length, base = statusQuo(game.start, n), out: { cards: (string | null)[]; overall: number }[] = [];
-  const walk = (i: number, cards: (string | null)[]) => {
-    if (i === n) { out.push({ cards, overall: gameScore({ ...game, decisions: base.map((d, j) => ({ ...d, card: cards[j] })) }).overall }); return; }
-    const turn = game.caseDef.turns.find(t => t.year === i + 1);
-    for (const id of [null, ...(turn?.cards.map(c => c.id) ?? [])]) walk(i + 1, [...cards, id]);
-  };
-  walk(0, []);
-  return out.sort((a, b) => a.overall - b.overall);
+  const n = game.decisions.length, base = statusQuo(game.start, n);
+  const options = Array.from({ length: n }, (_, i) => [null, ...(game.caseDef.turns.find(t => t.year === i + 1)?.cards.map(c => c.id) ?? [])]);
+  const total = options.reduce((x, o) => x * o.length, 1), sampled = total > MAX_STRATEGIES;
+  const paths: (string | null)[][] = [];
+  if (sampled) for (let k = 0; k < 1000; k++) paths.push(options.map((o, i) => o[Math.floor(uniform(game.seed, 'strategy', k, i) * o.length)]));
+  else { const walk = (i: number, cards: (string | null)[]) => { if (i === n) paths.push(cards); else for (const id of options[i]) walk(i + 1, [...cards, id]); }; walk(0, []); }
+  const out = paths.map(cards => ({ cards, overall: gameScore({ ...game, decisions: base.map((d, j) => ({ ...d, card: cards[j] })) }).overall }));
+  return { paths: out.sort((a, b) => a.overall - b.overall), total, sampled };
 }
 export const gradeFor = (percentile: number) => percentile >= .9 ? 'A' : percentile >= .7 ? 'B' : percentile >= .45 ? 'C' : percentile >= .2 ? 'D' : 'E';
 
@@ -98,8 +100,8 @@ export function debrief(game: Game, luckRuns = 40): Debrief {
   const runs = (decisions: Decision[]) => Array.from({ length: luckRuns }, (_, k) => gameScore({ ...game, decisions, seed: game.seed * 7919 + k + 1 }).overall).sort((a, b) => a - b);
   const taken = new Set(game.decisions.map(d => d.card).filter(Boolean));
   const lessons = game.caseDef.lessons.filter(l => l.when === 'always' || (l.when.startsWith('took:') && taken.has(l.when.slice(5))) || (l.when.startsWith('skipped:') && !taken.has(l.when.slice(8))) || (l.when === 'emergency' && you.records.some(r => r.emergency > 0))).map(l => l.note);
-  const paths = strategySpace(game), scores = paths.map(p => p.overall), best = paths.at(-1)!;
+  const { paths, total, sampled } = strategySpace(game), scores = paths.map(p => p.overall), best = paths.at(-1)!;
   const percentile = (scores.filter(x => x < you.card.overall).length + .5 * scores.filter(x => x === you.card.overall).length) / scores.length;
-  return { you, statusQuo: quo, reference, attribution, luck: { you: runs(game.decisions), statusQuo: runs(statusQuo(game.start, n)) }, lessons, space: { scores, best, percentile, grade: gradeFor(percentile) } };
+  return { you, statusQuo: quo, reference, attribution, luck: { you: runs(game.decisions), statusQuo: runs(statusQuo(game.start, n)) }, lessons, space: { scores, best, percentile, grade: gradeFor(percentile), total, sampled } };
 }
 export const percentile = (sorted: number[], q: number) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * q)))];

@@ -37,7 +37,7 @@ function activeEffects(game: Game, year: number) {
   return { once, lasting, notes };
 }
 const sum = (list: Effects[], key: keyof Effects) => list.reduce((n, e) => n + ((e[key] as number | undefined) ?? 0), 0);
-const product = (list: Effects[], key: 'elasticity' | 'demand') => list.reduce((n, e) => n * (e[key] ?? 1), 1);
+const product = (list: Effects[], key: 'elasticity' | 'demand' | 'staffNeed') => list.reduce((n, e) => n * (e[key] ?? 1), 1);
 
 export function play(game: Game): YearRecord[] {
   const { start, caseDef } = game, base = start.baseline, p = start.params;
@@ -74,7 +74,9 @@ export function play(game: Game): YearRecord[] {
       if (e.kind === 'demandBoom' || e.kind === 'customerLoss') demandFactor *= 1 + e.size;
     }
     // People: staffing follows revenue unless the CEO says otherwise; morale drives attrition, productivity and service.
-    const natural = people0.headcount * prev.state.revenue / base.state.revenue;
+    // The engine's operating costs already carry the payroll implied by revenue (naturalBase). Automation lowers the
+    // staff the work needs (natural); the payroll it saves shows up as a negative extraOpex.
+    const naturalBase = people0.headcount * prev.state.revenue / base.state.revenue, natural = naturalBase * product(lasting, 'staffNeed');
     const change = L.workforce / 100 + sum(once, 'workforce');
     const headcount = Math.max(1, prev.people.headcount * natural / prev.people.natural * (1 + change));
     const layoffs = Math.max(0, -change) * prev.people.headcount, hires = Math.max(0, headcount - prev.people.headcount);
@@ -86,7 +88,7 @@ export function play(game: Game): YearRecord[] {
     const r = effective / expected, staffing = r < 1 ? Math.pow(r, .6) : 1 + .2 * Math.log(r);
     const productivity = staffing * (1 + .3 * (morale - NEUTRAL_MORALE));
     const payroll = headcount * p.avgPay * wageDrift * (1 + pay);
-    const extraOpex = payroll - natural * p.avgPay + layoffs * .5 * p.avgPay * wageDrift + sum(once, 'bonus') * payroll + (attrition - p.baseAttrition) * headcount * .25 * p.avgPay + sum(once, 'oneOffCost') * prev.state.revenue;
+    const extraOpex = payroll - naturalBase * p.avgPay + layoffs * .5 * p.avgPay * wageDrift + sum(once, 'bonus') * payroll + (attrition - p.baseAttrition) * headcount * .25 * p.avgPay + sum(once, 'oneOffCost') * prev.state.revenue;
     const debtRaised = sum(once, 'debt') * prev.state.revenue, equityIssued = sum(once, 'equity') * prev.state.revenue;
     const squeeze = events.filter(e => e.kind === 'creditSqueeze').reduce((n, e) => n + e.size, 0) * prev.state.debt, debtIssued = debtRaised - squeeze;
     const state = stepYear(ctx, prev.state, year, {

@@ -4,11 +4,14 @@ A new, separate mode built on the existing machine: **you are the CEO of a ficti
 
 > Scenario → Decide → Play forward → See the impact → Debrief → Next decision
 
-## Status (first slice built)
+## Status
 
 Open **CEO mode** from the company workbench, or go to `#/ceo`. What works today:
 
-- **Three cases**, each five annual turns: *The Price War*, *Talent Exodus*, *Cash Crunch*.
+- **Six cases**, each five annual turns: *The Price War*, *Talent Exodus*, *Cash Crunch*, *Growth at Any Cost?*, *The Automation Bet* and *Dividend Pressure*.
+- **Sandbox:** choose which of eight shocks hit and in which year, then play with a general toolkit of ten decisions. Strategy rankings with more than 1,500 possible paths use a fixed sample of 1,000.
+- **While a year plays,** the machine's gears light up in causal order and the overlay names the decision entering the machine.
+- **Automation is modelled as lower staffing need**, not as layoffs that leave the plant short-handed; the payroll it saves flows through operating costs.
 - **Companies:** a fictional company in any of 8 industry archetypes, or a hypothetical future for **MSFT**, **WMT** or **JPM**.
 - **Each turn:** a decision card plus two one-off levers (price, staffing) and six standing policies (pay, reinvestment, marketing, R&D, training, dividends). The machine plays the year, then shows headlines, effects still to come, and the impact of this year's decision against holding course.
 - **Debrief:**
@@ -207,7 +210,22 @@ A **Sandbox** mode lets the player choose any archetype with no case: free play 
 
 ## 9. Next steps
 
-1. **More cases.** *Growth at Any Cost?*, *The Automation Bet* and *Dividend Pressure*, plus a Sandbox with free choice of shocks.
-2. **Show decisions entering the machine.** Animate a played card through the gears it touches, reusing the cascade styling.
-3. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
-4. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
+1. **Judgement score.** Grade the decisions by their median rank across the luck worlds, not only by the one world played. This matches how incumbents claim to "measure judgment, not outcomes".
+2. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
+3. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
+4. **Shareable challenges.** Encode case, company seed and decisions in the URL so a player can send a friend the exact same world to try to beat.
+
+## 10. Landscape (researched September 2026)
+
+| Product | What it is | How CEO mode differs |
+| --- | --- | --- |
+| **Capsim** (Capstone, Foundation, Inbox, Assessments) | The market leader in higher education: 1.7M+ users and 1,100+ institutions. Multi-round team company simulations; says it measures "judgment, not just outcomes". | Capsim is licensed and cohort-based, in an invented industry. CEO mode is free, solo and about 15 minutes, calibrated on real SEC filings, and each decision is scored against a replay without it. |
+| **Cesim**, **Marketplace Simulations**, **StratX**, **Smartsims**, **Knowledge Matters** | Team competitions in business schools, often industry-specific (banking, hospitality). | Same contrast: CEO mode is solo with counterfactual attribution rather than peer competition. |
+| **Harvard Business Publishing** / **Forio** simulations | Short single-issue scenarios with a debrief; Forio powers many HBS and Wharton simulations. | The closest in format. CEO mode adds a visual causal machine, real-data calibration and a luck-vs-skill band. |
+| **CEOSim** (ceosim.ai) | An AI-assisted simulation for Latin American business schools: an individual Arena against AI companies, team Core markets, AI-written "CEO profiles", real macro data from 2014–2025. | It uses AI to coach and profile players. CEO mode keeps every number deterministic and inspectable, with no model in the calculations. |
+| **Capitalism Lab**, **Business Simulator 2026**, **CEO** (Steam) | Deep entertainment tycoon games. | These are built for play; they do not isolate the impact of a decision. |
+| **StockTrak** | Trading simulations with real SEC data. | It uses real data for investing, not for running a company. |
+
+**Positioning:** "a flight simulator for business decisions." Every number is traceable, every decision is measured against the world where you did not make it, and luck is separated from judgement. Nothing found combines real-filing calibration, per-decision counterfactuals and luck-vs-skill in a free, solo format.
+
+Sources: [Capsim](https://www.capsim.com/), [Cesim comparison](https://www.cesim.com/simulations/compare-business-simulations), [StratX: top executive-education simulations 2026](https://stratxsim.com/recent-posts/6-top-business-simulations-for-executive-education-in-2026), [LiveCase: 7 best business simulation platforms 2026](https://www.livecase.com/blog/en/posts/7-best-business-simulation-platforms-in-2026), [CEOSim](https://www.ceosim.ai/en/), [AACSB on AI-driven simulations](https://www.aacsb.edu/insights/articles/2025/02/ai-driven-simulations-build-decision-making-skills), [Capitalism Lab ranking](https://www.capitalismlab.com/good-business-simulation-games/), [StockTrak](https://www.stocktrak.com/stock-market-simulations/).

@@ -46,5 +46,15 @@ try {
  await page.getByRole('button', { name: /Take the chair/ }).click(); await page.getByRole('button', { name: 'Play year 1' }).click(); await page.getByRole('heading', { name: 'Year 1 in the news' }).waitFor();
  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'no horizontal page scroll on a phone');
  await page.screenshot({ path: 'artifacts/ceo-mobile.png', fullPage: true });
+ // Sandbox: pick shocks, hold course every year, and get a sampled strategy ranking.
+ await page.setViewportSize({ width: 1440, height: 1000 });
+ await page.getByRole('button', { name: 'Decide year 2' }).click(); await page.getByRole('button', { name: 'Abandon this game' }).click();
+ await page.getByRole('radio', { name: /Sandbox/ }).click();
+ await page.getByLabel('Bank cuts the credit line', { exact: true }).check(); await page.getByRole('combobox', { name: 'Bank cuts the credit line: year' }).selectOption('3');
+ await page.screenshot({ path: 'artifacts/ceo-sandbox-setup.png', fullPage: true });
+ await page.getByRole('button', { name: /Read the briefing/ }).click(); await page.getByText(/bank cuts the credit line in year 3/i).waitFor();
+ await page.getByRole('button', { name: /Take the chair/ }).click();
+ for (let year = 1; year <= 5; year++) { await page.getByRole('button', { name: `Play year ${year}` }).click(); if (year === 3) await page.getByText('Your bank demands 20% of your debt back').first().waitFor(); await page.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click(); }
+ await page.getByRole('heading', { name: /1,000 sampled card strategies/ }).waitFor({ timeout: 30000 });
  assert.deepEqual(errors, []); console.log('CEO browser flow passed. Screenshots in artifacts/.');
 } finally { await browser.close() }

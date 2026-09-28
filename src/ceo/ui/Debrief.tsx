@@ -31,7 +31,7 @@ export default function Debrief({ game, again, quit }: { game: Game; again: () =
       <div className="grade" aria-label={`Grade ${space.grade}`}>{space.grade}</div>
       <div>
         <span className="eyebrow">DEBRIEF · {game.caseDef.title.toUpperCase()} · {game.start.name.toUpperCase()}</span>
-        <h2 id="debrief-title">Your strategy beat {Math.round(space.percentile * 100)}% of the {space.scores.length.toLocaleString('en-GB')} possible card strategies.</h2>
+        <h2 id="debrief-title">Your strategy beat {Math.round(space.percentile * 100)}% of {space.sampled ? `${space.scores.length.toLocaleString('en-GB')} sampled` : `the ${space.scores.length.toLocaleString('en-GB')} possible`} card strategies.</h2>
         <p>Score {you.card.overall} · doing nothing {statusQuo.card.overall} ({vsNothing >= 0 ? '+' : '−'}{Math.abs(vsNothing)}) · reference path {reference.card.overall} · best card strategy found {space.best.overall}. All played in the same world: same events, same luck.</p>
       </div>
     </div>

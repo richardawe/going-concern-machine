@@ -26,7 +26,7 @@ const priceWar: CaseDef = {
     { year: 3, memo: 'Suppliers want 4% more. Your buyers think one big supplier is bluffing.', cards: [
       { id: 'passThrough', title: 'Pass the increase on: prices +4%', fn: 'marketing', pitch: 'Keeps the margin intact.', effects: { price: .04 } },
       { id: 'renegotiate', title: 'Play hardball with suppliers', fn: 'operations', pitch: 'Could win better terms than before. Could also go badly.', effects: { oneOffCost: .005, grossMargin: .015, risk: { chance: .3, headline: 'A key supplier walks away; shelves are empty for a quarter', effects: { oneOffCost: .015, churn: .01 } } } },
-      { id: 'automateStores', title: 'Self-checkout and store automation', fn: 'operations', pitch: 'Costs 2.5% of revenue; reduces staffing needs in two years.', effects: { oneOffCost: .025, delayed: { years: 2, note: 'Automation lets stores run with fewer staff', effects: { opexRatio: -.012, workforce: -.05 } } } },
+      { id: 'automateStores', title: 'Self-checkout and store automation', fn: 'operations', pitch: 'Costs 2.5% of revenue; reduces staffing needs in two years.', effects: { oneOffCost: .025, delayed: { years: 2, note: 'Automation lets stores run with fewer staff', effects: { opexRatio: -.004, staffNeed: .95 } } } },
     ] },
     { year: 4, memo: 'Shareholders ask what happens to the cash. The finance team presents three options.', cards: [
       { id: 'specialDividend', title: 'Raise the dividend', fn: 'finance', pitch: 'Reward patient shareholders.', effects: { allocations: { dividends: 40 } } },
@@ -125,7 +125,7 @@ const cashCrunch: CaseDef = {
     { year: 3, memo: 'The worst may be over. Your bank offers to refinance; engineering proposes automation.', cards: [
       { id: 'refinance', title: 'Refinance into long-term fixed debt', fn: 'finance', pitch: 'A fee now for a rate 1.5 points lower.', effects: { oneOffCost: .005, interestRate: -.015 } },
       { id: 'suspendDividend', title: 'Suspend the dividend', fn: 'finance', pitch: 'Keep every dollar in the business.', effects: { allocations: { dividends: -60 } } },
-      { id: 'automate', title: 'Automate the main plant', fn: 'operations', pitch: 'Costs 3% of revenue now; cuts costs and headcount in two years.', effects: { oneOffCost: .03, delayed: { years: 2, note: 'Automation line comes online', effects: { opexRatio: -.03, workforce: -.06 } } } },
+      { id: 'automate', title: 'Automate the main plant', fn: 'operations', pitch: 'Costs 3% of revenue now; cuts costs and headcount in two years.', effects: { oneOffCost: .03, delayed: { years: 2, note: 'Automation line comes online', effects: { opexRatio: -.01, staffNeed: .92 } } } },
     ] },
     { year: 4, memo: 'Orders are back. Can you meet them?', cards: [
       { id: 'rehire', title: 'Rehire 8%', fn: 'people', pitch: 'Staff up to meet demand.', effects: { workforce: .08 } },
@@ -151,4 +151,150 @@ const cashCrunch: CaseDef = {
   ],
 };
 
-export const cases: CaseDef[] = [priceWar, talentExodus, cashCrunch];
+const growthAtAnyCost: CaseDef = {
+  id: 'growth-at-any-cost', title: 'Growth at Any Cost?', archetype: 'software', seed: 3319,
+  tagline: 'The board wants hypergrowth. Buy customers fast, or fix the leaky bucket first?',
+  briefing: 'Your software company is profitable, and the board wants it to grow faster. A competitor just raised a huge round and is growing 60% a year. Your head of sales wants a blitz; your head of product says a fifth of customers leave within a year and nobody is fixing it.',
+  objectives: ['Growth only creates value when the customers you buy stay long enough to pay back what they cost.', 'Churn is a leak in the bucket: every point of churn you cut compounds, every year.', 'Money raised is not free: new capital is charged at the cost of capital.', 'Easy funding can disappear. Plan for the year it does.'],
+  events: [
+    { year: 1, kind: 'demandBoom', size: .05, headline: 'Category hype: buyers are shopping for tools like yours' },
+    { year: 3, kind: 'rateRise', size: .025, headline: 'Funding winter: rates jump and investors turn cautious' },
+    { year: 3, kind: 'customerLoss', size: -.05, headline: 'Customers cut software budgets' },
+  ],
+  turns: [
+    { year: 1, memo: 'The board wants a growth plan. Three proposals are on the table.', cards: [
+      { id: 'blitz', title: 'Marketing blitz', fn: 'marketing', pitch: 'Double the marketing budget and run a 3%-of-revenue campaign.', effects: { oneOffCost: .03, allocations: { marketing: 50, sales: 30 } } },
+      { id: 'freemium', title: 'Launch a free tier', fn: 'product', pitch: 'Cut the entry price 25%. Many more users; some will never pay.', effects: { price: -.25, delayed: { years: 1, note: 'Free-tier users start converting', effects: { demand: 1.12, churn: .02 } } } },
+      { id: 'fixRetention', title: 'Fix retention first', fn: 'product', pitch: 'A customer-success team and product fixes. Costs 1.5% of revenue; growth waits a year.', effects: { oneOffCost: .015, allocations: { product: 30 }, delayed: { years: 1, note: 'Retention programme lands: fewer customers leave', effects: { churn: -.03 } } } },
+      { id: 'salesHiring', title: 'Hire a big sales team (+15%)', fn: 'people', pitch: 'More reps, more pipeline. They take a year to ramp.', effects: { workforce: .15, allocations: { sales: 30 } } },
+    ] },
+    { year: 2, memo: 'Investors are calling. Growth capital is cheap, for now.', cards: [
+      { id: 'raiseBig', title: 'Raise a large equity round (20% of revenue)', fn: 'finance', pitch: 'A war chest for growth, at a rich valuation.', effects: { equity: .2, reinvestment: .15 } },
+      { id: 'international', title: 'Expand internationally', fn: 'strategy', pitch: 'Costs 5% of revenue. New markets in two years, if it works.', effects: { oneOffCost: .05, delayed: { years: 2, note: 'International offices start selling', effects: { demand: 1.1 } }, risk: { chance: .35, headline: 'International launch stalls: local rivals and slow hiring', effects: { opexRatio: .015 } } } },
+      { id: 'priceTiers', title: 'Introduce premium pricing tiers', fn: 'marketing', pitch: 'Charge 6% more on average for advanced features.', effects: { price: .06 } },
+    ] },
+    { year: 3, memo: 'The funding winter has arrived. The board asks whether growth plans still make sense.', cards: [
+      { id: 'cutBurn', title: 'Cut the burn: trim 10% of staff', fn: 'finance', pitch: 'Get back to strong cash flow fast.', effects: { workforce: -.1, allocations: { marketing: -30 } } },
+      { id: 'discountToRetain', title: 'Discount renewals to keep customers', fn: 'marketing', pitch: 'A 5% renewal discount while budgets are tight.', effects: { price: -.05, churn: -.015 } },
+      { id: 'debtBridge', title: 'Take a venture-debt bridge (8% of revenue)', fn: 'finance', pitch: 'Keep growing through the winter on borrowed money.', effects: { debt: .08 } },
+    ] },
+    { year: 4, memo: 'Budgets are thawing. Where do you put the next dollar?', cards: [
+      { id: 'platform', title: 'Invest in the platform', fn: 'product', pitch: 'Raise R&D and reinvestment; pays off in two years.', effects: { reinvestment: .1, allocations: { rd: 40 }, delayed: { years: 1, note: 'Platform upgrade ships', effects: { demand: 1.05, churn: -.01 } } } },
+      { id: 'secondBlitz', title: 'Another marketing blitz', fn: 'marketing', pitch: 'Growth is back; spend to catch it.', effects: { oneOffCost: .03, allocations: { marketing: 40 } } },
+      { id: 'dividend', title: 'Start a dividend', fn: 'finance', pitch: 'Signal maturity to investors.', effects: { allocations: { dividends: 40 } } },
+    ] },
+    { year: 5, memo: 'Your final year. The board will judge growth and quality together.', cards: [
+      { id: 'successPush', title: 'Double down on customer success', fn: 'people', pitch: 'Bonuses tied to retention.', effects: { bonus: .03, churn: -.01 } },
+      { id: 'finalPrice', title: 'Raise list prices 5%', fn: 'marketing', pitch: 'Harvest the loyal base.', effects: { price: .05 } },
+    ] },
+  ],
+  reference: [{ card: 'fixRetention' }, { card: 'priceTiers' }, { card: 'discountToRetain' }, { card: 'platform' }, { card: 'successPush' }],
+  weights: { value: .3, survival: .15, growth: .2, people: .1, customers: .25 },
+  lessons: [
+    { when: 'took:fixRetention', note: 'Fixing retention first felt slow in year 1, but every customer you kept kept paying: lower churn compounds, year after year.' },
+    { when: 'took:freemium', note: 'The free tier brought volume and a 25% lower price on everyone, plus extra churn from users who never meant to pay.' },
+    { when: 'took:blitz', note: 'A blitz buys customers at the going acquisition cost. If they leave within a year or two, the spend never pays back.' },
+    { when: 'took:raiseBig', note: 'A big round funds growth, but the value score charges the cost of capital on every dollar raised and parked.' },
+    { when: 'took:debtBridge', note: 'Venture debt kept the lights on at a higher interest bill, right as rates rose.' },
+    { when: 'always', note: 'Watch the Customers score: activity against the trend path, plus the change in retention. Growth bought with churn scores worse than slower, stickier growth.' },
+  ],
+};
+
+const automationBet: CaseDef = {
+  id: 'automation-bet', title: 'The Automation Bet', archetype: 'industrial', seed: 6607,
+  tagline: 'Wages are rising and workers are scarce. Automate now, later, or never?',
+  briefing: 'Your manufacturing plants run on skilled labour, and wage costs are climbing fast. Engineering has a plan to automate the main lines: expensive, disruptive and slow to pay back. The workforce is nervous and the union is watching.',
+  objectives: ['Automation trades cash now for lower costs later: judge it over the full horizon, not the first two years.', 'How you treat people during a transition shows up in morale, attrition and productivity.', 'Borrowing to invest is only as good as the returns on what you buy.', 'A downturn tests whether you kept enough flexibility.'],
+  events: [
+    { year: 1, kind: 'costInflation', size: .04, headline: 'Wage and material costs up 4%' },
+    { year: 2, kind: 'talentWar', size: .05, headline: 'Skilled machinists are scarce; rivals are hiring yours' },
+    { year: 4, kind: 'recession', size: .1, headline: 'A mild recession cuts orders by a tenth' },
+  ],
+  turns: [
+    { year: 1, memo: 'Engineering presents three options for the plants.', cards: [
+      { id: 'fullAutomation', title: 'Automate all main lines now', fn: 'operations', pitch: 'Costs 5% of revenue, part-funded by debt. Big savings from year 3.', effects: { oneOffCost: .05, debt: .025, morale: -.05, delayed: { years: 2, note: 'Automated lines come online', effects: { opexRatio: -.015, staffNeed: .88 } } } },
+      { id: 'pilot', title: 'Pilot one line first', fn: 'operations', pitch: 'Costs 1.5% of revenue. Learn before you bet.', effects: { oneOffCost: .015, delayed: { years: 1, note: 'Pilot line proves out', effects: { staffNeed: .97 } } } },
+      { id: 'offshore', title: 'Move production offshore', fn: 'strategy', pitch: 'Cheaper labour, better margins. Quality and lead times are a risk.', effects: { oneOffCost: .03, grossMargin: .03, workforce: -.15, risk: { chance: .4, headline: 'Quality problems at the offshore plant; customers complain', effects: { churn: .03 } } } },
+      { id: 'raiseWages', title: 'Raise wages to hold on to skilled staff', fn: 'people', pitch: 'Pay 5% above market.', effects: { pay: .05 } },
+    ] },
+    { year: 2, memo: 'Machinists are being poached. How do you handle the people side?', cards: [
+      { id: 'retrain', title: 'Retrain operators as technicians', fn: 'people', pitch: 'A bigger training budget and a promise of no forced layoffs.', effects: { oneOffCost: .01, allocations: { people: 30 }, morale: .08 } },
+      { id: 'unionDeal', title: 'Sign a three-year deal with the union', fn: 'people', pitch: '3% above market, in exchange for flexibility.', effects: { pay: .03, morale: .1 } },
+      { id: 'preemptiveCuts', title: 'Cut 8% of staff before automation arrives', fn: 'people', pitch: 'Take the pain early.', effects: { workforce: -.08 } },
+    ] },
+    { year: 3, memo: 'The next phase needs capital.', cards: [
+      { id: 'phaseTwo', title: 'Phase two: automate the rest', fn: 'operations', pitch: 'Another 3% of revenue for another round of savings.', effects: { oneOffCost: .03, delayed: { years: 1, note: 'Phase two lines running', effects: { opexRatio: -.005, staffNeed: .95 } } } },
+      { id: 'maintenance', title: 'Catch up on deferred maintenance', fn: 'operations', pitch: 'Raise the maintenance budget; avoid breakdowns.', effects: { allocations: { maintenance: 30 } } },
+      { id: 'payDownAuto', title: 'Pay down debt', fn: 'finance', pitch: 'Get ready for the next downturn.', effects: { allocations: { debtRepayment: 50 } } },
+    ] },
+    { year: 4, memo: 'Orders are falling. The board asks what gives.', cards: [
+      { id: 'recessionLayoffs', title: 'Lay off 10%', fn: 'people', pitch: 'Match costs to orders.', effects: { workforce: -.1 } },
+      { id: 'shortTime', title: 'Short-time working for a year', fn: 'people', pitch: 'A 5% pay cut shared by all; no layoffs.', effects: { pay: -.05, morale: .02, delayed: { years: 1, note: 'Full hours restored', effects: { pay: .05 } } } },
+      { id: 'priceHold', title: 'Hold prices and win share from weaker rivals', fn: 'marketing', pitch: 'Your costs are lower now; use it.', effects: { allocations: { sales: 30 } } },
+    ] },
+    { year: 5, memo: 'Your final year.', cards: [
+      { id: 'shareGains', title: 'Share the productivity gains', fn: 'people', pitch: 'A 4% bonus for everyone who stayed.', effects: { bonus: .04 } },
+      { id: 'capacityUp', title: 'Add capacity for the recovery', fn: 'strategy', pitch: 'Raise reinvestment.', effects: { reinvestment: .15, allocations: { infrastructure: 20 } } },
+    ] },
+  ],
+  reference: [{ card: 'fullAutomation' }, { card: 'retrain' }, { card: 'payDownAuto' }, { card: 'shortTime' }, { card: 'shareGains' }],
+  weights: { value: .4, survival: .15, growth: .15, people: .15, customers: .15 },
+  lessons: [
+    { when: 'took:fullAutomation', note: 'Full automation cost cash and morale for two years, then cut operating costs for good. Big capital bets must be judged over their whole life.' },
+    { when: 'took:pilot', note: 'The pilot was cheap and safe, and its savings were small. Caution has a cost too: the savings you never captured.' },
+    { when: 'took:offshore', note: 'Offshoring lifted margins at once but carried a real quality risk. When it hit, churn rose and stayed up.' },
+    { when: 'took:preemptiveCuts', note: 'Cutting before the machines arrived left the plants short-handed, and morale fell just as rivals were poaching.' },
+    { when: 'took:retrain', note: 'Retraining kept know-how in the business and kept morale up through the transition.' },
+    { when: 'always', note: 'Look at the attribution table: the automation decision is negative in its first years and strongly positive by year 5. That is what a good investment looks like.' },
+  ],
+};
+
+const dividendPressure: CaseDef = {
+  id: 'dividend-pressure', title: 'Dividend Pressure', archetype: 'consumer', seed: 2281,
+  tagline: 'Shareholders want cash back. Your products are getting old. Then a recession arrives.',
+  briefing: 'Your consumer-brands company is a steady cash machine, and your shareholders like it that way: they expect a rising dividend. But your best-known products are ageing, a start-up brand is stealing younger customers, and marketing budgets have been flat for years.',
+  objectives: ['A dividend is a claim on future cash: paying it from a shrinking business shrinks the business faster.', 'Borrowing to pay shareholders moves risk from them onto the company.', 'Brands decay without investment; the decay shows up slowly, then all at once.', 'Keep enough in reserve to meet the next downturn on your own terms.'],
+  events: [
+    { year: 2, kind: 'customerLoss', size: -.06, headline: 'A start-up brand takes 6% of your customers' },
+    { year: 4, kind: 'recession', size: .12, headline: 'Recession: shoppers trade down to cheaper brands' },
+  ],
+  turns: [
+    { year: 1, memo: 'Your largest shareholders ask for a higher payout at the annual meeting.', cards: [
+      { id: 'raiseDividend', title: 'Raise the dividend', fn: 'finance', pitch: 'Give shareholders what they are asking for.', effects: { allocations: { dividends: 40 } } },
+      { id: 'leveredPayout', title: 'Borrow to fund a special payout', fn: 'finance', pitch: 'Raise debt of 15% of revenue and hand most of it back.', effects: { debt: .15, allocations: { dividends: 60 }, interestRate: .005 } },
+      { id: 'refresh', title: 'Refresh the product line', fn: 'product', pitch: 'Raise reinvestment and R&D; new products in two years.', effects: { reinvestment: .2, allocations: { rd: 30, marketing: 20 }, delayed: { years: 2, note: 'Refreshed product line reaches shelves', effects: { demand: 1.07, elasticity: .9 } } } },
+      { id: 'buyBrand', title: 'Buy the start-up brand', fn: 'strategy', pitch: 'Costs 8% of revenue. Integration is never easy.', effects: { oneOffCost: .08, delayed: { years: 1, note: 'Acquired brand integrated', effects: { demand: 1.06 } }, risk: { chance: .3, headline: 'The acquired brand loses its founders and its edge', effects: { opexRatio: .01 } } } },
+    ] },
+    { year: 2, memo: 'The start-up brand is winning younger shoppers.', cards: [
+      { id: 'priceCutYouth', title: 'Cut prices 6% to compete', fn: 'marketing', pitch: 'Meet the challenger on price.', effects: { price: -.06 } },
+      { id: 'brandCampaign', title: 'A big brand campaign', fn: 'marketing', pitch: 'Costs 2% of revenue; makes the brand relevant again.', effects: { oneOffCost: .02, allocations: { marketing: 30 }, delayed: { years: 1, note: 'Campaign lifts brand consideration', effects: { churn: -.02 } } } },
+      { id: 'costProgramme', title: 'A cost-cutting programme', fn: 'operations', pitch: 'Trim 6% of staff and overheads.', effects: { workforce: -.06, opexRatio: -.005 } },
+    ] },
+    { year: 3, memo: 'Shareholders ask again about returns.', cards: [
+      { id: 'buybackDebt', title: 'Borrow to buy back shares', fn: 'finance', pitch: 'Debt of 10% of revenue, returned through buybacks.', effects: { debt: .1, allocations: { dividends: 40 } } },
+      { id: 'holdPayout', title: 'Hold the payout and explain the plan', fn: 'finance', pitch: 'Cut the payout weight and invest instead.', effects: { allocations: { dividends: -20 }, reinvestment: .1 } },
+      { id: 'newChannel', title: 'Go direct to consumers online', fn: 'operations', pitch: 'Costs 2% of revenue; better margins in two years.', effects: { oneOffCost: .02, delayed: { years: 2, note: 'Direct-to-consumer channel is profitable', effects: { grossMargin: .02 } } } },
+    ] },
+    { year: 4, memo: 'Recession. Shoppers are trading down.', cards: [
+      { id: 'valueRange', title: 'Launch a value range', fn: 'product', pitch: 'Cheaper products for tighter budgets.', effects: { oneOffCost: .01, elasticity: .85, grossMargin: -.01 } },
+      { id: 'cutDividend', title: 'Cut the dividend', fn: 'finance', pitch: 'Keep the cash while the storm passes.', effects: { allocations: { dividends: -40 } } },
+      { id: 'recessionCuts', title: 'Cut 10% of staff', fn: 'people', pitch: 'Protect the margin.', effects: { workforce: -.1 } },
+    ] },
+    { year: 5, memo: 'Your final year. The board wants the business ready for the next decade.', cards: [
+      { id: 'restoreDividend', title: 'Restore the dividend', fn: 'finance', pitch: 'Reward loyal shareholders.', effects: { allocations: { dividends: 30 } } },
+      { id: 'innovationFund', title: 'Set up an innovation fund', fn: 'product', pitch: 'Raise R&D for the next product generation.', effects: { allocations: { rd: 30 }, reinvestment: .1 } },
+    ] },
+  ],
+  reference: [{ card: 'refresh' }, { card: 'brandCampaign' }, { card: 'holdPayout' }, { card: 'valueRange' }, { card: 'innovationFund' }],
+  weights: { value: .3, survival: .25, growth: .15, people: .1, customers: .2 },
+  lessons: [
+    { when: 'took:leveredPayout', note: 'Borrowing to pay shareholders moved cash out and risk in. The interest bill kept running when the recession came.' },
+    { when: 'took:buybackDebt', note: 'A debt-funded buyback returns cash that the business then has to earn back with interest.' },
+    { when: 'took:refresh', note: 'Refreshing the product line cost cash for two years and slowed the customer drift once the new products landed.' },
+    { when: 'skipped:refresh', note: 'Without new products, demand kept drifting away. Brand decay is slow, then sudden.' },
+    { when: 'took:priceCutYouth', note: 'Cutting price against a challenger gave away margin on every existing customer to win back a few.' },
+    { when: 'always', note: 'Compare the cash chart for all three futures: a high payout looks generous until the recession year.' },
+  ],
+};
+
+export const cases: CaseDef[] = [priceWar, talentExodus, cashCrunch, growthAtAnyCost, automationBet, dividendPressure];

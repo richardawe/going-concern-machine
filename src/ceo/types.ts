@@ -34,7 +34,7 @@ export interface Effects {
   /** Persistent additions to allocation weights. */ allocations?: Partial<Record<AllocationKey, number>>;
   reinvestment?: number;
   /** Persistent percentage-point changes (as fractions). */ grossMargin?: number; opexRatio?: number; churn?: number; workingCapital?: number; interestRate?: number;
-  /** Persistent multipliers. */ elasticity?: number; demand?: number;
+  /** Persistent multipliers. `staffNeed` scales how many people the work requires (automation lowers it). */ elasticity?: number; demand?: number; staffNeed?: number;
   delayed?: { years: number; note: string; effects: Effects };
   /** A seeded chance that something else happens as a result. */ risk?: { chance: number; headline: string; effects: Effects };
 }

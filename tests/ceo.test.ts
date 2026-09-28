@@ -5,7 +5,8 @@ import { buildArchetypes, MIN_COMPANIES, sicToArchetype } from '../src/ceo/arche
 import { fictionalCompany, prepareStart, realCompany } from '../src/ceo/company';
 import { cases } from '../src/ceo/cases';
 import { defaultLevers, play, statusQuo } from '../src/ceo/game';
-import { debrief, describeDecision, gameScore, referenceDecisions, undoDecision } from '../src/ceo/assess';
+import { debrief, describeDecision, gameScore, MAX_STRATEGIES, referenceDecisions, strategySpace, undoDecision } from '../src/ceo/assess';
+import { resolveCase, SANDBOX_ID, SANDBOX_YEARS, sandboxCase } from '../src/ceo/sandbox';
 import type { CompanyDataset } from '../src/ontology/types';
 import type { Game } from '../src/ceo/types';
 
@@ -113,4 +114,27 @@ test('undoing a decision reverts the standing policy it set, but not a later cha
   assert.equal(undone[1].card, 'academy');
   assert.equal(undoDecision(g, 2), null, 'year 3 only kept the policy: nothing to undo');
   assert.match(describeDecision(g, 3), /pay \+4/);
+});
+
+test('sandbox: shocks land in the chosen year, and a huge strategy space is sampled', () => {
+  const config = { archetype: 'industrial' as const, events: [{ kind: 'recession' as const, year: 2 }, { kind: 'creditSqueeze' as const, year: 3 }] };
+  const c = resolveCase(SANDBOX_ID, config)!;
+  assert.equal(c.turns.length, SANDBOX_YEARS); assert.deepEqual(c.events.map(e => e.year), [2, 3]);
+  assert.equal(resolveCase(SANDBOX_ID, { archetype: 'industrial', events: [{ kind: 'recession', year: 9 }] }), undefined);
+  assert.equal(resolveCase(SANDBOX_ID), undefined);
+  const start = fictionalCompany(archetype('industrial'), 7), game = { start, caseDef: c, seed: c.seed, decisions: statusQuo(start, SANDBOX_YEARS) };
+  const calm = play({ ...game, caseDef: sandboxCase({ archetype: 'industrial', events: [] }) }), stormy = play(game);
+  assert.deepEqual(stormy[1].state, calm[1].state, 'nothing happens before the first shock');
+  assert.ok(stormy[2].state.revenue < calm[2].state.revenue);
+  const space = strategySpace(game);
+  assert.ok(space.sampled && space.total > MAX_STRATEGIES && space.paths.length === 1000);
+  assert.deepEqual(strategySpace(game).paths.map(p => p.overall), space.paths.map(p => p.overall), 'the sample is reproducible');
+});
+
+test('automation lowers the staff the work needs rather than leaving the plant short-handed', () => {
+  const game = newGame('automation-bet'), d = structuredClone(game.decisions); d[0].card = 'fullAutomation';
+  const auto = play({ ...game, decisions: d }), sq = play(game);
+  assert.ok(auto[4].people.natural < sq[4].people.natural * .95);
+  assert.ok(auto[4].people.headcount / auto[4].people.natural > .97, 'staffing stays in line with the lower need');
+  assert.ok(auto[5].state.operatingProfit > sq[5].state.operatingProfit);
 });

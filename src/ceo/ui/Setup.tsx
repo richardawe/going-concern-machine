@@ -3,18 +3,22 @@ import { ArrowRight, Dices } from 'lucide-react';
 import { archetypeLabels, type ArchetypeFile, type ArchetypeId } from '../archetypes';
 import { cases } from '../cases';
 import { realCompanies } from '../company';
+import { SANDBOX_ID, SANDBOX_YEARS, sandboxEvents, type SandboxConfig } from '../sandbox';
+import type { EventKind } from '../types';
 
 export type CompanyChoice = { kind: 'fictional'; archetype: ArchetypeId; seed: number } | { kind: 'real'; ticker: string };
 const REAL: Record<string, string> = { MSFT: 'Microsoft', WMT: 'Walmart', JPM: 'JPMorgan Chase' };
 
-export default function Setup({ archetypes, begin }: { archetypes: ArchetypeFile; begin: (caseId: string, choice: CompanyChoice) => void }) {
+export default function Setup({ archetypes, begin }: { archetypes: ArchetypeFile; begin: (caseId: string, choice: CompanyChoice, sandbox?: SandboxConfig) => void }) {
   const [caseId, setCaseId] = useState(cases[0].id);
-  const chosen = cases.find(c => c.id === caseId)!;
+  const sandbox = caseId === SANDBOX_ID, chosen = cases.find(c => c.id === caseId) ?? cases[0];
+  const [shocks, setShocks] = useState<Partial<Record<EventKind, number>>>({ recession: 2 });
   const available = archetypes.archetypes.map(a => a.id);
   const [archetype, setArchetype] = useState<ArchetypeId | null>(null);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e6));
   const [real, setReal] = useState<string | null>(null);
-  const industry = archetype ?? (available.includes(chosen.archetype) ? chosen.archetype : available[0]);
+  const suggested: ArchetypeId = sandbox ? 'industrial' : chosen.archetype;
+  const industry = archetype ?? (available.includes(suggested) ? suggested : available[0]);
   const choice: CompanyChoice = real ? { kind: 'real', ticker: real } : { kind: 'fictional', archetype: industry, seed };
 
   return <section className="ceo-setup" aria-labelledby="ceo-setup-title">
@@ -24,7 +28,19 @@ export default function Setup({ archetypes, begin }: { archetypes: ArchetypeFile
         <span className="eyebrow">{archetypeLabels[c.archetype].toUpperCase()} · {c.turns.length} YEARS</span>
         <strong>{c.title}</strong><span>{c.tagline}</span>
       </button>)}
+      <button role="radio" aria-checked={sandbox} className="case-card sandbox-card" onClick={() => setCaseId(SANDBOX_ID)}>
+        <span className="eyebrow">ANY INDUSTRY · {SANDBOX_YEARS} YEARS</span>
+        <strong>Sandbox</strong><span>Choose the shocks and when they hit, then play with a general toolkit of decisions.</span>
+      </button>
     </div>
+    {sandbox && <fieldset className="shock-picker"><legend className="panel-title">SANDBOX SHOCKS</legend>
+      {(Object.keys(sandboxEvents) as EventKind[]).map(k => <div key={k} className="shock-row">
+        <label><input type="checkbox" checked={shocks[k] != null} onChange={e => setShocks(({ [k]: _, ...rest }) => e.target.checked ? { ...rest, [k]: 2 } : rest)} /> {sandboxEvents[k].label}</label>
+        <select aria-label={`${sandboxEvents[k].label}: year`} disabled={shocks[k] == null} value={shocks[k] ?? 2} onChange={e => setShocks({ ...shocks, [k]: +e.target.value })}>
+          {Array.from({ length: SANDBOX_YEARS }, (_, i) => <option key={i} value={i + 1}>Year {i + 1}</option>)}
+        </select>
+      </div>)}
+    </fieldset>}
     <h2 className="ceo-section-title"><span className="eyebrow">STEP 2</span> Choose your company</h2>
     <div className="company-choice">
       <div className={`choice-panel ${real ? '' : 'is-chosen'}`}>
@@ -46,6 +62,6 @@ export default function Setup({ archetypes, begin }: { archetypes: ArchetypeFile
         {real && <p className="muted small">{realCompanies[real].note}</p>}
       </div>
     </div>
-    <div className="setup-go"><button className="primary-button big" onClick={() => begin(caseId, choice)}>Read the briefing <ArrowRight size={15} /></button></div>
+    <div className="setup-go"><button className="primary-button big" onClick={() => begin(caseId, choice, sandbox ? { archetype: industry, events: (Object.entries(shocks) as [EventKind, number][]).map(([kind, year]) => ({ kind, year })) } : undefined)}>Read the briefing <ArrowRight size={15} /></button></div>
   </section>;
 }
