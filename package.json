@@ -15,7 +15,7 @@
     "demo": "node --import tsx scripts/demo.ts",
     "data:publish": "node --import tsx scripts/publish-sec.ts",
     "ceo:balance": "node --import tsx scripts/balance-ceo.ts",
-    "test:browser": "node tests/browser.mjs",
+    "test:browser": "node tests/browser.mjs && node tests/ceo-browser.mjs",
     "demo:record": "node scripts/record-demo.mjs"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import { clamp, ratio } from '../model/config';
-import { findCard, play, statusQuo } from './game';
-import { dimensions, type Decision, type Dimension, type Game, type YearRecord } from './types';
+import { defaultLevers, findCard, play, statusQuo } from './game';
+import { dimensions, type Decision, type Dimension, type Game, type Levers, type YearRecord } from './types';
 
 // The debrief. Every score is a published formula over the played years, and every comparison replays the same seed,
 // so differences come from decisions, not luck.
@@ -57,6 +57,27 @@ export function strategySpace(game: Game) {
 export const gradeFor = (percentile: number) => percentile >= .9 ? 'A' : percentile >= .7 ? 'B' : percentile >= .45 ? 'C' : percentile >= .2 ? 'D' : 'E';
 
 const cumulativeFcf = (r: YearRecord[]) => r.slice(1).reduce((n, x) => n + x.state.freeCashFlow, 0);
+const standing = ['pay', 'reinvestment', 'marketing', 'rd', 'people', 'dividends'] as const;
+const leverNames: Record<keyof Levers, string> = { price: 'price', workforce: 'staffing', pay: 'pay', reinvestment: 'reinvestment', marketing: 'marketing', rd: 'R&D', people: 'training', dividends: 'dividends' };
+const priorLevers = (game: Game, i: number): Levers => i === 0 ? defaultLevers(game.start) : game.decisions[i - 1].levers;
+/** What changed in year i+1 relative to the year before: a card, one-off moves, or new standing policies. */
+export function leverChanges(game: Game, i: number): [keyof Levers, number][] {
+  const now = game.decisions[i].levers, before = priorLevers(game, i);
+  return [...(['price', 'workforce'] as const).filter(k => now[k] !== 0).map(k => [k, now[k]] as [keyof Levers, number]), ...standing.filter(k => now[k] !== before[k]).map(k => [k, now[k] - before[k]] as [keyof Levers, number])];
+}
+export function describeDecision(game: Game, i: number): string {
+  const card = findCard(game, i + 1, game.decisions[i].card)?.title;
+  const levers = leverChanges(game, i).map(([k, v]) => `${leverNames[k]} ${v > 0 ? '+' : '−'}${Math.abs(v)}`).join(', ');
+  return [card, levers].filter(Boolean).join(' · ') || 'Hold course';
+}
+/** The decisions with year i+1 turned into "hold course", or null when it already was. */
+export function undoDecision(game: Game, i: number): Decision[] | null {
+  if (!game.decisions[i].card && !leverChanges(game, i).length) return null;
+  const before = priorLevers(game, i), set = game.decisions[i].levers, out = structuredClone(game.decisions);
+  out[i] = { card: null, levers: { ...before, price: 0, workforce: 0 } };
+  for (const k of standing) for (let j = i + 1; j < out.length && game.decisions[j].levers[k] === set[k]; j++) out[j].levers[k] = before[k];
+  return out;
+}
 export function referenceDecisions(game: Game): Decision[] {
   const sq = statusQuo(game.start, game.decisions.length);
   return sq.map((d, i) => ({ card: game.caseDef.reference[i]?.card ?? null, levers: { ...d.levers, ...game.caseDef.reference[i]?.levers } }));
@@ -65,14 +86,13 @@ export function referenceDecisions(game: Game): Decision[] {
 export function debrief(game: Game, luckRuns = 40): Debrief {
   const n = game.decisions.length, outcome = (label: string, decisions: Decision[]): Outcome => { const g = { ...game, decisions }; const records = play(g); return { label, records, card: gameScore(g, records) }; };
   const you = outcome('Your decisions', game.decisions), quo = outcome('Doing nothing', statusQuo(game.start, n)), reference = outcome('Reference path', referenceDecisions(game));
-  const sq = statusQuo(game.start, n)[0];
-  // Each decision's marginal effect: replay with only that year's decision undone.
+  // Each decision's marginal effect: replay with that decision undone. A standing policy set that year is undone for as
+  // long as later years simply kept it; a later change to the same lever is that later year's own decision.
   const attribution = game.decisions.flatMap((d, i): Attribution[] => {
-    if (!d.card && JSON.stringify(d.levers) === JSON.stringify(sq.levers)) return [];
-    const without = game.decisions.map((x, j) => j === i ? sq : x), g = { ...game, decisions: without }, records = play(g), card = gameScore(g, records);
-    const title = [findCard(game, i + 1, d.card)?.title, JSON.stringify(d.levers) !== JSON.stringify(sq.levers) ? 'lever changes' : null].filter(Boolean).join(' + ');
+    const without = undoDecision(game, i); if (!without) return [];
+    const g = { ...game, decisions: without }, records = play(g), card = gameScore(g, records);
     const last = you.records.at(-1)!, alt = records.at(-1)!;
-    return [{ year: i + 1, title, delta: { overall: you.card.overall - card.overall, revenue: last.state.revenue - alt.state.revenue, cash: last.state.cash - alt.state.cash, cumulativeFcf: cumulativeFcf(you.records) - cumulativeFcf(records), morale: last.people.morale - alt.people.morale } }];
+    return [{ year: i + 1, title: describeDecision(game, i), delta: { overall: you.card.overall - card.overall, revenue: last.state.revenue - alt.state.revenue, cash: last.state.cash - alt.state.cash, cumulativeFcf: cumulativeFcf(you.records) - cumulativeFcf(records), morale: last.people.morale - alt.people.morale } }];
   });
   // Luck: the same decisions in other possible worlds (different demand noise and risk draws; scheduled events stay).
   const runs = (decisions: Decision[]) => Array.from({ length: luckRuns }, (_, k) => gameScore({ ...game, decisions, seed: game.seed * 7919 + k + 1 }).overall).sort((a, b) => a - b);

@@ -5,7 +5,7 @@ import { buildArchetypes, MIN_COMPANIES, sicToArchetype } from '../src/ceo/arche
 import { fictionalCompany, prepareStart, realCompany } from '../src/ceo/company';
 import { cases } from '../src/ceo/cases';
 import { defaultLevers, play, statusQuo } from '../src/ceo/game';
-import { debrief, gameScore, referenceDecisions } from '../src/ceo/assess';
+import { debrief, describeDecision, gameScore, referenceDecisions, undoDecision } from '../src/ceo/assess';
 import type { CompanyDataset } from '../src/ontology/types';
 import type { Game } from '../src/ceo/types';
 
@@ -103,4 +103,14 @@ test('debrief attributes each decision, ranks the strategy and measures luck', (
   assert.ok(d.you.card.overall > d.statusQuo.card.overall);
   assert.ok(d.lessons.length > 0);
   assert.deepEqual(defaultLevers(game.start), statusQuo(game.start, 1)[0].levers);
+});
+
+test('undoing a decision reverts the standing policy it set, but not a later change to it', () => {
+  const game = newGame('talent-exodus'), d = structuredClone(game.decisions);
+  d.forEach(x => { x.levers.pay = 5; }); d[3].levers.pay = 9; d[1].card = 'academy';
+  const g = { ...game, decisions: d }, undone = undoDecision(g, 0)!;
+  assert.deepEqual(undone.map(x => x.levers.pay), [0, 0, 0, 9, 5]);
+  assert.equal(undone[1].card, 'academy');
+  assert.equal(undoDecision(g, 2), null, 'year 3 only kept the policy: nothing to undo');
+  assert.match(describeDecision(g, 3), /pay \+4/);
 });

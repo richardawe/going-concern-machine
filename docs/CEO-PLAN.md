@@ -4,6 +4,42 @@ A new, separate mode built on the existing machine: **you are the CEO of a ficti
 
 > Scenario → Decide → Play forward → See the impact → Debrief → Next decision
 
+## Status (first slice built)
+
+Open **CEO mode** from the company workbench, or go to `#/ceo`. What works today:
+
+- **Three cases**, each five annual turns: *The Price War*, *Talent Exodus*, *Cash Crunch*.
+- **Companies:** a fictional company in any of 8 industry archetypes, or a hypothetical future for **MSFT**, **WMT** or **JPM**.
+- **Each turn:** a decision card plus two one-off levers (price, staffing) and six standing policies (pay, reinvestment, marketing, R&D, training, dividends). The machine plays the year, then shows headlines, effects still to come, and the impact of this year's decision against holding course.
+- **Debrief:**
+  - objectives, revealed only now;
+  - a five-dimension scorecard against doing nothing and against the reference path;
+  - three-futures charts;
+  - per-decision attribution;
+  - the grade, which is your rank among every card strategy;
+  - a 40-world luck band, lessons, and a JSON report.
+- **Tests and tooling:**
+  - `npm run ceo:balance` plays every card path for every case on the fictional company and on MSFT, WMT and JPM.
+  - `tests/ceo.test.ts` and `tests/ceo-browser.mjs` cover the engine and a full game.
+
+## Decisions (agreed)
+
+| Question | Decision |
+| --- | --- |
+| Turn length | **Annual** turns (fits the engine). |
+| Audience | **Self-directed players.** No cohorts, and no backend. |
+| Learning objectives | **Revealed only in the debrief.** |
+| Companies | **Fictional by default**, with MSFT, WMT and JPM as options. The opening is reported; the future is hypothetical; people and price sensitivity are game assumptions. JPM runs through the general engine with credit provisions as the cost of delivery, and that caveat is stated in the game. |
+| Name | **CEO mode inside Going Concern Machine**, with its own link (`#/ceo`). |
+
+### Design choices made while building
+
+- **Scores measure change the CEO made**, not how good the company was at the start. 50 means it kept pace with Year 0, and a logistic curve stops strong companies from saturating.
+- **Value is scored on economic profit**, which charges the cost of capital on all new debt and equity. Borrowing or diluting to look safe is not free.
+- **Survival is scored on cash net of new borrowing.** A cash shortfall is never absorbed silently: it becomes an emergency loan at a penalty rate, with a headline.
+- **The grade is a rank:** where your score falls among every card strategy the case allows, played in the same world. This makes grades comparable between a fictional start-up-sized firm and Microsoft.
+- **Undoing a decision** also reverts the standing policy it set, for as long as later years only kept it.
+
 This mode sits beside the company-analysis product and does not replace it. It reuses the engine, the machine visuals and the SEC data that already exist.
 
 ---
@@ -107,7 +143,7 @@ Acceptance: unit tests for accounting identities (cash roll-forward, equity roll
 
 ## 6. Scenario/case format
 
-Cases are JSON files in `public/ceo/cases/`, checked by `scripts/validate-cases.ts`.
+Cases live in `src/ceo/cases.ts`: they are typed, and `tests/ceo.test.ts` plus `npm run ceo:balance` check that they are valid and balanced. They are shown below as JSON for readability.
 
 ```jsonc
 {
@@ -169,10 +205,9 @@ A **Sandbox** mode lets the player choose any archetype with no case: free play 
 
 ---
 
-## 9. Open questions
+## 9. Next steps
 
-1. **Turn length.** Annual turns (fits the current engine; recommended for v1) or quarterly (more realistic, a bigger engine change)?
-2. **Audience.** Self-directed players, or trainer-led cohorts that need comparable scores and exportable results?
-3. **Objective visibility.** Show learning objectives before play (coaching) or only at the debrief (assessment)?
-4. **Real companies.** Fully fictional as planned, or also an optional "run a real company" mode using the verified MSFT/WMT/JPM machines?
-5. **Branding.** Keep it inside Going Concern Machine as "CEO mode", or give it its own title and landing page?
+1. **More cases.** *Growth at Any Cost?*, *The Automation Bet* and *Dividend Pressure*, plus a Sandbox with free choice of shocks.
+2. **Show decisions entering the machine.** Animate a played card through the gears it touches, reusing the cascade styling.
+3. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
+4. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
