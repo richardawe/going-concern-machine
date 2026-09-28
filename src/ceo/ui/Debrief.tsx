@@ -1,24 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
-import { Download, RotateCcw } from 'lucide-react';
+import { Download, Link2, RotateCcw, Swords } from 'lucide-react';
 import { money, percent } from '../../presentation';
-import { debrief, dimensionFormulas, dimensionLabels, judgement as judge, JUDGEMENT_WORLDS, percentile, verdict, type Debrief as Result, type Judgement, type Outcome } from '../assess';
+import { debrief, describeDecision, dimensionFormulas, gameScore, gradeFor, dimensionLabels, judgement as judge, JUDGEMENT_WORLDS, percentile, verdict, type Debrief as Result, type Judgement, type Outcome } from '../assess';
 import { findCard } from '../game';
-import { dimensions, type Game, type YearRecord } from '../types';
+import { challengeUrl, encodeChallenge, type CompanyChoice } from '../challenge';
+import type { SandboxConfig } from '../sandbox';
+import { dimensions, type Decision, type Game, type YearRecord } from '../types';
 
 type Metric = { id: string; label: string; value: (r: YearRecord) => number; format: (n: number) => string };
 
-export default function Debrief({ game, again, quit }: { game: Game; again: () => void; quit: () => void }) {
-  const [result, setResult] = useState<Result | null>(null), [judgement, setJudgement] = useState<Judgement | null>(null);
+type Challenger = { name?: string; decisions: Decision[] };
+export default function Debrief({ game, share, challenger, again, quit }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig }; challenger?: Challenger; again: () => void; quit: () => void }) {
+  const [result, setResult] = useState<Result | null>(null), [judgement, setJudgement] = useState<Judgement | null>(null), [rival, setRival] = useState<Judgement | null>(null);
   // Scoring runs in a worker; without worker support it falls back to the page, after a first paint.
   useEffect(() => {
-    setResult(null); setJudgement(null);
+    setResult(null); setJudgement(null); setRival(null);
     let worker: Worker | null = null, timer = 0;
+    const onPage = () => { timer = window.setTimeout(() => { setResult(debrief(game)); setJudgement(judge(game)); if (challenger) setRival(judge({ ...game, decisions: challenger.decisions })); }, 30); };
     try {
       worker = new Worker(new URL('../debrief.worker.ts', import.meta.url), { type: 'module' });
-      worker.onmessage = (e: MessageEvent<{ type: 'debrief'; result: Result } | { type: 'judgement'; result: Judgement }>) => { if (e.data.type === 'debrief') setResult(e.data.result); else setJudgement(e.data.result); };
-      worker.onerror = () => { worker?.terminate(); worker = null; timer = window.setTimeout(() => { setResult(debrief(game)); setJudgement(judge(game)); }, 30); };
-      worker.postMessage(game);
-    } catch { timer = window.setTimeout(() => { setResult(debrief(game)); setJudgement(judge(game)); }, 30); }
+      worker.onmessage = (e: MessageEvent<{ type: 'debrief'; result: Result } | { type: 'judgement' | 'challenger'; result: Judgement }>) => { if (e.data.type === 'debrief') setResult(e.data.result); else if (e.data.type === 'judgement') setJudgement(e.data.result); else setRival(e.data.result); };
+      worker.onerror = () => { worker?.terminate(); worker = null; onPage(); };
+      worker.postMessage({ game, challenger: challenger?.decisions });
+    } catch { onPage(); }
     return () => { worker?.terminate(); clearTimeout(timer); };
   }, [game]);
   if (!result) return <p className="empty-state" role="status">The board is reviewing your tenure…</p>;
@@ -82,6 +86,8 @@ export default function Debrief({ game, again, quit }: { game: Game; again: () =
       <Luck you={result.luck.you} nothing={result.luck.statusQuo} actual={you.card.overall} />
     </div>
 
+    {challenger && <Rivalry game={game} challenger={challenger} you={{ judgement, score: you.card.overall }} rival={rival} spaceScores={space.scores} />}
+
     <section aria-labelledby="lessons-title" className="lessons">
       <h3 id="lessons-title" className="panel-title">LESSONS FROM YOUR PLAY</h3>
       <ul>{result.lessons.map(l => <li key={l}>{l}</li>)}</ul>
@@ -89,7 +95,7 @@ export default function Debrief({ game, again, quit }: { game: Game; again: () =
     </section>
     <div className="desk-actions">
       <button className="text-button" onClick={quit}>Choose another situation</button>
-      <span><button onClick={download}><Download size={14} /> Download report</button> <button className="primary-button big" onClick={again}><RotateCcw size={14} /> Replay this case</button></span>
+      <span><ShareChallenge game={game} share={share} /><button onClick={download}><Download size={14} /> Download report</button> <button className="primary-button big" onClick={again}><RotateCcw size={14} /> Replay this case</button></span>
     </div>
   </section>;
 }
@@ -151,5 +157,35 @@ function Luck({ you, nothing, actual }: { you: number[]; nothing: number[]; actu
       <div className="luck-track" aria-label={`${label}: ${p10} to ${p90}, median ${p50}`}><i className={cls as string} style={{ left: at(p10 as number), width: at((p90 as number) - (p10 as number)) }} /><b style={{ left: at(p50 as number) }} />{cls === 'you' && <em style={{ left: at(actual) }} title={`Your actual score: ${actual}`} />}</div>
       <small>{p10 as number}–{p90 as number}</small></div>)}
     <p className="small">{a[0] > b[2] ? 'Your decisions beat doing nothing in almost every possible world: that is skill.' : a[1] > b[1] ? 'Your decisions beat doing nothing in most worlds, but luck could have flipped it.' : 'In most worlds, doing nothing would have scored as well or better.'} {actual > a[2] ? 'This time you were lucky.' : actual < a[0] ? 'This time you were unlucky.' : ''}</p>
+  </section>;
+}
+
+function ShareChallenge({ game, share }: { game: Game; share: { choice: CompanyChoice; sandbox?: SandboxConfig } }) {
+  const [open, setOpen] = useState(false), [name, setName] = useState(''), [status, setStatus] = useState('');
+  const url = challengeUrl(encodeChallenge({ caseId: game.caseDef.id, choice: share.choice, sandbox: share.sandbox, decisions: game.decisions, name, revenue: game.start.baseline.state.revenue }, game.caseDef));
+  const copy = async () => { try { await navigator.clipboard.writeText(url); setStatus('Link copied. Send it to a friend.'); } catch { setStatus('Copy the link below.'); } };
+  if (!open) return <button onClick={() => setOpen(true)}><Swords size={14} /> Challenge a friend</button>;
+  return <div className="share-panel" role="group" aria-label="Challenge a friend">
+    <label>Your name (optional)<input value={name} maxLength={30} onChange={e => { setName(e.target.value); setStatus(''); }} placeholder="Shown to your challenger" /></label>
+    <button className="primary-button" onClick={copy}><Link2 size={14} /> Copy challenge link</button>
+    <input className="share-url" aria-label="Challenge link" readOnly value={url} onFocus={e => e.currentTarget.select()} />
+    <small role="status">{status || 'They play the same company in the same world. Your decisions stay hidden until their debrief.'}</small>
+  </div>;
+}
+
+function Rivalry({ game, challenger, you, rival, spaceScores }: { game: Game; challenger: Challenger; you: { judgement: Judgement | null; score: number }; rival: Judgement | null; spaceScores: number[] }) {
+  const them = challenger.name || 'Your challenger', theirGame = { ...game, decisions: challenger.decisions };
+  const theirScore = gameScore(theirGame).overall, rank = (x: number) => (spaceScores.filter(s => s < x).length + .5 * spaceScores.filter(s => s === x).length) / spaceScores.length;
+  const winner = !you.judgement || !rival ? null : you.judgement.percentile !== rival.percentile ? (you.judgement.percentile > rival.percentile ? 'you' : 'them') : you.score !== theirScore ? (you.score > theirScore ? 'you' : 'them') : 'tie';
+  return <section className="rivalry" aria-labelledby="rivalry-title">
+    <h3 id="rivalry-title" className="panel-title">YOU VS {them.toUpperCase()}</h3>
+    <p className="rivalry-verdict">{winner == null ? 'Replaying their decisions in every world…' : winner === 'tie' ? 'A dead heat: the same judgement and the same outcome.' : winner === 'you' ? `You beat ${them} on judgement.` : `${them} wins on judgement this time.`}</p>
+    <table className="impact-table"><thead><tr><th scope="col" />
+      <th scope="col">You</th><th scope="col">{them}</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Judgement</th><td>{you.judgement ? `${you.judgement.grade} · ${Math.round(you.judgement.percentile * 100)}%` : '…'}</td><td>{rival ? `${rival.grade} · ${Math.round(rival.percentile * 100)}%` : '…'}</td></tr>
+        <tr><th scope="row">Outcome</th><td>{gradeFor(rank(you.score))} · score {you.score}</td><td>{gradeFor(rank(theirScore))} · score {theirScore}</td></tr>
+        {game.decisions.map((_, i) => <tr key={i}><th scope="row">Year {i + 1}</th><td>{describeDecision(game, i)}</td><td>{describeDecision(theirGame, i)}</td></tr>)}
+      </tbody></table>
   </section>;
 }

@@ -16,6 +16,11 @@ Open **CEO mode** from the company workbench, or go to `#/ceo`. What works today
   - A one-line verdict combines the two: *sound decisions, unlucky outcome*, *a lucky result*, and so on.
   - Scoring runs in a Web Worker (`src/ceo/debrief.worker.ts`), so the page stays responsive; the judgement grade fills in about a second after the rest of the debrief.
   - Demand noise was raised from 3% to 5% a year so that luck is large enough to matter; every case still balances.
+- **Shareable challenges.**
+  - *Challenge a friend* in the debrief copies a link (`#/ceo?challenge=…`). It carries the case, the company (fictional industry and seed, or ticker), any Sandbox shocks, the player's decisions and an optional name.
+  - The link never carries scores: the recipient's browser replays the decisions, so a result cannot be faked. `src/ceo/challenge.ts` validates every field and rejects out-of-range or tampered links.
+  - The recipient sees a banner and plays the same world. Their debrief adds *You vs [name]*: both players' judgement and outcome grades and their decisions year by year. The challenger's judgement is computed in the same worker.
+  - If the company data has been refreshed since the link was made, the briefing says the world may differ slightly.
 - **While a year plays,** the machine's gears light up in causal order and the overlay names the decision entering the machine.
 - **Automation is modelled as lower staffing need**, not as layoffs that leave the plant short-handed; the payroll it saves flows through operating costs.
 - **Companies:** a fictional company in any of 8 industry archetypes, or a hypothetical future for **MSFT**, **WMT** or **JPM**.
@@ -218,7 +223,6 @@ A **Sandbox** mode lets the player choose any archetype with no case: free play 
 
 1. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
 2. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
-3. **Shareable challenges.** Encode case, company seed and decisions in the URL so a player can send a friend the exact same world to try to beat.
 
 ## 10. Landscape (researched September 2026)
 

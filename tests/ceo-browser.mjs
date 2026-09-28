@@ -37,6 +37,24 @@ try {
  await page.locator('.chart-wrap svg').hover(); await page.locator('.chart-tip').waitFor();
  await page.screenshot({ path: 'artifacts/ceo-debrief.png', fullPage: true });
  await page.emulateMedia({ colorScheme: 'dark' }); await page.screenshot({ path: 'artifacts/ceo-debrief-dark.png', fullPage: true }); await page.emulateMedia({ colorScheme: 'light' });
+ // Challenge a friend: a fresh browser opens the link, plays the same world, and sees both players compared.
+ await page.getByRole('button', { name: 'Challenge a friend' }).click(); await page.getByLabel('Your name (optional)').fill('Alex');
+ const link = await page.getByLabel('Challenge link').inputValue(); assert.match(link, /#\/ceo\?challenge=[A-Za-z0-9_-]+$/);
+ {
+  const friend = await (await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' })).newPage(); friend.on('pageerror', e => errors.push(e.message));
+  await friend.context().route('http://gcm.test/**', async route => { const url = new URL(route.request().url()); const part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, ''); const file = path.resolve('dist', part || 'index.html'); try { const body = await readFile(file); await route.fulfill({ body, contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' }) } catch { await route.fulfill({ status: 404, body: 'Not found' }) } });
+  await friend.goto(link); await friend.getByRole('heading', { name: 'Alex challenged you' }).waitFor();
+  await friend.screenshot({ path: 'artifacts/ceo-challenge-banner.png' });
+  await friend.getByRole('button', { name: 'Accept the challenge' }).click(); await friend.getByText(/Alex played this exact world/).waitFor();
+  assert.ok(!friend.url().includes('challenge='), 'the link is consumed once accepted');
+  await friend.getByRole('button', { name: /Take the chair/ }).click();
+  for (let year = 1; year <= 5; year++) { await friend.getByRole('button', { name: `Play year ${year}` }).click(); await friend.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click(); }
+  await friend.getByRole('heading', { name: 'YOU VS ALEX' }).waitFor({ timeout: 30000 });
+  await friend.locator('.rivalry-verdict').filter({ hasText: /Alex wins on judgement|You beat Alex|dead heat/ }).waitFor({ timeout: 30000 });
+  await friend.locator('.rivalry').getByText('Hold prices; invest in service and loyalty').waitFor();
+  await friend.screenshot({ path: 'artifacts/ceo-challenge-debrief.png', fullPage: true });
+  await friend.context().close();
+ }
  // Progress survives a reload.
  await page.reload(); await page.getByLabel(/^Judgement grade [A-E]$/).waitFor({ timeout: 30000 });
  // A real company in another case, on a phone.

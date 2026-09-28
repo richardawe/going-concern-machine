@@ -7,6 +7,7 @@ import { cases } from '../src/ceo/cases';
 import { defaultLevers, play, statusQuo } from '../src/ceo/game';
 import { debrief, describeDecision, gameScore, judgement, JUDGEMENT_WORLDS, verdict, MAX_STRATEGIES, referenceDecisions, strategySpace, undoDecision } from '../src/ceo/assess';
 import { resolveCase, SANDBOX_ID, SANDBOX_YEARS, sandboxCase } from '../src/ceo/sandbox';
+import { challengeFromHash, decodeChallenge, encodeChallenge } from '../src/ceo/challenge';
 import type { CompanyDataset } from '../src/ontology/types';
 import type { Game } from '../src/ceo/types';
 
@@ -149,4 +150,28 @@ test('judgement: averages across worlds, is reproducible, and separates luck fro
   assert.equal(verdict(.9, .2).title, 'Sound decisions, unlucky outcome');
   assert.equal(verdict(.2, .9).title, 'A lucky result');
   assert.equal(verdict(.9, .9).title, 'Sound decisions, and they paid off');
+});
+
+test('challenge links round-trip exactly and reject anything tampered with', () => {
+  const game = newGame('price-war'), decisions = referenceDecisions(game);
+  decisions[0].levers.pay = 3; decisions[2].levers.price = -7;
+  const challenge = { caseId: 'price-war', choice: { kind: 'fictional' as const, archetype: 'retail' as const, seed: 1207 }, decisions, name: '  Alex <b>  ', revenue: game.start.baseline.state.revenue };
+  const code = encodeChallenge(challenge, game.caseDef), back = decodeChallenge(code)!;
+  assert.match(code, /^[A-Za-z0-9_-]+$/);
+  assert.deepEqual(back.decisions, decisions); assert.deepEqual(back.choice, challenge.choice); assert.equal(back.name, 'Alex <b>');
+  assert.equal(back.revenue, Math.round(challenge.revenue));
+  assert.equal(challengeFromHash(`#/ceo?challenge=${code}`), code);
+  // The replayed world is the challenger's world: same case, same company, same decisions, same score.
+  assert.equal(gameScore({ ...game, decisions: back.decisions }).overall, gameScore({ ...game, decisions }).overall);
+  const tamper = (f: (w: any) => void) => { const w = JSON.parse(Buffer.from(code, 'base64url').toString()); f(w); return decodeChallenge(Buffer.from(JSON.stringify(w)).toString('base64url')); };
+  assert.equal(tamper(w => { w.d[0][0] = 9; }), null, 'card index out of range');
+  assert.equal(tamper(w => { w.d[0][1] = 90; }), null, 'price lever out of range');
+  assert.equal(tamper(w => { w.d.pop(); }), null, 'missing a year');
+  assert.equal(tamper(w => { w.co = ['r', 'AAPL']; }), null, 'not a CEO-mode company');
+  assert.equal(tamper(w => { w.k = 'no-such-case'; }), null);
+  assert.equal(decodeChallenge('not base64!'), null); assert.equal(decodeChallenge(''), null); assert.equal(decodeChallenge('x'.repeat(5000)), null);
+  const sandbox = { archetype: 'industrial' as const, events: [{ kind: 'recession' as const, year: 2 }] };
+  const sc = sandboxCase(sandbox), sd = statusQuo(game.start, SANDBOX_YEARS).map((d, i) => ({ ...d, card: i === 1 ? 'layoffs' : null }));
+  const s2 = decodeChallenge(encodeChallenge({ caseId: SANDBOX_ID, choice: { kind: 'fictional', archetype: 'industrial', seed: 5 }, sandbox, decisions: sd, revenue: 1 }, sc))!;
+  assert.deepEqual(s2.sandbox, sandbox); assert.equal(s2.decisions[1].card, 'layoffs');
 });

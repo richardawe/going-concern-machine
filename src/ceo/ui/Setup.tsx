@@ -6,7 +6,7 @@ import { realCompanies } from '../company';
 import { SANDBOX_ID, SANDBOX_YEARS, sandboxEvents, type SandboxConfig } from '../sandbox';
 import type { EventKind } from '../types';
 
-export type CompanyChoice = { kind: 'fictional'; archetype: ArchetypeId; seed: number } | { kind: 'real'; ticker: string };
+import type { CompanyChoice } from '../challenge';
 const REAL: Record<string, string> = { MSFT: 'Microsoft', WMT: 'Walmart', JPM: 'JPMorgan Chase' };
 
 export default function Setup({ archetypes, begin }: { archetypes: ArchetypeFile; begin: (caseId: string, choice: CompanyChoice, sandbox?: SandboxConfig) => void }) {

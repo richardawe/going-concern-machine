@@ -3,7 +3,7 @@ import { money, percent } from '../../presentation';
 import { initialPeople } from '../game';
 import type { Game } from '../types';
 
-export default function Briefing({ game, begin, quit }: { game: Game; begin: () => void; quit: () => void }) {
+export default function Briefing({ game, challenger, begin, quit }: { game: Game; challenger?: { name?: string; refreshed: boolean }; begin: () => void; quit: () => void }) {
   const { start, caseDef } = game, s = start.baseline.state, c = start.baseline.currency, people = initialPeople(start);
   return <section className="ceo-briefing" aria-labelledby="briefing-title">
     <div className="memo">
@@ -12,6 +12,7 @@ export default function Briefing({ game, begin, quit }: { game: Game; begin: () 
       <p className="memo-lead">{caseDef.briefing}</p>
       <p>You will make one decision a year for {caseDef.turns.length} years. Each turn you may play one decision card and adjust your standing levers: price, staffing, pay, budgets, reinvestment and payout. Then the machine plays the year forward.</p>
       <p className="muted">How you will be judged stays sealed until the debrief.</p>
+      {challenger && <p className="challenge-note"><strong>Challenge:</strong> {challenger.name ?? 'Your challenger'} played this exact world. You will see their decisions and grades beside yours in the debrief.{challenger.refreshed ? ' The company data has been refreshed since the link was made, so the world may differ slightly.' : ''}</p>}
       <div className="memo-actions"><button className="primary-button big" onClick={begin}>Take the chair <ArrowRight size={15} /></button><button className="text-button" onClick={quit}>Choose a different situation</button></div>
     </div>
     <aside className="company-card" aria-label="Your company">

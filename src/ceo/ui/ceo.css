@@ -167,7 +167,22 @@ fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}
 .luck-track em{position:absolute;top:-6px;width:0;height:0;border:5px solid transparent;border-top-color:var(--ink);transform:translateX(-5px)}
 .luck-row small{font:10px 'IBM Plex Mono',monospace;color:var(--n4)}
 .lessons{padding:4px 0 10px}
+.challenge-banner{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin:18px 0 4px;padding:16px 18px;border:2px solid var(--accent1);border-radius:4px;background:var(--n11)}
+.challenge-banner svg{color:var(--accent1)}
+.challenge-banner h2{font:600 19px 'Archivo',Arial,sans-serif;margin:0 0 4px}
+.challenge-banner p{margin:0;font-size:13px;line-height:1.55;color:var(--n3)}
+.challenge-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.challenge-note{border-left:3px solid var(--accent1);padding:6px 12px;background:var(--n10);font-size:13px!important}
+.share-panel{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;padding:12px;border:1px solid var(--n6);border-radius:3px;background:var(--n10);max-width:560px}
+.share-panel label{display:flex;flex-direction:column;gap:4px;font-size:10px;color:var(--n4)}
+.share-panel input{padding:7px 8px;border:1px solid var(--n6);border-radius:3px;background:var(--n11);color:var(--ink);min-width:0}
+.share-panel .share-url{grid-column:1/-1;font:10px 'IBM Plex Mono',monospace}
+.share-panel small{grid-column:1/-1;font-size:11px;color:var(--n4)}
+.rivalry{padding:18px 0;border-top:1px solid var(--line)}
+.rivalry-verdict{font:600 18px 'Archivo',Arial,sans-serif;margin:4px 0 10px}
+.rivalry .impact-table td,.rivalry .impact-table thead th{text-align:left}
+.debrief-grid section>p:not(.muted){font-size:13px;line-height:1.55}
 
 @media(max-width:1100px){.ceo-workspace{grid-template-columns:1fr}.ceo-panel{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.ceo-panel>.panel-title{grid-column:1/-1}.desk-grid,.year-result,.debrief-grid{grid-template-columns:1fr}}
-@media(max-width:760px){.company-choice,.ceo-briefing{grid-template-columns:1fr}.ceo-status{grid-template-columns:1fr}.ceo-panel{grid-template-columns:1fr}.lever-grid{grid-template-columns:1fr}.verdict{flex-direction:column;align-items:flex-start}.grades{gap:10px}.grade-tile{width:auto;flex:1}.grade{width:78px;height:78px;font-size:42px}.memo{padding:18px}.memo h2{font-size:27px}.select-label select{min-width:0;width:100%}.choice-row>*{flex:1}.desk-actions{flex-direction:column-reverse;align-items:stretch}.luck-row{grid-template-columns:90px 1fr 44px}}
+@media(max-width:760px){.company-choice,.ceo-briefing{grid-template-columns:1fr}.ceo-status{grid-template-columns:1fr}.ceo-panel{grid-template-columns:1fr}.lever-grid{grid-template-columns:1fr}.verdict{flex-direction:column;align-items:flex-start}.grades{gap:10px}.grade-tile{width:auto;flex:1}.grade{width:78px;height:78px;font-size:42px}.memo{padding:18px}.memo h2{font-size:27px}.select-label select{min-width:0;width:100%}.choice-row>*{flex:1}.desk-actions{flex-direction:column-reverse;align-items:stretch}.challenge-banner{grid-template-columns:1fr}.challenge-actions{align-items:stretch}.share-panel{grid-template-columns:1fr}.luck-row{grid-template-columns:90px 1fr 44px}}
 @media(prefers-reduced-motion:reduce){.grade.pending{animation:none}.running-overlay i::after{animation:none;transform:none}.meter i,.bar i{transition:none}}
