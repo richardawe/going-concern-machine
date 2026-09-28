@@ -3,12 +3,14 @@
 //   npm run data:publish -- AAPL --fixtures        (offline, from tests/fixtures/sec)
 //   npm run data:publish -- --universe data/universe/sp500.json   (every company in a list)
 // Verified companies are never overwritten. A company that fails a quality gate is skipped with its reasons,
-// and whatever was published for it before stays in place.
+// and whatever was published for it before stays in place. A machine that cannot run a scenario is still published
+// (its reported figures are sound) but marked inspect-only in the index, with the reason.
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { DataQualityError, secToDataset, trimFacts, type SecCompanyFacts, type SecSubmission } from '../src/data/sec';
 import { companyRegistry } from '../src/translation/classify';
 import { constructMachine, validateDataset } from '../src/translation/construct';
+import { whyInspectOnly } from '../src/simulation/company';
 import type { CompanyDataset } from '../src/ontology/types';
 
 const args = process.argv.slice(2), offline = args.includes('--fixtures'), save = args.includes('--save-fixtures');
@@ -58,11 +60,12 @@ for (const ticker of tickers) {
   const dataset: CompanyDataset = secToDataset(ticker, facts, sub, retrieved);
   validateDataset(dataset);
   dataset.periods.forEach((_, i) => constructMachine(dataset, i));
+  const inspectOnly = whyInspectOnly(constructMachine(dataset));
   if (save) await writeFile(`tests/fixtures/sec/${ticker}.json`, JSON.stringify({ retrieved, submission: sub, facts: trimFacts(facts, dataset.classification!.sector) }) + '\n');
   await writeFile(`public/machines/${ticker}.json`, JSON.stringify(dataset, null, 2) + '\n');
-  const entry = { ticker, name: dataset.name, periods: dataset.periods.map(p => p.period), retrieved, verified: false, sector: dataset.classification!.sector };
+  const entry = { ticker, name: dataset.name, periods: dataset.periods.map(p => p.period), retrieved, verified: false, sector: dataset.classification!.sector, ...(inspectOnly ? { inspectOnly } : {}) };
   index.companies = [...index.companies.filter(c => c.ticker !== ticker), entry];
-  report.push({ ticker, status: 'published' });
+  report.push(inspectOnly ? { ticker, status: 'published: inspect only', reasons: [inspectOnly] } : { ticker, status: 'published' });
  } catch (e) {
   report.push({ ticker, status: existsSync(`public/machines/${ticker}.json`) ? 'failed: previous dataset kept' : 'failed: not published', reasons: e instanceof DataQualityError ? e.reasons : [e instanceof Error ? e.message : String(e)] });
  }
@@ -73,8 +76,8 @@ await mkdir('artifacts/refresh', { recursive: true });
 await writeFile('artifacts/refresh/publish-report.json', JSON.stringify(report, null, 2) + '\n');
 for (const r of report) console.log(`${r.ticker}: ${r.status}${r.reasons ? ' — ' + r.reasons.join('; ') : ''}`);
 const count = (p: string) => report.filter(r => r.status.startsWith(p)).length;
-const summary = [`### Company machines · ${today}`, '', `Published ${count('published')} · skipped ${count('skipped')} (verified) · not published ${count('failed')} of ${report.length}.`, '',
- ...(count('failed') ? ['| Ticker | Status | Why |', '| --- | --- | --- |', ...report.filter(r => r.status.startsWith('failed')).map(r => `| ${r.ticker} | ${r.status} | ${(r.reasons ?? []).join('; ').replace(/\|/g, '/')} |`)] : [])].join('\n');
+const summary = [`### Company machines · ${today}`, '', `Published ${count('published')} (${count('published: inspect only')} inspect only) · skipped ${count('skipped')} (verified) · not published ${count('failed')} of ${report.length}.`, '',
+ ...(report.some(r => r.reasons) ? ['| Ticker | Status | Why |', '| --- | --- | --- |', ...report.filter(r => r.reasons).map(r => `| ${r.ticker} | ${r.status} | ${(r.reasons ?? []).join('; ').replace(/\|/g, '/')} |`)] : [])].join('\n');
 await writeFile('artifacts/refresh/publish-report.md', summary + '\n');
 if (process.env.GITHUB_STEP_SUMMARY) await writeFile(process.env.GITHUB_STEP_SUMMARY, summary + '\n', { flag: 'a' });
 if (report.every(r => r.status.startsWith('failed'))) process.exitCode = 1;

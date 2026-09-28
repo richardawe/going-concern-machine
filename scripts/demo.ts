@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { constructMachine, getNode } from '../src/translation/construct';
 import { sectors } from '../src/sectors';
-import { equations } from '../src/simulation/equations';
+import { equationsFor } from '../src/simulation/equations';
 import { HORIZON, suggestedBasis } from '../src/simulation/company';
 import { demoScenarios } from '../src/simulation/demos';
 import { describeChange, describeLever, explainExperiment, isLeverRef, rootPath } from '../src/simulation/explain';
@@ -21,7 +21,7 @@ export function transcript(ticker: string): string {
  out.push('', `## 2. Economic machine — ${module.label}`, '', `**Why this machine?** ${m.classification.rationale}`, '', `Ring (universal core + sector stages): ${m.stages.map(s => getNode(m, s)?.label).join(' → ')}.`, '', `Sector module: ${m.moduleNodes.map(s => `${getNode(m, s)?.label} (${showValue(getNode(m, s))})`).join(', ')}.`, '');
  out.push(`${m.nodes.filter(n => n.value != null).length} of ${m.nodes.length} components have values. UNKNOWN components are shown as gaps, never filled: ${m.nodes.filter(n => n.value == null).map(n => n.label).join(', ')}.`, '');
  out.push('## 3. Causal model — the forecast equations', '', 'The simulator evaluates these rows in order each year; the machine’s computed links are generated from their inputs.', '', '| # | Component | Equation | Type |', '| --- | --- | --- | --- |');
- equations[m.classification.sector].forEach((e, i) => out.push(`| ${i + 1} | ${getNode(m, e.target)?.label || e.target} | ${cell(e.formula)} | ${e.kind} |`));
+ equationsFor(m).forEach((e, i) => out.push(`| ${i + 1} | ${getNode(m, e.target)?.label || e.target} | ${cell(e.formula)} | ${e.kind} |`));
  out.push('', `Conceptual links (drawn, never simulated): ${m.edges.filter(e => e.kind === 'concept').map(e => `${getNode(m, e.from)?.label} → ${getNode(m, e.to)?.label}`).join('; ')}.`, '');
  out.push('## 4. One lever', '', `**${demo.question}**`, '', demo.why, '', `Lever: **${x.levers.map(describeLever).join('; ')}**. All other assumptions are identical in BASE and LEVER:`, '', '| Assumption | Value | Basis |', '| --- | --- | --- |');
  for (const c of module.controls) out.push(`| ${c.label} | ${base.values[c.id]} ${c.unit}${c.id === demo.lever ? ` → **${lever.values[c.id]} ${c.unit}**` : ''} | ${basis[c.id] || 'Neutral placeholder; not a company disclosure'} |`);
