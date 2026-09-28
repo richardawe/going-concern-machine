@@ -83,5 +83,8 @@ export const totalCostEquations: Equation[] = industrial(false).flatMap(e => e.t
  eq('operatingProfit', 'Revenue − total operating costs', ['revenue', 'totalCosts'], x => x.revenue - x.totalCosts),
 ] : byCost.includes(e.target) ? [] : [e]);
 /** The equations a machine actually runs: its sector's, or the total-cost variant when no cost of sales is reported. */
-export const equationsFor = (m: { costBasis?: 'total'; classification: { sector: SectorId } }) => m.costBasis === 'total' ? totalCostEquations : equations[m.classification.sector];
+type Basis = { costBasis?: 'total'; inventoryBasis?: 'reported'; classification: { sector: SectorId } };
+// Without inventory data a retailer runs the industrial equations with no inventory reservoir.
+const noInventory = industrial(false);
+export const equationsFor = (m: Basis) => m.costBasis === 'total' ? totalCostEquations : m.inventoryBasis === 'reported' ? noInventory : equations[m.classification.sector];
 export const equationFor = (m: Parameters<typeof equationsFor>[0], target: string) => equationsFor(m).find(e => e.target === target);

@@ -19,11 +19,11 @@ const industrial: Record<string, Rule> = {
  dividends: r(['PaymentsOfDividends', 'PaymentsOfDividendsCommonStock']),
  tax: r(['IncomeTaxExpenseBenefit']),
  netIncome: r(['NetIncomeLoss']),
- inventoryInvestment: r(['IncreaseDecreaseInInventories']),
+ inventoryInvestment: r(['IncreaseDecreaseInInventories', 'IncreaseDecreaseInRetailRelatedInventories', 'IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories']),
  cash: r(['CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents'], true),
  equity: r(['StockholdersEquity'], true),
  ppe: r(['PropertyPlantAndEquipmentNet'], true),
- inventory: r(['InventoryNet', 'FIFOInventoryAmount'], true),
+ inventory: r(['InventoryNet', 'RetailRelatedInventoryMerchandise', 'InventoryFinishedGoodsNetOfReserves', 'InventoryFinishedGoods', 'FIFOInventoryAmount'], true),
 };
 const bank: Record<string, Rule> = {
  nii: r(['InterestIncomeExpenseNet']),
@@ -35,12 +35,17 @@ const bank: Record<string, Rule> = {
  tax: r(['IncomeTaxExpenseBenefit']),
  netIncome: r(['NetIncomeLoss']),
  deposits: r(['Deposits'], true),
- loans: r(['LoansAndLeasesReceivableNetReportedAmount', 'LoansAndLeasesReceivableGrossCarryingAmount'], true),
+ // Since CECL (2020) most banks tag loans as financing receivables; net of the credit-loss allowance comes first.
+ loans: r(['LoansAndLeasesReceivableNetReportedAmount', 'FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss', 'LoansAndLeasesReceivableGrossCarryingAmount', 'FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss', 'FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossFeeAndLoanInProcess'], true),
  equity: r(['StockholdersEquity'], true),
 };
 export const secRules = (sector: SectorId) => sector === 'banking' ? bank : industrial;
 // A fallback tag measures something slightly different from the standard one; the difference is stated on the figure.
 const fallbackNotes: Record<string, string> = {
+ FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss: 'Loans before the allowance for credit losses: the company does not tag net loans, so this is slightly higher than the net loan book.',
+ FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossFeeAndLoanInProcess: 'Loans before the allowance for credit losses and deferred fees: the company does not tag net loans, so this is slightly higher than the net loan book.',
+ InventoryFinishedGoodsNetOfReserves: 'Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale.',
+ InventoryFinishedGoods: 'Reported as finished-goods inventory: the merchandise the company holds for sale.',
  FIFOInventoryAmount: 'Inventory at FIFO cost, before the LIFO reserve the company deducts on its balance sheet, so it is higher than the carrying amount.',
  CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization: 'Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit.',
  CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents: 'Includes restricted cash: the company does not report cash and cash equivalents separately, so this overstates freely available cash.',

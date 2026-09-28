@@ -20,7 +20,7 @@ export function suggestedScenario(machine:MachineDefinition):CompanyScenario{
  if(basis.capexRatio)values.capexRatio=round(Math.max(0,Math.min(40,n('capex')!/n('revenue')!*100)));
  if(basis.inventoryDays)values.inventoryDays=Math.round(n('inventory')!/n('cogs')!*365);
  if(basis.distribution)values.distribution=round(Math.max(0,Math.min(100,n('dividends')!/n('freeCashFlow')!*100)));
- if(basis.creditCost)values.creditCost=round(Math.min(8,n('provision')!/n('loans')!*100),2);
+ if(basis.creditCost)values.creditCost=round(Math.max(-2,Math.min(8,n('provision')!/n('loans')!*100)),2);
  if(basis.taxRate)values.taxRate=round(Math.max(0,Math.min(50,n('tax')!/n('pretaxIncome')!*100)));
  return {adopted:false,values,shocks:[]};
 }
