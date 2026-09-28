@@ -88,3 +88,9 @@ test('fallback tags recover missing cash, cash flow and CapEx, and say how they 
  const std=secToDataset('TC',synth({...core,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27').periods[0].facts;
  assert.equal(std.cash.calculation,undefined,'standard tags carry no caveat');
 });
+test('cost of sales excluding D&A is used when it is the only cost line, and the derived gross profit says so',()=>{
+ const {CostOfGoodsAndServicesSold:_c,...rest}=core;
+ const d=secToDataset('TC',synth({...rest,CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization:40e9,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27');
+ assert.equal(d.periods[0].facts.cogs.value,40e9);assert.match(d.periods[0].facts.cogs.calculation!,/excluding depreciation and amortization/);
+ const gp=getNode(constructMachine(d),'grossProfit')!;assert.equal(gp.value,60e9);assert.equal(gp.status,'CALCULATED');assert.match(gp.calculation!,/higher than a conventional gross profit/);
+});

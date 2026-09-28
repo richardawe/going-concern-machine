@@ -10,7 +10,7 @@ type Rule = { tags: string[]; instant?: boolean; largest?: boolean };
 const r = (tags: string[], instant = false, largest = false): Rule => ({ tags, instant, largest });
 const industrial: Record<string, Rule> = {
  revenue: r(['RevenueFromContractWithCustomerExcludingAssessedTax', 'Revenues', 'SalesRevenueNet', 'RevenueFromContractWithCustomerIncludingAssessedTax']),
- cogs: r(['CostOfGoodsAndServicesSold', 'CostOfRevenue', 'CostOfGoodsSold']),
+ cogs: r(['CostOfGoodsAndServicesSold', 'CostOfRevenue', 'CostOfGoodsSold', 'CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization']),
  grossProfit: r(['GrossProfit']),
  operatingProfit: r(['OperatingIncomeLoss']),
  operatingCashFlow: r(['NetCashProvidedByUsedInOperatingActivities', 'NetCashProvidedByUsedInOperatingActivitiesContinuingOperations']),
@@ -23,7 +23,7 @@ const industrial: Record<string, Rule> = {
  cash: r(['CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents'], true),
  equity: r(['StockholdersEquity'], true),
  ppe: r(['PropertyPlantAndEquipmentNet'], true),
- inventory: r(['InventoryNet'], true),
+ inventory: r(['InventoryNet', 'FIFOInventoryAmount'], true),
 };
 const bank: Record<string, Rule> = {
  nii: r(['InterestIncomeExpenseNet']),
@@ -41,6 +41,8 @@ const bank: Record<string, Rule> = {
 export const secRules = (sector: SectorId) => sector === 'banking' ? bank : industrial;
 // A fallback tag measures something slightly different from the standard one; the difference is stated on the figure.
 const fallbackNotes: Record<string, string> = {
+ FIFOInventoryAmount: 'Inventory at FIFO cost, before the LIFO reserve the company deducts on its balance sheet, so it is higher than the carrying amount.',
+ CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization: 'Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit.',
  CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents: 'Includes restricted cash: the company does not report cash and cash equivalents separately, so this overstates freely available cash.',
  NetCashProvidedByUsedInOperatingActivitiesContinuingOperations: 'Continuing operations only: cash flow from discontinued operations is excluded.',
  PaymentsToAcquireProductiveAssets: 'Reported as payments for productive assets, which can include intangible assets as well as property and equipment.',

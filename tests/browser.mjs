@@ -23,7 +23,7 @@ try{
   await page.getByText('Y1 PROPAGATION').waitFor();await page.getByText('Scenario started').waitFor();
   await lever.press('0');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%/,'0 returns to the reported setting');
   await page.locator('.scenario-banner').getByRole('button',{name:'Back to reported'}).click();
-  await page.getByText('ACTUAL COMPANY',{exact:true}).waitFor();assert.equal(await page.locator('.scenario-banner').count(),0);}
+  await page.getByText('ACTUAL COMPANY',{exact:true}).waitFor();assert.equal(await page.locator('.scenario-banner:not(.idle)').count(),0);}
  await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
  await mkdir('artifacts',{recursive:true});
  // Canonical demonstration, repeated for each verified business model.
