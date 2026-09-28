@@ -1,16 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, RotateCcw } from 'lucide-react';
 import { money, percent } from '../../presentation';
-import { debrief, dimensionFormulas, dimensionLabels, percentile, type Debrief as Result, type Outcome } from '../assess';
+import { debrief, dimensionFormulas, dimensionLabels, judgement as judge, JUDGEMENT_WORLDS, percentile, verdict, type Debrief as Result, type Judgement, type Outcome } from '../assess';
 import { findCard } from '../game';
 import { dimensions, type Game, type YearRecord } from '../types';
 
 type Metric = { id: string; label: string; value: (r: YearRecord) => number; format: (n: number) => string };
 
 export default function Debrief({ game, again, quit }: { game: Game; again: () => void; quit: () => void }) {
-  const [result, setResult] = useState<Result | null>(null);
-  // Scoring replays the game over a thousand times; let the page paint first.
-  useEffect(() => { const t = setTimeout(() => setResult(debrief(game)), 30); return () => clearTimeout(t); }, [game]);
+  const [result, setResult] = useState<Result | null>(null), [judgement, setJudgement] = useState<Judgement | null>(null);
+  // Scoring runs in a worker; without worker support it falls back to the page, after a first paint.
+  useEffect(() => {
+    setResult(null); setJudgement(null);
+    let worker: Worker | null = null, timer = 0;
+    try {
+      worker = new Worker(new URL('../debrief.worker.ts', import.meta.url), { type: 'module' });
+      worker.onmessage = (e: MessageEvent<{ type: 'debrief'; result: Result } | { type: 'judgement'; result: Judgement }>) => { if (e.data.type === 'debrief') setResult(e.data.result); else setJudgement(e.data.result); };
+      worker.onerror = () => { worker?.terminate(); worker = null; timer = window.setTimeout(() => { setResult(debrief(game)); setJudgement(judge(game)); }, 30); };
+      worker.postMessage(game);
+    } catch { timer = window.setTimeout(() => { setResult(debrief(game)); setJudgement(judge(game)); }, 30); }
+    return () => { worker?.terminate(); clearTimeout(timer); };
+  }, [game]);
   if (!result) return <p className="empty-state" role="status">The board is reviewing your tenure…</p>;
   const { you, statusQuo, reference, space } = result, c = game.start.baseline.currency;
   const metrics: Metric[] = [
@@ -22,17 +32,32 @@ export default function Debrief({ game, again, quit }: { game: Game; again: () =
   ];
   const vsNothing = you.card.overall - statusQuo.card.overall;
   const download = () => {
-    const report = { case: game.caseDef.title, company: game.start.name, companyId: game.start.id, seed: game.seed, decisions: game.decisions.map((d, i) => ({ year: i + 1, card: findCard(game, i + 1, d.card)?.title ?? 'Hold course', levers: d.levers })), scores: { you: you.card, doingNothing: statusQuo.card, reference: reference.card }, strategyRank: { percentile: space.percentile, grade: space.grade, strategies: space.scores.length }, attribution: result.attribution, lessons: result.lessons };
+    const report = { case: game.caseDef.title, company: game.start.name, companyId: game.start.id, seed: game.seed, decisions: game.decisions.map((d, i) => ({ year: i + 1, card: findCard(game, i + 1, d.card)?.title ?? 'Hold course', levers: d.levers })), scores: { you: you.card, doingNothing: statusQuo.card, reference: reference.card }, strategyRank: { percentile: space.percentile, grade: space.grade, strategies: space.scores.length }, judgement, attribution: result.attribution, lessons: result.lessons };
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' })); a.download = `ceo-debrief-${game.caseDef.id}.json`; a.click(); URL.revokeObjectURL(a.href);
   };
 
   return <section className="ceo-debrief" aria-labelledby="debrief-title">
     <div className="verdict">
-      <div className="grade" aria-label={`Grade ${space.grade}`}>{space.grade}</div>
+      <div className="grades">
+        <div className="grade-tile" aria-label={judgement ? `Judgement grade ${judgement.grade}` : 'Judgement grade pending'}>
+          <span className="eyebrow">JUDGEMENT</span>
+          <div className={`grade ${judgement ? '' : 'pending'}`}>{judgement?.grade ?? '…'}</div>
+          <small>How good the choices were, across {JUDGEMENT_WORLDS} possible worlds</small>
+        </div>
+        <div className="grade-tile" aria-label={`Outcome grade ${space.grade}`}>
+          <span className="eyebrow">OUTCOME</span>
+          <div className="grade outcome">{space.grade}</div>
+          <small>How it turned out in the world you played</small>
+        </div>
+      </div>
       <div>
         <span className="eyebrow">DEBRIEF · {game.caseDef.title.toUpperCase()} · {game.start.name.toUpperCase()}</span>
-        <h2 id="debrief-title">Your strategy beat {Math.round(space.percentile * 100)}% of {space.sampled ? `${space.scores.length.toLocaleString('en-GB')} sampled` : `the ${space.scores.length.toLocaleString('en-GB')} possible`} card strategies.</h2>
-        <p>Score {you.card.overall} · doing nothing {statusQuo.card.overall} ({vsNothing >= 0 ? '+' : '−'}{Math.abs(vsNothing)}) · reference path {reference.card.overall} · best card strategy found {space.best.overall}. All played in the same world: same events, same luck.</p>
+        {judgement ? <><h2 id="debrief-title">{verdict(judgement.percentile, space.percentile).title}</h2><p className="verdict-detail">{verdict(judgement.percentile, space.percentile).detail}</p></>
+          : <h2 id="debrief-title">Weighing your decisions across {JUDGEMENT_WORLDS} possible worlds…</h2>}
+        <ul className="verdict-facts">
+          <li><b>Judgement</b> {judgement ? <>Averaged over {judgement.worlds} worlds, your decisions beat {Math.round(judgement.percentile * 100)}% of {judgement.sampled ? `${judgement.strategies} sampled` : `all ${judgement.strategies}`} card strategies. Average score {judgement.expected.toFixed(1)} · doing nothing {judgement.statusQuo.toFixed(1)} · reference path {judgement.reference.toFixed(1)} · best strategy {judgement.best.expected.toFixed(1)}.</> : 'Replaying every strategy in every world…'}</li>
+          <li><b>Outcome</b> In the world you played, your strategy beat {Math.round(space.percentile * 100)}% of {space.sampled ? `${space.scores.length.toLocaleString('en-GB')} sampled` : `the ${space.scores.length.toLocaleString('en-GB')} possible`} card strategies. Score {you.card.overall} · doing nothing {statusQuo.card.overall} ({vsNothing >= 0 ? '+' : '−'}{Math.abs(vsNothing)}) · reference path {reference.card.overall} · best {space.best.overall}.</li>
+        </ul>
       </div>
     </div>
 

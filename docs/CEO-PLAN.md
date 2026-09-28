@@ -10,6 +10,12 @@ Open **CEO mode** from the company workbench, or go to `#/ceo`. What works today
 
 - **Six cases**, each five annual turns: *The Price War*, *Talent Exodus*, *Cash Crunch*, *Growth at Any Cost?*, *The Automation Bet* and *Dividend Pressure*.
 - **Sandbox:** choose which of eight shocks hit and in which year, then play with a general toolkit of ten decisions. Strategy rankings with more than 1,500 possible paths use a fixed sample of 1,000.
+- **Two grades: Judgement and Outcome.**
+  - *Outcome* ranks your score among every card strategy in the world you played.
+  - *Judgement* replays your decisions and 240 card strategies in 12 worlds (the one you played plus 11 with different demand swings and risk draws), and ranks your average among theirs.
+  - A one-line verdict combines the two: *sound decisions, unlucky outcome*, *a lucky result*, and so on.
+  - Scoring runs in a Web Worker (`src/ceo/debrief.worker.ts`), so the page stays responsive; the judgement grade fills in about a second after the rest of the debrief.
+  - Demand noise was raised from 3% to 5% a year so that luck is large enough to matter; every case still balances.
 - **While a year plays,** the machine's gears light up in causal order and the overlay names the decision entering the machine.
 - **Automation is modelled as lower staffing need**, not as layoffs that leave the plant short-handed; the payroll it saves flows through operating costs.
 - **Companies:** a fictional company in any of 8 industry archetypes, or a hypothetical future for **MSFT**, **WMT** or **JPM**.
@@ -210,10 +216,9 @@ A **Sandbox** mode lets the player choose any archetype with no case: free play 
 
 ## 9. Next steps
 
-1. **Judgement score.** Grade the decisions by their median rank across the luck worlds, not only by the one world played. This matches how incumbents claim to "measure judgment, not outcomes".
-2. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
-3. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
-4. **Shareable challenges.** Encode case, company seed and decisions in the URL so a player can send a friend the exact same world to try to beat.
+1. **Node-level "why did this change".** Port the game onto the equation registry so `simulation/explain.ts` can trace any number back to a decision.
+2. **Case authoring.** Move the case definitions from TypeScript to validated JSON so non-developers can write scenarios.
+3. **Shareable challenges.** Encode case, company seed and decisions in the URL so a player can send a friend the exact same world to try to beat.
 
 ## 10. Landscape (researched September 2026)
 

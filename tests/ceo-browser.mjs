@@ -29,7 +29,8 @@ try {
   if (year === 1) { await page.getByText('Discounter opens 40 stores').first().waitFor(); await page.locator('.impact-table').waitFor(); await page.screenshot({ path: 'artifacts/ceo-result.png', fullPage: true }); }
   await page.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click();
  }
- await page.getByRole('heading', { name: /possible card strategies/ }).waitFor({ timeout: 20000 });
+ await page.getByLabel(/^Judgement grade [A-E]$/).waitFor({ timeout: 30000 }); await page.getByLabel(/^Outcome grade [A-E]$/).waitFor();
+ await page.locator('.verdict-facts').getByText(/averaged over 12 worlds/i).waitFor();
  await page.getByText('WHAT THIS CASE WAS TESTING').waitFor();
  assert.ok(await page.locator('.attribution tbody tr').count() >= 2, 'both played cards are attributed');
  await page.getByRole('tab', { name: 'Cash', exact: true }).click();
@@ -37,7 +38,7 @@ try {
  await page.screenshot({ path: 'artifacts/ceo-debrief.png', fullPage: true });
  await page.emulateMedia({ colorScheme: 'dark' }); await page.screenshot({ path: 'artifacts/ceo-debrief-dark.png', fullPage: true }); await page.emulateMedia({ colorScheme: 'light' });
  // Progress survives a reload.
- await page.reload(); await page.getByRole('heading', { name: /possible card strategies/ }).waitFor({ timeout: 20000 });
+ await page.reload(); await page.getByLabel(/^Judgement grade [A-E]$/).waitFor({ timeout: 30000 });
  // A real company in another case, on a phone.
  await page.getByRole('button', { name: 'Choose another situation' }).click();
  await page.setViewportSize({ width: 390, height: 844 });
@@ -55,6 +56,7 @@ try {
  await page.getByRole('button', { name: /Read the briefing/ }).click(); await page.getByText(/bank cuts the credit line in year 3/i).waitFor();
  await page.getByRole('button', { name: /Take the chair/ }).click();
  for (let year = 1; year <= 5; year++) { await page.getByRole('button', { name: `Play year ${year}` }).click(); if (year === 3) await page.getByText('Your bank demands 20% of your debt back').first().waitFor(); await page.getByRole('button', { name: year < 5 ? `Decide year ${year + 1}` : 'Open the debrief' }).click(); }
- await page.getByRole('heading', { name: /1,000 sampled card strategies/ }).waitFor({ timeout: 30000 });
+ await page.locator('.verdict-facts').getByText(/1,000 sampled card strategies/).waitFor({ timeout: 30000 }); await page.getByLabel(/^Judgement grade [A-E]$/).waitFor({ timeout: 30000 });
+ await page.screenshot({ path: 'artifacts/ceo-sandbox-debrief.png' });
  assert.deepEqual(errors, []); console.log('CEO browser flow passed. Screenshots in artifacts/.');
 } finally { await browser.close() }

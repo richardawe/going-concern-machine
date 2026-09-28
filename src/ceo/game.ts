@@ -8,7 +8,7 @@ import type { Card, Decision, Effects, Game, Headline, Levers, People, StartComp
 
 // CEO mode layers people, pricing, financing, decisions and events over the deterministic engine in model/engine.ts.
 // A game is its decisions: `play` replays them from Year 0, so a counterfactual is just a replay with a decision changed.
-const NEUTRAL_MORALE = .7, RAMP = .4, DEMAND_NOISE = .03;
+const NEUTRAL_MORALE = .7, RAMP = .4, DEMAND_NOISE = .05;
 
 export function defaultLevers(start: StartCompany): Levers {
   const a = start.baseline.assumptions.allocations;

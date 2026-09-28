@@ -97,7 +97,7 @@ export function debrief(game: Game, luckRuns = 40): Debrief {
     return [{ year: i + 1, title: describeDecision(game, i), delta: { overall: you.card.overall - card.overall, revenue: last.state.revenue - alt.state.revenue, cash: last.state.cash - alt.state.cash, cumulativeFcf: cumulativeFcf(you.records) - cumulativeFcf(records), morale: last.people.morale - alt.people.morale } }];
   });
   // Luck: the same decisions in other possible worlds (different demand noise and risk draws; scheduled events stay).
-  const runs = (decisions: Decision[]) => Array.from({ length: luckRuns }, (_, k) => gameScore({ ...game, decisions, seed: game.seed * 7919 + k + 1 }).overall).sort((a, b) => a - b);
+  const runs = (decisions: Decision[]) => Array.from({ length: luckRuns }, (_, k) => gameScore({ ...game, decisions, seed: worldSeed(game, k) }).overall).sort((a, b) => a - b);
   const taken = new Set(game.decisions.map(d => d.card).filter(Boolean));
   const lessons = game.caseDef.lessons.filter(l => l.when === 'always' || (l.when.startsWith('took:') && taken.has(l.when.slice(5))) || (l.when.startsWith('skipped:') && !taken.has(l.when.slice(8))) || (l.when === 'emergency' && you.records.some(r => r.emergency > 0))).map(l => l.note);
   const { paths, total, sampled } = strategySpace(game), scores = paths.map(p => p.overall), best = paths.at(-1)!;
@@ -105,3 +105,47 @@ export function debrief(game: Game, luckRuns = 40): Debrief {
   return { you, statusQuo: quo, reference, attribution, luck: { you: runs(game.decisions), statusQuo: runs(statusQuo(game.start, n)) }, lessons, space: { scores, best, percentile, grade: gradeFor(percentile), total, sampled } };
 }
 export const percentile = (sorted: number[], q: number) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * q)))];
+
+/** The k-th alternative world: same case, same company, different demand swings and risk draws. */
+export const worldSeed = (game: Game, k: number) => game.seed * 7919 + k + 1;
+
+export const JUDGEMENT_WORLDS = 12, JUDGEMENT_STRATEGIES = 240;
+export interface Judgement {
+  /** Share of alternative strategies whose average score across the worlds is below yours (ties count half). */
+  percentile: number; grade: string;
+  /** Your average score across the worlds, and the same for the benchmarks. */
+  expected: number; statusQuo: number; reference: number;
+  best: { cards: (string | null)[]; expected: number };
+  worlds: number; strategies: number; sampled: boolean;
+}
+/**
+ * Judgement separates the decisions from the luck. The played world plus JUDGEMENT_WORLDS − 1 alternative worlds are
+ * replayed for your decisions and for each alternative card strategy (default levers); each strategy is scored by its
+ * average across those worlds, and your average is ranked among them. The outcome grade asks "how did it turn out?";
+ * this asks "how good were the choices, given what could have happened?"
+ */
+export function judgement(game: Game): Judgement {
+  const n = game.decisions.length, base = statusQuo(game.start, n);
+  const seeds = [game.seed, ...Array.from({ length: JUDGEMENT_WORLDS - 1 }, (_, k) => worldSeed(game, k))];
+  const expected = (decisions: Decision[]) => seeds.reduce((x, seed) => x + gameScore({ ...game, decisions, seed }).overall, 0) / seeds.length;
+  const options = Array.from({ length: n }, (_, i) => [null, ...(game.caseDef.turns.find(t => t.year === i + 1)?.cards.map(c => c.id) ?? [])]);
+  const total = options.reduce((x, o) => x * o.length, 1), sampled = total > JUDGEMENT_STRATEGIES;
+  const paths: (string | null)[][] = [];
+  if (sampled) for (let k = 0; k < JUDGEMENT_STRATEGIES; k++) paths.push(options.map((o, i) => o[Math.floor(uniform(game.seed, 'judgement', k, i) * o.length)]));
+  else { const walk = (i: number, cards: (string | null)[]) => { if (i === n) paths.push(cards); else for (const id of options[i]) walk(i + 1, [...cards, id]); }; walk(0, []); }
+  const scored = paths.map(cards => ({ cards, expected: expected(base.map((d, j) => ({ ...d, card: cards[j] }))) }));
+  const mine = expected(game.decisions), below = scored.filter(p => p.expected < mine).length, equal = scored.filter(p => p.expected === mine).length;
+  const percentile = (below + equal / 2) / scored.length;
+  const best = scored.reduce((a, b) => b.expected > a.expected ? b : a);
+  return { percentile, grade: gradeFor(percentile), expected: mine, statusQuo: expected(base), reference: expected(referenceDecisions(game)), best, worlds: seeds.length, strategies: scored.length, sampled };
+}
+
+/** How judgement and outcome combine, in the words a coach would use. */
+export function verdict(judgementPercentile: number, outcomePercentile: number): { title: string; detail: string } {
+  const good = (p: number) => p >= .7, poor = (p: number) => p < .45;
+  if (good(judgementPercentile) && good(outcomePercentile)) return { title: 'Sound decisions, and they paid off', detail: 'Your choices rank well across the possible worlds, and this world rewarded them.' };
+  if (good(judgementPercentile) && poor(outcomePercentile)) return { title: 'Sound decisions, unlucky outcome', detail: 'Across the possible worlds your choices rank well; this particular world went against you. Keep the reasoning, not the regret.' };
+  if (poor(judgementPercentile) && good(outcomePercentile)) return { title: 'A lucky result', detail: 'This world flattered your choices. Across the possible worlds the same decisions usually rank lower: do not mistake the outcome for the judgement.' };
+  if (poor(judgementPercentile) && poor(outcomePercentile)) return { title: 'The decisions drove a weak result', detail: 'Both the outcome and the choices behind it rank low. The attribution table shows which decisions cost the most.' };
+  return { title: 'Middle of the pack', detail: 'Neither clearly strong nor weak: the attribution table shows which decision to rethink first.' };
+}

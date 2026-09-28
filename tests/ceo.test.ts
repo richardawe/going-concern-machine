@@ -5,7 +5,7 @@ import { buildArchetypes, MIN_COMPANIES, sicToArchetype } from '../src/ceo/arche
 import { fictionalCompany, prepareStart, realCompany } from '../src/ceo/company';
 import { cases } from '../src/ceo/cases';
 import { defaultLevers, play, statusQuo } from '../src/ceo/game';
-import { debrief, describeDecision, gameScore, MAX_STRATEGIES, referenceDecisions, strategySpace, undoDecision } from '../src/ceo/assess';
+import { debrief, describeDecision, gameScore, judgement, JUDGEMENT_WORLDS, verdict, MAX_STRATEGIES, referenceDecisions, strategySpace, undoDecision } from '../src/ceo/assess';
 import { resolveCase, SANDBOX_ID, SANDBOX_YEARS, sandboxCase } from '../src/ceo/sandbox';
 import type { CompanyDataset } from '../src/ontology/types';
 import type { Game } from '../src/ceo/types';
@@ -137,4 +137,16 @@ test('automation lowers the staff the work needs rather than leaving the plant s
   assert.ok(auto[4].people.natural < sq[4].people.natural * .95);
   assert.ok(auto[4].people.headcount / auto[4].people.natural > .97, 'staffing stays in line with the lower need');
   assert.ok(auto[5].state.operatingProfit > sq[5].state.operatingProfit);
+});
+
+test('judgement: averages across worlds, is reproducible, and separates luck from choices', () => {
+  const game = newGame('price-war'), ref = { ...game, decisions: referenceDecisions(game) };
+  const j = judgement(ref);
+  assert.deepEqual(judgement(ref), j);
+  assert.equal(j.worlds, JUDGEMENT_WORLDS); assert.ok(j.strategies > 100 && j.percentile >= 0 && j.percentile <= 1);
+  assert.ok(j.expected > j.statusQuo, 'the reference path beats doing nothing on average');
+  assert.ok(j.best.expected >= j.expected);
+  assert.equal(verdict(.9, .2).title, 'Sound decisions, unlucky outcome');
+  assert.equal(verdict(.2, .9).title, 'A lucky result');
+  assert.equal(verdict(.9, .9).title, 'Sound decisions, and they paid off');
 });
