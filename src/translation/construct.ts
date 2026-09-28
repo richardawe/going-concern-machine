@@ -23,7 +23,7 @@ export function constructMachine(dataset:CompanyDataset,periodIndex=0):MachineDe
   derive('pretaxIncome',['revenue','opex','provision'],(r,o,p)=>r-o-p,'Total net revenue − noninterest expense − provision for credit losses');
   if(facts.cet1Capital)facts.capital={...facts.cet1Capital,calculation:'Reported CET1 capital; not spendable cash or book equity'};
  }else{
-  if(!facts.grossProfit)derive('grossProfit',['revenue','cogs'],(r,c)=>r-c,'Total revenue − cost of sales');
+  if(!facts.grossProfit)derive('grossProfit',['revenue','cogs'],(r,c)=>r-c,`Total revenue − cost of sales${facts.cogs?.calculation?`. ${facts.cogs.calculation}`:''}`);
   derive('grossMargin',['grossProfit','revenue'],(g,r)=>g/r,'Gross profit / total revenue');derive('operatingMargin',['operatingProfit','revenue'],(o,r)=>o/r,'Operating profit / total revenue');
   derive('freeCashFlow',['operatingCashFlow','capex'],(c,i)=>c-i,'Reported operating cash flow − total cash CapEx; working capital already included');
   if(!facts.opex)derive('opex',['grossProfit','operatingProfit'],(g,o)=>g-o,'Gross profit − operating profit');
