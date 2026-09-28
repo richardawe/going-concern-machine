@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "KR",
   "name": "Kroger Co.",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2026-01-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-03-31",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+        },
+        "cogs": {
+          "value": 113240000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-03-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 1890000000,
@@ -81,6 +90,15 @@
           "period": "2026-01-31",
           "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-03-31",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+        },
+        "inventory": {
+          "value": 9445000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "source": "SEC XBRL us-gaap:FIFOInventoryAmount · 10-K filed 2026-03-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Inventory at FIFO cost, before the LIFO reserve the company deducts on its balance sheet, so it is higher than the carrying amount."
         }
       }
     },
@@ -95,6 +113,15 @@
           "period": "2025-02-01",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-03-31",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+        },
+        "cogs": {
+          "value": 113720000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-02-01",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-03-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 3849000000,
@@ -160,6 +187,15 @@
           "period": "2025-02-01",
           "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2026-03-31",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+        },
+        "inventory": {
+          "value": 9442000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-02-01",
+          "source": "SEC XBRL us-gaap:FIFOInventoryAmount · 10-K filed 2026-03-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Inventory at FIFO cost, before the LIFO reserve the company deducts on its balance sheet, so it is higher than the carrying amount."
         }
       }
     },
@@ -174,6 +210,15 @@
           "period": "2024-02-03",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-03-31",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/"
+        },
+        "cogs": {
+          "value": 116675000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-02-03",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-03-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926037723/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 3096000000,
@@ -239,6 +284,15 @@
           "period": "2024-02-03",
           "source": "SEC XBRL us-gaap:StockholdersEquity · 10-K filed 2025-04-01",
           "url": "https://www.sec.gov/Archives/edgar/data/56873/000155837025004267/"
+        },
+        "inventory": {
+          "value": 9414000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-02-03",
+          "source": "SEC XBRL us-gaap:FIFOInventoryAmount · 10-K filed 2025-04-01",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000155837025004267/",
+          "calculation": "Inventory at FIFO cost, before the LIFO reserve the company deducts on its balance sheet, so it is higher than the carrying amount."
         }
       }
     }

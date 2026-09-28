@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "UBER",
   "name": "Uber Technologies, Inc",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-13",
           "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/"
+        },
+        "cogs": {
+          "value": 31338000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-13",
+          "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 5565000000,
@@ -95,6 +104,15 @@
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-13",
           "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/"
         },
+        "cogs": {
+          "value": 26651000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-13",
+          "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": 2799000000,
           "unit": "USD",
@@ -172,6 +190,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-13",
           "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/"
+        },
+        "cogs": {
+          "value": 22457000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-13",
+          "url": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 1110000000,

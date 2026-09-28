@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "DASH",
   "name": "DOORDASH, INC.",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K/A filed 2026-05-06",
           "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/"
+        },
+        "cogs": {
+          "value": 6738000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K/A filed 2026-05-06",
+          "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 723000000,
@@ -95,6 +104,15 @@
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K/A filed 2026-05-06",
           "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/"
         },
+        "cogs": {
+          "value": 5542000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K/A filed 2026-05-06",
+          "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": -38000000,
           "unit": "USD",
@@ -172,6 +190,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K/A filed 2026-05-06",
           "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/"
+        },
+        "cogs": {
+          "value": 4589000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K/A filed 2026-05-06",
+          "url": "https://www.sec.gov/Archives/edgar/data/1792789/000179278926000035/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": -579000000,

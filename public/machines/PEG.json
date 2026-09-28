@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "PEG",
   "name": "Public Service Enterprise Group Incorporated",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-26",
           "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/"
+        },
+        "cogs": {
+          "value": 4159000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 2980000000,
@@ -87,6 +96,15 @@
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-26",
           "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/"
         },
+        "cogs": {
+          "value": 3393000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": 2353000000,
           "unit": "USD",
@@ -156,6 +174,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:Revenues · 10-K filed 2026-02-26",
           "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/"
+        },
+        "cogs": {
+          "value": 3260000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/788784/000119312526077446/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 3685000000,

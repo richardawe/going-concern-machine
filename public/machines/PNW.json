@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "PNW",
   "name": "PINNACLE WEST CAPITAL CORP",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-25",
           "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/"
+        },
+        "cogs": {
+          "value": 1933420000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 1067630000,
@@ -104,6 +113,15 @@
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-25",
           "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/"
         },
+        "cogs": {
+          "value": 1822566000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": 1012063000,
           "unit": "USD",
@@ -190,6 +208,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-25",
           "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/"
+        },
+        "cogs": {
+          "value": 1792657000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-25",
+          "url": "https://www.sec.gov/Archives/edgar/data/764622/000076462226000011/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 824640000,

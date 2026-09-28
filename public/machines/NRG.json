@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "NRG",
   "name": "NRG Energy, Inc",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-24",
           "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/"
+        },
+        "cogs": {
+          "value": 24761000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-24",
+          "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 1845000000,
@@ -103,6 +112,15 @@
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-24",
           "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/"
         },
+        "cogs": {
+          "value": 22100000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-24",
+          "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": 2424000000,
           "unit": "USD",
@@ -188,6 +206,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-24",
           "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/"
+        },
+        "cogs": {
+          "value": 26483000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-24",
+          "url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000004/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 384000000,

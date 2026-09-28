@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "ticker": "EFX",
   "name": "EQUIFAX INC",
-  "retrieved": "2026-09-27",
+  "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
@@ -16,6 +16,15 @@
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/"
+        },
+        "cogs": {
+          "value": 2645600000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 1095200000,
@@ -104,6 +113,15 @@
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/"
         },
+        "cogs": {
+          "value": 2518700000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
+        },
         "operatingProfit": {
           "value": 1042100000,
           "unit": "USD",
@@ -190,6 +208,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/"
+        },
+        "cogs": {
+          "value": 2335100000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization · 10-K filed 2026-02-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/33185/000003318526000010/",
+          "calculation": "Cost of sales excluding depreciation and amortization, which the company reports as a separate line. Gross profit derived from it is higher than a conventional gross profit."
         },
         "operatingProfit": {
           "value": 933600000,
