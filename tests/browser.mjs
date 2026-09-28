@@ -16,12 +16,12 @@ try{
  await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'System',exact:true}).click();
  assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-theme')),false);
  // Levers on the machine: keyboard pull starts a scenario at once, reports the value, and propagates.
- {const lever=page.locator('g.lever[aria-label="CapEx / revenue"]');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%; reported setting 22\.9%/);
+ {const lever=page.locator('g.lever[aria-label="CapEx / revenue"]');assert.match(await lever.getAttribute('aria-valuetext'),/^34\.9%; reported setting 34\.9%/);
   await lever.focus();for(let i=0;i<75;i++)await lever.press('ArrowRight');
-  assert.match(await lever.getAttribute('aria-valuetext'),/^30\.4%/);
+  assert.match(await lever.getAttribute('aria-valuetext'),/^42\.4%/);
   await page.locator('.scenario-banner').getByText('lever changed from the reported settings').waitFor();
   await page.getByText('Y1 PROPAGATION').waitFor();await page.getByText('Scenario started').waitFor();
-  await lever.press('0');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%/,'0 returns to the reported setting');
+  await lever.press('0');assert.match(await lever.getAttribute('aria-valuetext'),/^34\.9%/,'0 returns to the reported setting');
   await page.locator('.scenario-banner').getByRole('button',{name:'Back to reported'}).click();
   await page.getByText('ACTUAL COMPANY',{exact:true}).waitFor();assert.equal(await page.locator('.scenario-banner:not(.idle)').count(),0);}
 
@@ -52,7 +52,7 @@ try{
  await mkdir('artifacts',{recursive:true});await page.screenshot({path:'artifacts/msft-desktop.png',fullPage:true});
  await page.getByRole('button',{name:'Inspect ARR',exact:true}).count().then(n=>console.log('ARR direct controls',n));
  await page.getByRole('button',{name:'WMT Retail',exact:true}).click();await page.getByRole('group',{name:'WMT Omnichannel retail + memberships economic machine'}).waitFor();await page.screenshot({path:'artifacts/wmt-desktop.png',fullPage:true});
- await page.getByRole('button',{name:'FY2024 2024-01-31',exact:true}).click();assert.ok(await page.getByText('No earlier consecutive annual observation is published.').isVisible());
+ await page.getByRole('button',{name:'FY2025 2025-01-31',exact:true}).click();assert.ok(await page.getByText('No earlier consecutive annual observation is published.').isVisible());
  await page.getByRole('button',{name:'Fork into a scenario',exact:true}).click();const dialog=page.getByRole('dialog');await dialog.getByRole('button',{name:'Adopt assumptions & fork'}).click();await page.getByText('CUSTOM · SCENARIO YEAR 1').waitFor();
  await page.getByRole('slider',{name:'Forecast year',exact:true}).fill('5');await page.getByText('CUSTOM · SCENARIO YEAR 5').waitFor();
  await page.getByRole('button',{name:'Inspect Revenue',exact:true}).dispatchEvent('click');await page.getByRole('dialog').getByText('CALCULATED',{exact:true}).waitFor();await page.getByRole('button',{name:'Close inspector'}).click();

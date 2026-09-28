@@ -17,7 +17,7 @@ export function suggestedBasis(machine:MachineDefinition):Record<string,string>{
 export function suggestedScenario(machine:MachineDefinition):CompanyScenario{
  const values=Object.fromEntries(sectors[machine.classification.sector].controls.map(c=>[c.id,c.defaultValue]));
  const n=(k:string)=>getNode(machine,k)?.value;const basis=suggestedBasis(machine);
- if(basis.capexRatio)values.capexRatio=round(Math.max(0,Math.min(40,n('capex')!/n('revenue')!*100)));
+ if(basis.capexRatio)values.capexRatio=round(Math.max(0,Math.min(100,n('capex')!/n('revenue')!*100)));
  if(basis.inventoryDays)values.inventoryDays=Math.round(n('inventory')!/n('cogs')!*365);
  if(basis.distribution)values.distribution=round(Math.max(0,Math.min(100,n('dividends')!/n('freeCashFlow')!*100)));
  if(basis.creditCost)values.creditCost=round(Math.max(-2,Math.min(8,n('provision')!/n('loans')!*100)),2);

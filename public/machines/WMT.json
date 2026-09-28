@@ -2,9 +2,106 @@
   "schemaVersion": 2,
   "ticker": "WMT",
   "name": "Walmart Inc.",
-  "retrieved": "2026-09-26",
-  "provider": "Walmart FY2025 Form 10-K · consolidated statements",
+  "retrieved": "2026-09-28",
+  "provider": "Walmart FY2026 Form 10-K (SEC XBRL), verified by hand",
   "periods": [
+    {
+      "period": "2026-01-31",
+      "fiscalYear": 2026,
+      "facts": {
+        "revenue": {
+          "value": 713163000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:Revenues"
+        },
+        "cogs": {
+          "value": 535395000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:CostOfRevenue"
+        },
+        "operatingProfit": {
+          "value": 29825000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:OperatingIncomeLoss"
+        },
+        "opex": {
+          "value": 147943000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:SellingGeneralAndAdministrativeExpense",
+          "calculation": "Operating, selling, general and administrative expenses"
+        },
+        "operatingCashFlow": {
+          "value": 41565000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:NetCashProvidedByUsedInOperatingActivities"
+        },
+        "capex": {
+          "value": 26642000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"
+        },
+        "cash": {
+          "value": 10727000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:CashAndCashEquivalentsAtCarryingValue"
+        },
+        "inventory": {
+          "value": 58851000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:InventoryNet"
+        },
+        "inventoryInvestment": {
+          "value": 1443000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:IncreaseDecreaseInRetailRelatedInventories",
+          "calculation": "Increase in inventories (cash absorbed by stock)"
+        },
+        "ppe": {
+          "value": 136083000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:PropertyPlantAndEquipmentNet"
+        },
+        "equity": {
+          "value": 99617000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:StockholdersEquity",
+          "calculation": "Total Walmart shareholders’ equity, excluding noncontrolling interest"
+        }
+      }
+    },
     {
       "period": "2025-01-31",
       "fiscalYear": 2025,
@@ -12,184 +109,93 @@
         "revenue": {
           "value": 680985000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:Revenues · prior-year comparative"
         },
         "cogs": {
           "value": 511753000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:CostOfRevenue · prior-year comparative"
         },
         "operatingProfit": {
           "value": 29348000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:OperatingIncomeLoss · prior-year comparative"
         },
         "opex": {
           "value": 139884000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:SellingGeneralAndAdministrativeExpense · prior-year comparative",
+          "calculation": "Operating, selling, general and administrative expenses"
         },
         "operatingCashFlow": {
           "value": 36443000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:NetCashProvidedByUsedInOperatingActivities · prior-year comparative"
         },
         "capex": {
           "value": 23783000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:PaymentsToAcquirePropertyPlantAndEquipment · prior-year comparative"
         },
         "cash": {
           "value": 9037000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:CashAndCashEquivalentsAtCarryingValue · prior-year comparative"
         },
         "inventory": {
           "value": 56435000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:InventoryNet · prior-year comparative"
         },
         "inventoryInvestment": {
           "value": 2755000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:IncreaseDecreaseInRetailRelatedInventories · prior-year comparative",
+          "calculation": "Increase in inventories (cash absorbed by stock)"
         },
         "ppe": {
           "value": 119993000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:PropertyPlantAndEquipmentNet · prior-year comparative"
         },
         "equity": {
-          "value": 97421000000,
+          "value": 91013000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2025-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        }
-      }
-    },
-    {
-      "period": "2024-01-31",
-      "fiscalYear": 2024,
-      "facts": {
-        "revenue": {
-          "value": 648125000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "cogs": {
-          "value": 490142000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "operatingProfit": {
-          "value": 27012000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "opex": {
-          "value": 130971000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "operatingCashFlow": {
-          "value": 35726000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "capex": {
-          "value": 20606000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "cash": {
-          "value": 9867000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "inventory": {
-          "value": 54892000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "inventoryInvestment": {
-          "value": -2017000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "ppe": {
-          "value": 110810000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
-        },
-        "equity": {
-          "value": 90349000000,
-          "unit": "USD",
-          "period": "2024-01-31",
-          "url": "https://stock.walmart.com/sec-filings/all-sec-filings/content/0000104169-25-000021/wmt-20250131.htm",
-          "source": "Walmart FY2025 10-K, statements pp. 53–57; USD millions converted to USD",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000055/wmt-20260131.htm",
+          "source": "Walmart FY2026 Form 10-K, filed 2026-03-13 with the SEC · us-gaap:StockholdersEquity · prior-year comparative",
+          "calculation": "Total Walmart shareholders’ equity, excluding noncontrolling interest"
         }
       }
     }

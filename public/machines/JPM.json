@@ -2,9 +2,130 @@
   "schemaVersion": 2,
   "ticker": "JPM",
   "name": "JPMorgan Chase & Co.",
-  "retrieved": "2026-09-26",
-  "provider": "JPMorgan Chase FY2024 annual report · reported GAAP basis",
+  "retrieved": "2026-09-28",
+  "provider": "JPMorgan Chase FY2025 Form 10-K (SEC XBRL), verified by hand",
   "periods": [
+    {
+      "period": "2025-12-31",
+      "fiscalYear": 2025,
+      "facts": {
+        "revenue": {
+          "value": 182447000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:Revenues",
+          "calculation": "Total net revenue, reported GAAP"
+        },
+        "nii": {
+          "value": 95443000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:InterestIncomeExpenseNet"
+        },
+        "fees": {
+          "value": 87004000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NoninterestIncome"
+        },
+        "opex": {
+          "value": 95640000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NoninterestExpense"
+        },
+        "provision": {
+          "value": 14212000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:ProvisionForLoanLeaseAndOtherLosses"
+        },
+        "tax": {
+          "value": 15547000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:IncomeTaxExpenseBenefit"
+        },
+        "netIncome": {
+          "value": 57048000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NetIncomeLoss"
+        },
+        "deposits": {
+          "value": 2559320000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:Deposits"
+        },
+        "loans": {
+          "value": 1493429000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossesNetOfDeferredIncome",
+          "calculation": "Total loans, before the allowance for credit losses"
+        },
+        "equity": {
+          "value": 362438000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:StockholdersEquity"
+        },
+        "cet1Capital": {
+          "value": 288469000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:CommonEquityTier1Capital [Firm, Basel III Standardized]"
+        },
+        "rwa": {
+          "value": 1981692000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:RiskWeightedAssets [Firm, Basel III Standardized]"
+        },
+        "cet1": {
+          "value": 0.146,
+          "unit": "ratio",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:CommonEquityTier1CapitaltoRiskWeightedAssets [Firm, Basel III Standardized]"
+        },
+        "lcr": {
+          "value": 1.11,
+          "unit": "ratio",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · Not XBRL-tagged: Liquidity Risk Management table, average LCR for the three months ended December 31",
+          "calculation": "Firm average liquidity coverage ratio, fourth quarter"
+        }
+      }
+    },
     {
       "period": "2024-12-31",
       "fiscalYear": 2024,
@@ -12,232 +133,117 @@
         "revenue": {
           "value": 177556000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:Revenues · prior-year comparative",
+          "calculation": "Total net revenue, reported GAAP"
         },
         "nii": {
           "value": 92583000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:InterestIncomeExpenseNet · prior-year comparative"
         },
         "fees": {
           "value": 84973000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NoninterestIncome · prior-year comparative"
         },
         "opex": {
           "value": 91797000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NoninterestExpense · prior-year comparative"
         },
         "provision": {
           "value": 10678000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:ProvisionForLoanLeaseAndOtherLosses · prior-year comparative"
         },
         "tax": {
           "value": 16610000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:IncomeTaxExpenseBenefit · prior-year comparative"
         },
         "netIncome": {
           "value": 58471000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:NetIncomeLoss · prior-year comparative"
         },
         "deposits": {
           "value": 2406032000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:Deposits · prior-year comparative"
         },
         "loans": {
           "value": 1347988000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossesNetOfDeferredIncome · prior-year comparative",
+          "calculation": "Total loans, before the allowance for credit losses"
         },
         "equity": {
           "value": 344758000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "cet1": {
-          "value": 0.157,
-          "unit": "ratio",
-          "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "lcr": {
-          "value": 1.13,
-          "unit": "ratio",
-          "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:StockholdersEquity · prior-year comparative"
         },
         "cet1Capital": {
           "value": 275513000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:CommonEquityTier1Capital [Firm, Basel III Standardized] · prior-year comparative"
         },
         "rwa": {
           "value": 1757460000000,
           "unit": "USD",
+          "status": "OBSERVED",
           "period": "2024-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        }
-      }
-    },
-    {
-      "period": "2023-12-31",
-      "fiscalYear": 2023,
-      "facts": {
-        "revenue": {
-          "value": 158104000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "nii": {
-          "value": 89267000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "fees": {
-          "value": 68837000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "opex": {
-          "value": 87172000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "provision": {
-          "value": 9320000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "tax": {
-          "value": 12060000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "netIncome": {
-          "value": 49552000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "deposits": {
-          "value": 2400688000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "loans": {
-          "value": 1323706000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "equity": {
-          "value": 327878000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · us-gaap:RiskWeightedAssets [Firm, Basel III Standardized] · prior-year comparative"
         },
         "cet1": {
-          "value": 0.15,
+          "value": 0.157,
           "unit": "ratio",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · jpm:CommonEquityTier1CapitaltoRiskWeightedAssets [Firm, Basel III Standardized] · prior-year comparative"
         },
         "lcr": {
           "value": 1.13,
           "unit": "ratio",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "cet1Capital": {
-          "value": 250585000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
-        },
-        "rwa": {
-          "value": 1671995000000,
-          "unit": "USD",
-          "period": "2023-12-31",
-          "url": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf",
-          "source": "JPMorgan Chase 2024 annual report, Form 10-K pp. 50, 60, 99; reported GAAP; CET1 standardized incl. CECL transition; LCR Q4 average",
-          "status": "OBSERVED"
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+          "source": "JPMorgan Chase FY2025 Form 10-K, filed 2026-02-13 with the SEC · Not XBRL-tagged: Liquidity Risk Management table, average LCR for the three months ended December 31 · prior-year comparative",
+          "calculation": "Firm average liquidity coverage ratio, fourth quarter"
         }
       }
     }
