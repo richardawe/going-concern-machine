@@ -65,6 +65,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-11-19",
           "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
         },
+        "inventoryInvestment": {
+          "value": -1228800000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-09-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-11-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
+        },
         "cash": {
           "value": 2985400000,
           "unit": "USD",
@@ -163,6 +171,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-11-19",
           "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
         },
+        "inventoryInvestment": {
+          "value": -141300000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-09-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-11-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
+        },
         "cash": {
           "value": 4516400000,
           "unit": "USD",
@@ -259,6 +275,14 @@
           "status": "OBSERVED",
           "period": "2023-09-30",
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-11-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
+        },
+        "inventoryInvestment": {
+          "value": -861800000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-09-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-11-19",
           "url": "https://www.sec.gov/Archives/edgar/data/882184/000088218425000081/"
         },
         "cash": {

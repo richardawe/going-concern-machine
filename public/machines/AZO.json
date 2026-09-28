@@ -73,6 +73,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-10-27",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
         },
+        "inventoryInvestment": {
+          "value": 893908000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-08-30",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
+        },
         "cash": {
           "value": 271803000,
           "unit": "USD",
@@ -96,6 +104,15 @@
           "period": "2025-08-30",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-10-27",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
+        },
+        "inventory": {
+          "value": 7025688000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-08-30",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2025-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
         }
       }
     },
@@ -167,6 +184,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-10-27",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
         },
+        "inventoryInvestment": {
+          "value": 453101000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-08-31",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
+        },
         "cash": {
           "value": 298172000,
           "unit": "USD",
@@ -190,6 +215,15 @@
           "period": "2024-08-31",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-10-27",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
+        },
+        "inventory": {
+          "value": 6155218000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-08-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2025-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
         }
       }
     },
@@ -261,6 +295,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2025-10-27",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
         },
+        "inventoryInvestment": {
+          "value": 89180000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-08-26",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories · 10-K filed 2025-10-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000110465925102611/"
+        },
         "cash": {
           "value": 277054000,
           "unit": "USD",
@@ -284,6 +326,15 @@
           "period": "2023-08-26",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2024-10-28",
           "url": "https://www.sec.gov/Archives/edgar/data/866787/000155837024013758/"
+        },
+        "inventory": {
+          "value": 5764143000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-08-26",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2024-10-28",
+          "url": "https://www.sec.gov/Archives/edgar/data/866787/000155837024013758/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
         }
       }
     }

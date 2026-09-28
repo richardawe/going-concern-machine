@@ -75,6 +75,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-03-16",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
         },
+        "inventoryInvestment": {
+          "value": -130600000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInRetailRelatedInventories · 10-K filed 2026-03-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
+        },
         "cash": {
           "value": 717800000,
           "unit": "USD",
@@ -97,6 +105,14 @@
           "status": "OBSERVED",
           "period": "2026-01-31",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-03-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
+        },
+        "inventory": {
+          "value": 2495400000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "source": "SEC XBRL us-gaap:RetailRelatedInventoryMerchandise · 10-K filed 2026-03-16",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
         }
       }
@@ -171,6 +187,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-03-16",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
         },
+        "inventoryInvestment": {
+          "value": 182600000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-02-01",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInRetailRelatedInventories · 10-K filed 2026-03-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
+        },
         "cash": {
           "value": 1256500000,
           "unit": "USD",
@@ -193,6 +217,14 @@
           "status": "OBSERVED",
           "period": "2025-02-01",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-03-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
+        },
+        "inventory": {
+          "value": 2672000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-02-01",
+          "source": "SEC XBRL us-gaap:RetailRelatedInventoryMerchandise · 10-K filed 2026-03-16",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
         }
       }
@@ -266,6 +298,14 @@
           "source": "SEC XBRL us-gaap:NetIncomeLoss · 10-K filed 2026-03-16",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
         },
+        "inventoryInvestment": {
+          "value": -488200000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-02-03",
+          "source": "SEC XBRL us-gaap:IncreaseDecreaseInRetailRelatedInventories · 10-K filed 2026-03-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000025/"
+        },
         "cash": {
           "value": 425200000,
           "unit": "USD",
@@ -288,6 +328,14 @@
           "status": "OBSERVED",
           "period": "2024-02-03",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-03-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570325000015/"
+        },
+        "inventory": {
+          "value": 2495800000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-02-03",
+          "source": "SEC XBRL us-gaap:RetailRelatedInventoryMerchandise · 10-K filed 2025-03-26",
           "url": "https://www.sec.gov/Archives/edgar/data/935703/000093570325000015/"
         }
       }

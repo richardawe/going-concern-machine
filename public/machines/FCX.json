@@ -287,6 +287,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-02-14",
           "url": "https://www.sec.gov/Archives/edgar/data/831259/000083125925000006/"
+        },
+        "inventory": {
+          "value": 1782000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoods · 10-K filed 2024-02-16",
+          "url": "https://www.sec.gov/Archives/edgar/data/831259/000083125924000011/",
+          "calculation": "Reported as finished-goods inventory: the merchandise the company holds for sale."
         }
       }
     }

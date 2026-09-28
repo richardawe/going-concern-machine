@@ -104,6 +104,15 @@
           "period": "2026-01-31",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-03-26",
           "url": "https://www.sec.gov/Archives/edgar/data/1403568/000110465926035243/"
+        },
+        "inventory": {
+          "value": 2181127000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-01-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoods · 10-K filed 2026-03-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/1403568/000110465926035243/",
+          "calculation": "Reported as finished-goods inventory: the merchandise the company holds for sale."
         }
       }
     },
@@ -206,6 +215,15 @@
           "period": "2025-02-01",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-03-26",
           "url": "https://www.sec.gov/Archives/edgar/data/1403568/000110465926035243/"
+        },
+        "inventory": {
+          "value": 1968214000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-02-01",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoods · 10-K filed 2026-03-26",
+          "url": "https://www.sec.gov/Archives/edgar/data/1403568/000110465926035243/",
+          "calculation": "Reported as finished-goods inventory: the merchandise the company holds for sale."
         }
       }
     },
@@ -308,6 +326,15 @@
           "period": "2024-02-03",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-03-27",
           "url": "https://www.sec.gov/Archives/edgar/data/1403568/000155837025003810/"
+        },
+        "inventory": {
+          "value": 1742136000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-02-03",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoods · 10-K filed 2025-03-27",
+          "url": "https://www.sec.gov/Archives/edgar/data/1403568/000155837025003810/",
+          "calculation": "Reported as finished-goods inventory: the merchandise the company holds for sale."
         }
       }
     }

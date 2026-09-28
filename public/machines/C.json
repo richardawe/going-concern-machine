@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "ticker": "C",
-  "name": "Citigroup Inc",
+  "name": "Citigroup Inc.",
   "retrieved": "2026-09-28",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
@@ -71,6 +71,14 @@
           "status": "OBSERVED",
           "period": "2025-12-31",
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-20",
+          "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000011/"
+        },
+        "loans": {
+          "value": 732983000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2026-02-20",
           "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000011/"
         },
         "equity": {
@@ -151,6 +159,14 @@
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-20",
           "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000011/"
         },
+        "loans": {
+          "value": 675914000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2026-02-20",
+          "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000011/"
+        },
         "equity": {
           "value": 208598000000,
           "unit": "USD",
@@ -227,6 +243,14 @@
           "status": "OBSERVED",
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2025-02-21",
+          "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100125000067/"
+        },
+        "loans": {
+          "value": 671217000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2025-02-21",
           "url": "https://www.sec.gov/Archives/edgar/data/831001/000083100125000067/"
         },
         "equity": {

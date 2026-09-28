@@ -105,6 +105,15 @@
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-07-15",
           "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018726000088/"
         },
+        "inventory": {
+          "value": 7501000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2026-05-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2026-07-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018726000088/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
+        },
         "operatingProfit": {
           "value": 3900000000,
           "unit": "USD",
@@ -219,6 +228,15 @@
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2026-07-15",
           "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018726000088/"
         },
+        "inventory": {
+          "value": 7489000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-05-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2026-07-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018726000088/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
+        },
         "operatingProfit": {
           "value": 3885000000,
           "unit": "USD",
@@ -332,6 +350,15 @@
           "period": "2024-05-31",
           "source": "SEC XBRL us-gaap:PropertyPlantAndEquipmentNet · 10-K filed 2025-07-17",
           "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018725000047/"
+        },
+        "inventory": {
+          "value": 7519000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-05-31",
+          "source": "SEC XBRL us-gaap:InventoryFinishedGoodsNetOfReserves · 10-K filed 2026-07-15",
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018726000088/",
+          "calculation": "Reported as finished-goods inventory, net of reserves: the merchandise the company holds for sale."
         },
         "operatingProfit": {
           "value": 6700000000,

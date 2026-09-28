@@ -73,6 +73,14 @@
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-12",
           "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994426000028/"
         },
+        "loans": {
+          "value": 140749000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2026-02-12",
+          "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994426000028/"
+        },
         "equity": {
           "value": 26317000000,
           "unit": "USD",
@@ -151,6 +159,14 @@
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-12",
           "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994426000028/"
         },
+        "loans": {
+          "value": 137142000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2026-02-12",
+          "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994426000028/"
+        },
         "equity": {
           "value": 24254000000,
           "unit": "USD",
@@ -227,6 +243,14 @@
           "status": "OBSERVED",
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2025-02-13",
+          "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994425000013/"
+        },
+        "loans": {
+          "value": 143861000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss · 10-K filed 2025-02-13",
           "url": "https://www.sec.gov/Archives/edgar/data/759944/000075994425000013/"
         },
         "equity": {

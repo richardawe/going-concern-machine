@@ -408,8 +408,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot compute Inventory turns: input prior:inventory is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "BA",
@@ -433,8 +432,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "BALL",
@@ -578,8 +576,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "BR",
@@ -619,7 +616,7 @@
     },
     {
       "ticker": "C",
-      "name": "Citigroup Inc",
+      "name": "Citigroup Inc.",
       "periods": [
         "2025-12-31",
         "2024-12-31",
@@ -627,8 +624,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "CAH",
@@ -760,8 +756,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "CHD",
@@ -905,8 +900,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "COHR",
@@ -1230,8 +1224,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot simulate: opening Inventory cash investment is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "DGX",
@@ -1291,8 +1284,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot compute Inventory turns: input prior:inventory is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "DOV",
@@ -1784,8 +1776,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "FIX",
@@ -2085,8 +2076,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "HCA",
@@ -2110,8 +2100,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot simulate: opening Inventory cash investment is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "HII",
@@ -2542,8 +2531,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "KEYS",
@@ -2627,8 +2615,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot simulate: opening Inventory cash investment is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "KVUE",
@@ -3119,8 +3106,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "MTD",
@@ -3300,8 +3286,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "NUE",
@@ -3780,8 +3765,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "RMD",
@@ -4429,8 +4413,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot compute Inventory turns: input prior:inventory is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "UNP",
@@ -4466,8 +4449,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "banking",
-      "inspectOnly": "Cannot simulate: opening Loan assets is UNKNOWN."
+      "sector": "banking"
     },
     {
       "ticker": "V",
@@ -4803,8 +4785,7 @@
       ],
       "retrieved": "2026-09-28",
       "verified": false,
-      "sector": "retail",
-      "inspectOnly": "Cannot compute Inventory turns: input prior:inventory is UNKNOWN."
+      "sector": "retail"
     },
     {
       "ticker": "ZBH",

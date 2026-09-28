@@ -73,6 +73,15 @@
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762826000024/"
         },
+        "loans": {
+          "value": 453622000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2025-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss · 10-K filed 2026-02-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762826000024/",
+          "calculation": "Loans before the allowance for credit losses: the company does not tag net loans, so this is slightly higher than the net loan book."
+        },
         "equity": {
           "value": 113616000000,
           "unit": "USD",
@@ -151,6 +160,15 @@
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762826000024/"
         },
+        "loans": {
+          "value": 327775000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2024-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss · 10-K filed 2026-02-19",
+          "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762826000024/",
+          "calculation": "Loans before the allowance for credit losses: the company does not tag net loans, so this is slightly higher than the net loan book."
+        },
         "equity": {
           "value": 60784000000,
           "unit": "USD",
@@ -228,6 +246,15 @@
           "period": "2023-12-31",
           "source": "SEC XBRL us-gaap:Deposits · 10-K filed 2026-02-19",
           "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762826000024/"
+        },
+        "loans": {
+          "value": 320472000000,
+          "unit": "USD",
+          "status": "OBSERVED",
+          "period": "2023-12-31",
+          "source": "SEC XBRL us-gaap:FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss · 10-K filed 2025-02-20",
+          "url": "https://www.sec.gov/Archives/edgar/data/927628/000092762825000092/",
+          "calculation": "Loans before the allowance for credit losses: the company does not tag net loans, so this is slightly higher than the net loan book."
         },
         "equity": {
           "value": 58089000000,
