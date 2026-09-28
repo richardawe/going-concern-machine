@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
 import {constructMachine,getNode} from '../src/translation/construct';
 import {HORIZON,simulateCompany,suggestedScenario} from '../src/simulation/company';
-import {equations,refKind,refNode} from '../src/simulation/equations';
+import {equationsFor,refKind,refNode} from '../src/simulation/equations';
 import {demoScenarios,demonstrations} from '../src/simulation/demos';
 import {explainExperiment,isLeverRef,rootPath} from '../src/simulation/explain';
 import {sectors} from '../src/sectors';
@@ -11,7 +11,7 @@ const tickers=Object.keys(demonstrations);
 const close=(a:number,b:number)=>Math.abs(a-b)<=1e-6*Math.max(1,Math.abs(a),Math.abs(b));
 
 test('the causal graph is generated from the equations the simulator evaluates',()=>{
- for(const t of tickers){const m=constructMachine(data(t)),eqs=equations[m.classification.sector];
+ for(const t of tickers){const m=constructMachine(data(t)),eqs=equationsFor(m);
   for(const e of m.edges.filter(e=>e.kind!=='concept'))assert.ok(eqs.some(q=>q.target===e.to&&q.inputs.some(r=>refNode(r)===e.from)),`${t}: edge ${e.id} has no equation`);
   for(const q of eqs)for(const r of q.inputs){const from=refNode(r);if(from&&refKind(r)!=='opening')assert.ok(m.edges.some(e=>e.from===from&&e.to===q.target),`${t}: input ${r} of ${q.target} is not drawn`);if(refKind(r)==='assume')assert.ok(sectors[m.classification.sector].controls.some(c=>`assume:${c.id}`===r),`${t}: ${r} is not a control`);}
   // Every computed node is evaluated after its same-year inputs.

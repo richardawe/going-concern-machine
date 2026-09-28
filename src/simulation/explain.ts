@@ -4,7 +4,7 @@ import { sectors } from '../sectors';
 import { getNode } from '../translation/construct';
 import { showDelta, showValue } from '../format';
 import { HORIZON, lagYears, resolveInputs, simulateCompany } from './company';
-import { equations, refKind, refNode, type Equation, type Ref } from './equations';
+import { equationsFor, refKind, refNode, type Equation, type Ref } from './equations';
 // Explains a scenario against BASE: every node that differs, in every year, is attributed to the changed inputs of
 // its own equation. Each input effect is the symmetric one-at-a-time swap
 //   ½[(f(S) − f(S with input from B)) + (f(B with input from S) − f(B))],
@@ -33,7 +33,7 @@ export function leverDiff(opening: MachineDefinition, base: CompanyScenario, sce
 export function explainExperiment(opening: MachineDefinition, baseScenario: CompanyScenario, scenScenario: CompanyScenario, years = HORIZON): Experiment {
  const base = simulateCompany(opening, { ...baseScenario, adopted: true }, years), scen = simulateCompany(opening, { ...scenScenario, adopted: true }, years);
  const sector = opening.classification.sector, changes: Change[] = [], absorbed: Absorbed[] = [];
- for (let year = 1; year <= years; year++) equations[sector].forEach((e, order) => {
+ for (let year = 1; year <= years; year++) equationsFor(opening).forEach((e, order) => {
   const b = getNode(base[year], e.target)?.value, s = getNode(scen[year], e.target)?.value;
   const xb = resolveInputs(e, base, year, baseScenario), xs = resolveInputs(e, scen, year, scenScenario);
   const f = (x: Record<Ref, number>) => e.f(x) ?? NaN;

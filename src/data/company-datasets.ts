@@ -1,6 +1,6 @@
 import type {CompanyDataset,SectorId} from '../ontology/types';
 import {validateDataset} from '../translation/construct';
-export interface PublishedCompany {ticker:string;name:string;periods:string[];retrieved:string;verified:boolean;sector:SectorId}
+export interface PublishedCompany {ticker:string;name:string;periods:string[];retrieved:string;verified:boolean;sector:SectorId;/** Set when the machine can be inspected but cannot run a scenario. */inspectOnly?:string}
 export class CompanyDatasetProvider{
  private cache=new Map<string,CompanyDataset>();private list:Promise<PublishedCompany[]>|null=null;
  /** Every company with a published machine: the ticker box offers exactly these. */

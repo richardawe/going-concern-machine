@@ -3,6 +3,8 @@ import {DataQualityError,fiscalYearOf,secToDataset,type SecCompanyFacts} from '.
 import {classify,sectorFromSic} from '../src/translation/classify';
 import {constructMachine,getNode} from '../src/translation/construct';
 import {demoScenarios} from '../src/simulation/demos';
+import {simulateCompany,suggestedScenario,whyInspectOnly} from '../src/simulation/company';
+import {controlsFor} from '../src/sectors';
 import {explainExperiment,isLeverRef,rootPath} from '../src/simulation/explain';
 import type {CompanyDataset} from '../src/ontology/types';
 const fixture=()=>JSON.parse(readFileSync('tests/fixtures/sec/AAPL.json','utf8'));
@@ -93,4 +95,26 @@ test('cost of sales excluding D&A is used when it is the only cost line, and the
  const d=secToDataset('TC',synth({...rest,CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization:40e9,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27');
  assert.equal(d.periods[0].facts.cogs.value,40e9);assert.match(d.periods[0].facts.cogs.calculation!,/excluding depreciation and amortization/);
  const gp=getNode(constructMachine(d),'grossProfit')!;assert.equal(gp.value,60e9);assert.equal(gp.status,'CALCULATED');assert.match(gp.calculation!,/higher than a conventional gross profit/);
+});
+test('no cost-of-sales line: the machine runs on total operating costs, and gross profit stays UNKNOWN',()=>{
+ const {CostOfGoodsAndServicesSold:_c,...rest}=core;
+ const m=constructMachine(secToDataset('TC',synth({...rest,OperatingIncomeLoss:20e9},['CashAndCashEquivalentsAtCarryingValue']),general,'2026-09-27'));
+ assert.equal(m.costBasis,'total');assert.equal(getNode(m,'grossProfit')?.value??null,null);assert.equal(getNode(m,'grossMargin')?.value??null,null);
+ const tc=getNode(m,'totalCosts')!;assert.equal(tc.value,80e9);assert.equal(tc.status,'CALCULATED');assert.match(tc.calculation!,/no cost-of-sales line/);
+ assert.ok(m.stages.includes('totalCosts')&&!m.stages.includes('grossProfit'));assert.ok(m.limitations.some(l=>/total operating costs/.test(l)));
+ assert.ok(!controlsFor(m).some(c=>c.id==='opexGrowth'),'operating cost growth does not apply');
+ assert.equal(whyInspectOnly(m),null,'the machine runs');
+ const base={...suggestedScenario(m),adopted:true},h=simulateCompany(m,base);
+ assert.ok(Math.abs(getNode(h[5],'operatingMargin')!.value!-.2)<1e-12,'costs keep their reported share of revenue');
+ const cut=structuredClone(base);cut.values.growth=-10;const x=explainExperiment(m,base,cut);
+ assert.deepEqual(x.changes.filter(c=>c.year===1).slice(0,3).map(c=>c.node),['revenue','totalCosts','operatingProfit']);
+ for(const c of x.changes){assert.ok(Math.abs(c.contributions.reduce((s,p)=>s+p.effect,0)+c.interaction-c.delta)<=1e-6*Math.max(1,Math.abs(c.delta)));const last=rootPath(x,c).at(-1)!;assert.ok('ref' in last&&isLeverRef(last.ref));}
+ assert.ok(m.edges.some(e=>e.from==='totalCosts'&&e.to==='operatingProfit')&&!m.edges.some(e=>e.to==='grossProfit'),'the causal graph follows the equations that run');
+});
+test('a machine that cannot run a scenario is identified as inspect-only, with the reason',()=>{
+ const f=(val:number,instant=false)=>({units:{USD:[{val,end:'2025-12-31',...(instant?{}:{start:'2025-01-01'}),filed:'2026-02-20',form:'10-K',accn:'0000000001-26-000001'}]}});
+ const facts:SecCompanyFacts={cik:1,entityName:'Test Bank',facts:{'us-gaap':{InterestIncomeExpenseNet:f(60e9),NoninterestIncome:f(40e9),NoninterestExpense:f(65e9),ProvisionForCreditLosses:f(5e9),NetIncomeLoss:f(22e9),IncomeTaxExpenseBenefit:f(7e9),Deposits:f(2e12,true),StockholdersEquity:f(3e11,true)}}};
+ const m=constructMachine(secToDataset('TB',facts,{cik:'1',name:'Test Bank',sic:'6021',sicDescription:'National Commercial Banks'},'2026-09-27'));
+ assert.match(whyInspectOnly(m)!,/Loan assets is UNKNOWN/);
+ assert.equal(whyInspectOnly(constructMachine(build())),null);
 });

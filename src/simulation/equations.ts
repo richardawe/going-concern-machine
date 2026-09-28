@@ -75,4 +75,13 @@ const banking: Equation[] = [
 ];
 
 export const equations: Record<SectorId, Equation[]> = { 'software-cloud': industrial(false), retail: industrial(true), banking, general: industrial(false) };
-export const equationFor = (sector: SectorId, target: string) => equations[sector].find(e => e.target === target);
+// No cost-of-sales line: gross profit does not exist, so costs are modelled as one block that keeps its reported share
+// of revenue. Inventory equations need cost of sales, so they drop out too (inventory stays as reported).
+const byCost = ['cogs', 'grossProfit', 'grossMargin', 'opex', 'operatingProfit', 'inventory', 'inventoryTurns', 'inventoryInvestment'];
+export const totalCostEquations: Equation[] = industrial(false).flatMap(e => e.target === 'revenue' ? [e,
+ eq('totalCosts', 'Revenue × (1 − (opening operating margin + margin change)) × cost shock; total costs keep their reported share of revenue', ['revenue', 'opening:operatingProfit', 'opening:revenue', 'assume:marginChange', 'shock:cost'], x => x.revenue * (1 - Math.max(-.5, Math.min(.95, x['opening:operatingProfit'] / x['opening:revenue'] + pct(x['assume:marginChange'])))) * x['shock:cost'], 'hypothesis'),
+ eq('operatingProfit', 'Revenue − total operating costs', ['revenue', 'totalCosts'], x => x.revenue - x.totalCosts),
+] : byCost.includes(e.target) ? [] : [e]);
+/** The equations a machine actually runs: its sector's, or the total-cost variant when no cost of sales is reported. */
+export const equationsFor = (m: { costBasis?: 'total'; classification: { sector: SectorId } }) => m.costBasis === 'total' ? totalCostEquations : equations[m.classification.sector];
+export const equationFor = (m: Parameters<typeof equationsFor>[0], target: string) => equationsFor(m).find(e => e.target === target);

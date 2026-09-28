@@ -2,7 +2,7 @@ import { sectors } from '../sectors';
 import { getNode } from '../translation/construct';
 import { unknown, type CompanyScenario, type MachineDefinition } from '../ontology/types';
 import { concepts } from '../ontology/catalog';
-import { equations, momentumParts, refKind, refNode, type Equation, type Ref } from './equations';
+import { equationsFor, momentumParts, refKind, refNode, type Equation, type Ref } from './equations';
 export const HORIZON=5;
 const round=(v:number,d=1)=>Math.round(v*10**d)/10**d;
 // Each suggested value states where it came from: calibrated from a reported ratio, or a neutral placeholder.
@@ -37,7 +37,7 @@ export function resolveInputs(e:Equation,history:MachineDefinition[],year:number
  for(const ref of e.inputs){const kind=refKind(ref),node=refNode(ref);let v:number|null|undefined;
   if(kind==='assume')v=scenario.values[ref.slice(7)];else if(kind==='shock')v=shockFactor(scenario,ref.slice(6),year);else if(kind==='year')v=year;
   else if(kind==='opening'){v=getNode(opening,node!)?.value;if(v==null)throw new Error(`Cannot simulate: opening ${concepts[node!]?.label||node} is UNKNOWN.`);}
-  else if(kind==='prior'){v=getNode(history[year-1],node!)?.value;if(v==null)v=equations[opening.classification.sector].find(q=>q.target===node)?.initial;}
+  else if(kind==='prior'){v=getNode(history[year-1],node!)?.value;if(v==null)v=equationsFor(opening).find(q=>q.target===node)?.initial;}
   else if(kind==='lagged'){const t=year-lagYears(scenario);v=t<1?0:getNode(history[t],node!)?.value;}
   else v=getNode(history[year],node!)?.value;
   if(v==null||!Number.isFinite(v))throw new Error(`Cannot compute ${concepts[e.target]?.label||e.target}: input ${ref} is UNKNOWN.`);x[ref]=v;}
@@ -45,11 +45,11 @@ export function resolveInputs(e:Equation,history:MachineDefinition[],year:number
 }
 export function simulateCompany(opening:MachineDefinition,scenario:CompanyScenario,years=HORIZON):MachineDefinition[]{
  if(!validateCompanyScenario(scenario,opening))throw new Error('Invalid sector assumptions.');if(!scenario.adopted)return [structuredClone(opening)];
- const sector=opening.classification.sector,bank=sector==='banking';const history=[structuredClone(opening)];
+ const bank=opening.classification.sector==='banking';const history=[structuredClone(opening)];
  for(let year=1;year<=years;year++){
   const m=structuredClone(opening);m.year=year;m.period=`${opening.period} + ${year} year${year>1?'s':''}`;
   m.nodes=m.nodes.map(n=>({...n,...unknown(n.unit,m.period,'Not projected by this sector model.')}));history.push(m);
-  for(const e of equations[sector]){
+  for(const e of equationsFor(opening)){
    const x=resolveInputs(e,history,year,scenario),value=e.f(x);let n=getNode(m,e.target);
    if(!n){const c=concepts[e.target];if(!c)throw new Error(`Unknown concept: ${e.target}`);n={id:e.target,...c,...unknown(c.unit,m.period),role:'core'};m.nodes.push(n);}
    if(value==null){Object.assign(n,unknown(n.unit,m.period,'Prior profit is zero or unavailable; growth-based momentum is undefined.'));continue;}
@@ -61,4 +61,8 @@ export function simulateCompany(opening:MachineDefinition,scenario:CompanyScenar
   m.edges=m.edges.map(e=>e.from==='capexExcess'&&e.to==='investmentLift'?{...e,lag:lagYears(scenario)}:e);
  }
  return history;
+}
+/** Why a machine cannot run a scenario, or null when it can: the suggested scenario must simulate end to end. */
+export function whyInspectOnly(opening:MachineDefinition):string|null{
+ try{simulateCompany(opening,{...suggestedScenario(opening),adopted:true},1);return null}catch(e){return e instanceof Error?e.message:String(e)}
 }

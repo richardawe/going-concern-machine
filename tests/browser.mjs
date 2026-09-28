@@ -24,6 +24,12 @@ try{
   await lever.press('0');assert.match(await lever.getAttribute('aria-valuetext'),/^22\.9%/,'0 returns to the reported setting');
   await page.locator('.scenario-banner').getByRole('button',{name:'Back to reported'}).click();
   await page.getByText('ACTUAL COMPANY',{exact:true}).waitFor();assert.equal(await page.locator('.scenario-banner:not(.idle)').count(),0);}
+
+ // No cost-of-sales line: the machine runs on total operating costs; a machine that cannot run is inspect-only.
+ for(const [t,check] of [['MCD',async()=>{assert.equal(await page.locator('.v2-business-bar').getByText('TOTAL-COST BASIS').count(),1);await page.locator('.company-svg g.sector-gear[aria-label="Inspect Total operating costs"]').waitFor();assert.equal(await page.locator('g.lever[aria-label="Operating cost growth"]').count(),0);assert.equal(await page.locator('g.lever[aria-label="Margin change"]').count(),1);}],
+  ['BAC',async()=>{assert.equal(await page.locator('.v2-business-bar').getByText('INSPECT ONLY').count(),1);assert.equal(await page.locator('g.lever').count(),0);assert.ok(await page.getByRole('button',{name:'Run 5 years'}).isDisabled());await page.locator('.scenario-banner').getByText(/can be inspected but not run: opening Loan assets is UNKNOWN/).waitFor();}]]){
+  await page.fill('#company-ticker',t);await page.getByRole('button',{name:'Construct'}).click();await page.getByRole('group',{name:new RegExp(`^${t} `)}).waitFor();await check();}
+ await page.fill('#company-ticker','MSFT');await page.getByRole('button',{name:'Construct'}).click();await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();
  await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
  await mkdir('artifacts',{recursive:true});
  // Canonical demonstration, repeated for each verified business model.

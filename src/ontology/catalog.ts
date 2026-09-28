@@ -33,6 +33,7 @@ export const concepts:Record<string,{label:string;meaning:string;unit:Unit}>={
  nii:{label:'Net interest income',meaning:'Reported interest income less interest expense, using reported GAAP basis.',unit:'USD'},
  fees:{label:'Noninterest revenue',meaning:'Reported noninterest revenue, including markets and asset management.',unit:'USD'},
  provision:{label:'Credit-loss provision',meaning:'Provision expense, not actual cash charge-offs.',unit:'USD'},
+ totalCosts:{label:'Total operating costs',meaning:'Everything the company spends to run the business before operating profit: revenue − operating profit. Used when the filing reports no cost-of-sales line, so no gross profit exists.',unit:'USD'},
  opex:{label:'Operating expense',meaning:'Noninterest expense for banks; operating expenses for other companies.',unit:'USD'},
  tax:{label:'Income tax expense',meaning:'Reported annual income tax provision.',unit:'USD'},
  netIncome:{label:'Net income',meaning:'Reported consolidated profit after tax.',unit:'USD'},
