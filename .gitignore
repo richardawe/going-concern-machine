@@ -7,3 +7,4 @@ artifacts/
 .DS_Store
 
 public/machines/definitions/
+public/ceo/archetypes.json

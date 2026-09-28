@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "npm run data:validate && tsc -b && vite build",
+    "predev": "npm run data:archetypes",
+    "build": "npm run data:validate && npm run data:archetypes && tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --import tsx --test tests/*.test.ts",
     "data:refresh": "node --import tsx scripts/refresh-data.ts",
     "data:validate": "node --import tsx scripts/validate-data.ts",
+    "data:archetypes": "node --import tsx scripts/build-archetypes.ts",
     "demo": "node --import tsx scripts/demo.ts",
     "data:publish": "node --import tsx scripts/publish-sec.ts",
+    "ceo:balance": "node --import tsx scripts/balance-ceo.ts",
     "test:browser": "node tests/browser.mjs",
     "demo:record": "node scripts/record-demo.mjs"
   },
