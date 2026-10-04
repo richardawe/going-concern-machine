@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, CircleAlert, CircleCheck, Pause, Play as PlayIcon, RotateCcw } from 'lucide-react';
+import { lazy, Suspense, type ReactNode, useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, ArrowRight, Check, CircleAlert, CircleCheck, Focus, Gauge as GaugeIcon, Info, Newspaper, Pause, Play as PlayIcon, RotateCcw, TrendingUp, Wallet, X } from 'lucide-react';
 import ThemeSwitch from '../components/ThemeSwitch';
 import Inspector from '../components/Inspector';
 import { leverRange, type CompanyChoice } from '../ceo/challenge';
@@ -12,9 +12,9 @@ import Setup from '../ceo/ui/Setup';
 import Briefing from '../ceo/ui/Briefing';
 import DecisionDesk from '../ceo/ui/DecisionDesk';
 import { startFor, useArchetypes } from '../ceo/ui/load';
-import { money } from '../presentation';
+import { money, percent } from '../presentation';
 import { healthLabels, sceneFrame, type Health } from './frame';
-import type { Labels } from './scene/Campus';
+import type { Labels, Part } from './scene/Campus';
 import '../ceo/ui/ceo.css';
 import './live.css';
 
@@ -78,7 +78,7 @@ export default function LiveApp() {
 function labelsFor(r: YearRecord, start: YearRecord, currency: string): Labels {
   const s = r.state;
   return {
-    revenue: money(s.revenue, currency), momentum: `${s.businessMomentum > 0 ? '+' : ''}${s.businessMomentum.toFixed(0)}`, cash: money(s.cash, currency), debt: money(s.debt, currency),
+    revenue: money(s.revenue, currency), momentum: signedInt(s.businessMomentum), cash: money(s.cash, currency), debt: money(s.debt, currency),
     staff: Math.round(r.people.headcount).toLocaleString('en-GB'), customers: `${(s.customers / start.state.customers * 100).toFixed(0)}% of Y0`,
   };
 }
@@ -91,7 +91,10 @@ function LivePlay({ game, finished, decide, finish, again, quit }: { game: Game;
   const [phase, setPhase] = useState<'decide' | 'running' | 'result'>(played === n ? 'result' : 'decide');
   const [ghostOn, setGhostOn] = useState(false);
   const [inspect, setInspect] = useState<string | null>(null);
-  const [legend, setLegend] = useState(false);
+  const [legend, setLegend] = useState(false), [reset, setReset] = useState(0);
+  // The detail card follows the part under the pointer, else the part last clicked, else the company.
+  const [hovered, setHovered] = useState<Part | null>(null), [selected, setSelected] = useState<Part | null>(null);
+  const focus = hovered ?? selected;
   // Replay (after the last year): steps through the years beside the company that held course throughout.
   const [replay, setReplay] = useState<number | null>(null), [replaying, setReplaying] = useState(false);
   const [draft, setDraft] = useState(() => holdCourse(game, played + 1).levers);
@@ -109,7 +112,6 @@ function LivePlay({ game, finished, decide, finish, again, quit }: { game: Game;
   const ghost = useMemo(() => showGhost && ghostRecords[year] ? sceneFrame(game, ghostRecords, year) : undefined, [showGhost, game, ghostRecords, year]);
   const health = you.health, board = gameScore(game, records).overall;
   const prev = records[Math.max(0, year - 1)];
-  const delta = (a: number, b: number) => b === 0 ? '' : `${a >= b ? '▲' : '▼'} ${Math.abs((a / b - 1) * 100).toFixed(0)}%`;
 
   return <section className="live-play" aria-label="Live company">
     <div className="ceo-status">
@@ -125,28 +127,31 @@ function LivePlay({ game, finished, decide, finish, again, quit }: { game: Game;
     </div>
 
     <div className={`live-stage ${health}`}>
-      {webgl ? <Suspense fallback={<p className="live-loading">Building the campus…</p>}>
-        <LiveScene you={you} ghost={ghost} labels={labelsFor(shown, records[0], c)} pick={setInspect} reduced={reduced} youTitle={showGhost ? 'YOUR COMPANY' : undefined} />
-      </Suspense> : <p className="live-loading">This browser cannot draw 3D (WebGL is off). The numbers below still tell the story.</p>}
-      <div className="live-hud" role="status" aria-live="polite">
-        <span className={`live-health ${health}`}>{healthLabels[health]}</span>
-        <span className="eyebrow">{year === 0 ? 'STARTING POSITION' : `YEAR ${year}${replay != null ? ' · REPLAY' : ''}`}</span>
-        <dl>
-          <dt>Revenue</dt><dd>{money(shown.state.revenue, c)} <small>{year ? delta(shown.state.revenue, prev.state.revenue) : ''}</small></dd>
-          <dt>Free cash flow</dt><dd className={shown.state.freeCashFlow < 0 ? 'neg' : ''}>{money(shown.state.freeCashFlow, c)}</dd>
-          <dt>Cash</dt><dd className={shown.state.cash < records[0].state.cash * .25 ? 'neg' : ''}>{money(shown.state.cash, c)}</dd>
-          <dt>Debt</dt><dd>{money(shown.state.debt, c)}</dd>
-          <dt>Momentum</dt><dd className={shown.state.businessMomentum < 0 ? 'neg' : ''}>{shown.state.businessMomentum.toFixed(0)}</dd>
-          <dt>Staff · morale</dt><dd className={shown.people.morale < .5 ? 'neg' : ''}>{Math.round(shown.people.headcount).toLocaleString('en-GB')} · {(shown.people.morale * 100).toFixed(0)}</dd>
-        </dl>
-        {shown.emergency > 0 && <p className="live-alarm"><CircleAlert size={13} /> Emergency loan {money(shown.emergency, c)}</p>}
+      <div className="live-canvas">
+        {webgl ? <Suspense fallback={<p className="live-loading">Building the site…</p>}>
+          <LiveScene you={you} ghost={ghost} labels={labelsFor(shown, records[0], c)} reduced={reduced} youTitle={showGhost ? 'YOUR COMPANY' : undefined} reset={reset}
+            interaction={{ pick: setSelected, hover: setHovered, hovered: focus }} />
+        </Suspense> : <p className="live-loading">This browser cannot draw 3D (WebGL is off). The numbers around it still tell the story.</p>}
+        {phase === 'running' && <div className="live-running" role="status"><span>PLAYING YEAR {played}…</span><small>{shown.headlines[0]?.text}</small></div>}
       </div>
+      <div className="live-kpis" role="status" aria-live="polite">
+        <Kpi icon={<TrendingUp size={16} />} label="Revenue" value={money(shown.state.revenue, c)} change={year ? shown.state.revenue / prev.state.revenue - 1 : null} sub={year === 0 ? 'starting position' : `year ${year}${replay != null ? ' · replay' : ''}`} />
+        <Kpi icon={<Wallet size={16} />} label="Cash" value={money(shown.state.cash, c)} change={year ? (prev.state.cash ? shown.state.cash / prev.state.cash - 1 : null) : null} sub={`FCF ${money(shown.state.freeCashFlow, c)}`} bad={shown.state.freeCashFlow < 0} />
+        <Kpi icon={<GaugeIcon size={16} />} label="Momentum" value={signedInt(shown.state.businessMomentum)} change={null} sub={healthLabels[health].toLowerCase()} bad={shown.state.businessMomentum < 0} />
+      </div>
+      <div className="live-map-tools">
+        <button aria-label="Reset the view" title="Reset the view" onClick={() => setReset(r => r + 1)}><Focus size={15} /></button>
+        <button aria-label={legend ? 'Hide the key' : 'What am I looking at?'} title="What am I looking at?" aria-expanded={legend} onClick={() => setLegend(!legend)}><Info size={15} /></button>
+      </div>
+      <DetailCard part={focus} pinned={selected != null && hovered == null} close={() => setSelected(null)} inspect={setInspect} record={shown} prev={prev} start={records[0]} health={health} company={game.start} board={played ? board : null} />
       {ghost && <div className="live-ghost-hud"><span className="eyebrow">HOLDING COURSE · YEAR {year}</span><span>Revenue <b>{money(ghostRecords[year].state.revenue, c)}</b></span><span>Cash <b>{money(ghostRecords[year].state.cash, c)}</b></span><span className={`live-health small ${ghost.health}`}>{healthLabels[ghost.health]}</span></div>}
-      {phase === 'running' && <div className="live-running" role="status"><span>PLAYING YEAR {played}…</span><small>{shown.headlines[0]?.text}</small></div>}
-      <div className="live-tools">
+      <YearStepper records={records} game={game} n={n} played={played} year={year} />
+      <aside className="live-card live-news" aria-label="This year">
+        <header><span className="live-card-icon"><Newspaper size={14} /></span><strong>{year === 0 ? 'Before you take the chair' : `Year ${year} at a glance`}</strong></header>
+        <ul>{(year === 0 ? [{ text: game.caseDef.tagline, tone: 'neutral' as const }] : shown.headlines.length ? shown.headlines.slice(0, 3) : [{ text: 'A quiet year.', tone: 'neutral' as const }]).map(h => <li key={h.text} className={h.tone}><i />{h.text}</li>)}</ul>
+        {shown.emergency > 0 && <p className="live-alarm"><CircleAlert size={13} /> Emergency loan {money(shown.emergency, c)}</p>}
         {replay == null && <label className="live-toggle"><input type="checkbox" checked={ghostOn} onChange={e => setGhostOn(e.target.checked)} /> Show the company that held course</label>}
-        <button className="text-button" aria-expanded={legend} onClick={() => setLegend(!legend)}>{legend ? 'Hide' : 'What am I looking at?'}</button>
-      </div>
+      </aside>
       {legend && <Legend />}
     </div>
 
@@ -159,6 +164,61 @@ function LivePlay({ game, finished, decide, finish, again, quit }: { game: Game;
       watch={() => { setReplay(0); setReplaying(true); }} pause={() => setReplaying(!replaying)} scrub={y => { setReplaying(false); setReplay(y); }} exit={() => { setReplay(null); setReplaying(false); }} again={again} quit={quit} />}
     {inspect && <Inspector metric={inspect} state={shown.state} baseline={game.start.baseline} history={records.slice(0, year + 1).map(r => r.state)} close={() => setInspect(null)} />}
   </section>;
+}
+
+const signedInt = (x: number) => { const n = Math.round(x); return `${n > 0 ? '+' : n < 0 ? '−' : ''}${Math.abs(n)}`; };
+const signedPct = (x: number) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)}%`;
+function Kpi({ icon, label, value, change, sub, bad }: { icon: ReactNode; label: string; value: string; change: number | null; sub: string; bad?: boolean }) {
+  return <div className="live-card live-kpi">
+    <span className="live-card-icon">{icon}</span>
+    <div><span className="live-kpi-label">{label}</span><strong className={bad ? 'neg' : ''}>{value}{change != null && Number.isFinite(change) && <em className={change < 0 ? 'down' : 'up'}>{signedPct(change)}</em>}</strong><small>{sub}</small></div>
+  </div>;
+}
+
+type Row = [string, string, boolean?];
+function DetailCard({ part, pinned, close, inspect, record: r, prev, start, health, company, board }: { part: Part | null; pinned: boolean; close: () => void; inspect: (m: string) => void; record: YearRecord; prev: YearRecord; start: YearRecord; health: Health; company: StartCompany; board: number | null }) {
+  const s = r.state, c = company.baseline.currency, p = r.people;
+  const growth = r.year ? s.revenue / prev.state.revenue - 1 : 0;
+  const cards: Record<Part | 'company', { eyebrow: string; title: string; chip: string; rows: Row[]; note: string; metric?: string }> = {
+    company: { eyebrow: company.tagline.toUpperCase(), title: company.name, chip: healthLabels[health], note: 'Point at a building, the flywheel, the cash silo, the debt hoist, the yard or the road to see what drives it.',
+      rows: [['Free cash flow', money(s.freeCashFlow, c), s.freeCashFlow < 0], ['Debt', money(s.debt, c)], ['Staff', Math.round(p.headcount).toLocaleString('en-GB')], ['Morale', (p.morale * 100).toFixed(0), p.morale < .5], ['Customer activity', `${(s.customers / start.state.customers * 100).toFixed(0)}% of start`], ['Board confidence', board == null ? '—' : String(board)]] },
+    revenue: { eyebrow: 'OFFICE TOWER', title: 'Revenue', chip: money(s.revenue, c), metric: 'revenue', note: 'One storey for every sixth of starting revenue. Lit windows show team productivity.',
+      rows: [['Change on last year', r.year ? signedPct(growth) : '—', growth < 0], ['Operating profit', money(s.operatingProfit, c), s.operatingProfit < 0], ['Gross margin', percent(s.grossMargin)], ['Productivity', `${p.productivity.toFixed(2)}×`, p.productivity < .95]] },
+    businessMomentum: { eyebrow: 'FLYWHEEL', title: 'Business momentum', chip: signedInt(s.businessMomentum), metric: 'businessMomentum', note: 'Spins faster as the business compounds; wobbles and slows as it decays.',
+      rows: [...s.momentumParts].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution)).slice(0, 4).map(m => [m.label, `${m.contribution > 0 ? '+' : ''}${m.contribution.toFixed(1)}`, m.contribution < 0] as Row) },
+    cash: { eyebrow: 'CASH SILO', title: 'Cash reserve', chip: money(s.cash, c), metric: 'cash', note: 'The silo level is cash; amber flows in along the pipe with positive free cash flow, red drains out with negative.',
+      rows: [['Free cash flow', money(s.freeCashFlow, c), s.freeCashFlow < 0], ['Runway', s.runway == null ? 'No burn' : `${s.runway.toFixed(0)} months`, s.runway != null], ['Dividends', money(s.dividends, c)], ['Emergency loan', r.emergency ? money(r.emergency, c) : 'None', r.emergency > 0]] },
+    debt: { eyebrow: 'DEBT HOIST', title: 'Debt', chip: money(s.debt, c), metric: 'debt', note: 'Each red weight is debt worth a tenth of starting revenue.',
+      rows: [['Interest this year', money(s.interestExpense, c)], ['Change on last year', money(s.debt - prev.state.debt, c), s.debt > prev.state.debt], ['Raised since start', money(r.raised, c)]] },
+    staff: { eyebrow: 'YARD CREW', title: 'People', chip: Math.round(p.headcount).toLocaleString('en-GB'), note: 'Each figure is a slice of headcount. They move briskly when morale is high; leavers walk off site.',
+      rows: [['Morale', (p.morale * 100).toFixed(0), p.morale < .5], ['Attrition', percent(p.attrition), p.attrition > company.params.baseAttrition * 1.3], ['Staffing vs need', `${(p.headcount / p.natural * 100).toFixed(0)}%`], ['Productivity', `${p.productivity.toFixed(2)}×`, p.productivity < .95]] },
+    customers: { eyebrow: 'ROAD & DOCKS', title: 'Customers', chip: `${(s.customers / start.state.customers * 100).toFixed(0)}%`, metric: 'customers', note: 'Busy bays get a delivery truck; grey trucks driving past are customers lost to churn.',
+      rows: [['Customer activity', `${(s.customers / start.state.customers * 100).toFixed(0)}% of start`], ['Churn', percent(s.churnRate), s.churnRate > prev.state.churnRate], ['New customers', s.newCustomers.toLocaleString('en-GB', { maximumFractionDigits: 0 })]] },
+  };
+  const k = cards[part ?? 'company'];
+  return <aside className="live-card live-detail" aria-label={`${k.title} details`}>
+    <header>
+      <div><span className="live-card-eyebrow">{k.eyebrow}</span><strong>{k.title}</strong></div>
+      {pinned && <button className="live-icon-button" aria-label="Close" onClick={close}><X size={14} /></button>}
+    </header>
+    <span className={`live-chip ${part ? '' : health}`}>{k.chip}</span>
+    <dl>{k.rows.map(([label, value, bad]) => <div key={label}><dt>{label}</dt><dd className={bad ? 'neg' : ''}>{value}</dd></div>)}</dl>
+    <p className="live-note">{k.note}</p>
+    {k.metric && <button className="live-link" onClick={() => inspect(k.metric!)}>Open the inspector <ArrowRight size={12} /></button>}
+  </aside>;
+}
+
+function YearStepper({ records, game, n, played, year }: { records: YearRecord[]; game: Game; n: number; played: number; year: number }) {
+  return <aside className="live-card live-steps" aria-label="Years">
+    <header><span className="live-card-icon"><TrendingUp size={14} /></span><strong>Five-year journey</strong><small>{game.caseDef.title}</small></header>
+    <ol>{Array.from({ length: n + 1 }, (_, i) => {
+      const h = i <= played ? sceneFrame(game, records, i).health : null;
+      return <li key={i} className={`${i < year ? 'done' : ''} ${i === year ? 'current' : ''} ${h ?? 'future'}`} aria-current={i === year ? 'step' : undefined}>
+        <span className="dot">{i < year ? <Check size={11} /> : i === year ? <i /> : null}</span>
+        <b>{i === 0 ? 'Start' : `Year ${i}`}</b><small>{h ? healthLabels[h].toLowerCase() : 'to play'}</small>
+      </li>;
+    })}</ol>
+  </aside>;
 }
 
 function Headlines({ record, year }: { record: YearRecord; year: number }) {
@@ -213,14 +273,14 @@ function Finale({ game, records, ghost, replay, replaying, watch, pause, scrub, 
 function Legend() {
   return <aside className="live-legend" aria-label="What the scene shows">
     <ul>
-      <li><b>Tower height</b> revenue compared with the start. <b>Lit windows</b> team productivity.</li>
+      <li><b>Office tower</b> grows a storey for every sixth of starting revenue; <b>lit windows</b> show productivity.</li>
       <li><b>Flywheel</b> business momentum: fast when compounding, wobbling and slowing as it decays.</li>
-      <li><b>Amber tank</b> cash. <b>Pipe</b> free cash flow: amber drops in, red drops out.</li>
-      <li><b>Red weights</b> debt, one per 10% of starting revenue. <b>Red beacon</b> an emergency loan this year.</li>
-      <li><b>Figures</b> staff: number, pace and colour follow headcount and morale; some walk off with attrition and layoffs.</li>
-      <li><b>Teal blocks</b> customers arriving; grey ones walking past are churn.</li>
-      <li><b>Cranes</b> investment still to pay off. <b>Sky</b> this year’s events and overall health; <b>smoke</b> means trouble.</li>
-      <li>Click the tower, flywheel, tank, weights or road to inspect the number behind it.</li>
+      <li><b>Cash silo</b> cash. <b>Pipe</b> free cash flow: amber in, red out.</li>
+      <li><b>Red weights</b> on the hoist are debt, one per 10% of starting revenue. A <b>flashing red beacon</b> means an emergency loan this year.</li>
+      <li><b>Delivery trucks</b> are customers: busy docks have their doors up and a truck unloading. <b>Grey trucks</b> driving past are customers lost to churn.</li>
+      <li><b>Crew in hi-vis</b> is headcount: they move briskly when morale is high, and leavers walk off through the gate. <b>Forklifts</b> speed up with productivity.</li>
+      <li><b>Cranes</b> mean investment still to pay off. <b>Sky</b> shows this year’s events and overall health; <b>smoke</b> means trouble. The <b>flag and dock lights</b> show the health colour.</li>
+      <li>Point at the tower, flywheel, silo, hoist, yard or road for details; click to keep the card open.</li>
     </ul>
   </aside>;
 }
