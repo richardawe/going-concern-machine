@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "C",
-  "name": "Citigroup Inc.",
-  "retrieved": "2026-09-28",
+  "name": "Citigroup Inc",
+  "retrieved": "2026-10-05",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
