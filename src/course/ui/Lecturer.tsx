@@ -10,7 +10,8 @@ import type { Payload } from '../types';
 import { gradesFor } from './Submit';
 
 // The lecturer's inbox. Hand-ins are public GitHub issues holding sealed codes; this page reads them, opens each with
-// the private key file (which never leaves this browser), and rebuilds each student's PDF here.
+// the private key file (asked for the first time it's needed, then remembered on this device; it never leaves the
+// browser), and rebuilds each student's PDF here.
 
 interface Row { issue?: number; url?: string; author?: string; payload: Payload; code: string; superseded: number; grades?: Record<string, ModuleGrade | null> }
 interface Failure { source: string; reason: string }
@@ -32,23 +33,23 @@ async function loadIssues(): Promise<{ number: number; html_url: string; user?: 
 
 export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | null }) {
   const [key, setKey] = useState<JsonWebKey | null>(() => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } });
-  const [remember, setRemember] = useState(() => { try { return !!localStorage.getItem(KEY); } catch { return false; } });
   const [rows, setRows] = useState<Row[]>([]), [failures, setFailures] = useState<Failure[]>([]);
   const [busy, setBusy] = useState(''), [error, setError] = useState(''), [pasted, setPasted] = useState('');
-  const file = useRef<HTMLInputElement>(null);
+  const file = useRef<HTMLInputElement>(null), pending = useRef<((k: JsonWebKey) => Promise<void>) | null>(null);
 
+  /** Runs an action with the course key, asking for the key file first if this device doesn't have it yet. */
+  const withKey = (action: (k: JsonWebKey) => Promise<void>) => { if (key) void action(key); else { pending.current = action; file.current?.click(); } };
   const loadKey = async (text: string) => {
     setError('');
     try {
       const jwk = JSON.parse(text) as JsonWebKey;
       await crypto.subtle.importKey('jwk', jwk, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt']);
-      setKey(jwk); if (remember) try { localStorage.setItem(KEY, JSON.stringify(jwk)); } catch { /* memory only */ }
-    } catch { setError('That isn’t a course private key file.'); }
+      setKey(jwk); try { localStorage.setItem(KEY, JSON.stringify(jwk)); } catch { /* memory only */ }
+      const next = pending.current; pending.current = null; if (next) await next(jwk);
+    } catch { setError('That isn’t the course key file. Choose the key file you were given.'); }
   };
-  const forget = () => { setKey(null); setRemember(false); try { localStorage.removeItem(KEY); } catch { /* nothing stored */ } };
 
-  async function open(entries: { source: string; text: string; issue?: number; url?: string; author?: string }[]) {
-    if (!key) return;
+  async function open(key: JsonWebKey, entries: { source: string; text: string; issue?: number; url?: string; author?: string }[]) {
     const found: Row[] = [], failed: Failure[] = [];
     for (const e of entries) {
       const codes = findAllSealed(e.text);
@@ -70,9 +71,9 @@ export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | n
     setRows([...latest.values()].sort((a, b) => a.payload.student.name.localeCompare(b.payload.student.name)));
     setFailures(failed);
   }
-  const fromGitHub = async () => {
+  const fromGitHub = async (key: JsonWebKey) => {
     setBusy('Reading hand-ins from GitHub…'); setError('');
-    try { const issues = await loadIssues(); await open(issues.map(i => ({ source: `Issue #${i.number}`, text: i.body ?? '', issue: i.number, url: i.html_url, author: i.user?.login }))); }
+    try { const issues = await loadIssues(); await open(key, issues.map(i => ({ source: `Issue #${i.number}`, text: i.body ?? '', issue: i.number, url: i.html_url, author: i.user?.login }))); }
     catch (e) { setError(e instanceof Error ? e.message : 'GitHub could not be read.'); }
     setBusy('');
   };
@@ -101,26 +102,17 @@ export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | n
   };
 
   return <section className="stack-lg">
-    <div className="banner"><div className="stack-sm"><span className="eyebrow">Lecturer</span><h1>Hand-ins</h1>
-      <p className="muted lede">Students hand in sealed codes as issues on <a href={`https://github.com/${SUBMISSION_REPO}/issues?q=label%3Asubmission`} target="_blank" rel="noopener noreferrer">{SUBMISSION_REPO}</a>. Load the course private key to open them. The key stays in this browser.</p></div></div>
+    <h1>Hand-ins</h1>
     <div className="card pad stack-sm">
-      <span className="eyebrow">Course key</span>
-      {key ? <div className="row"><span className="c-tag good">Key loaded</span><button className="link" onClick={forget}>Forget the key</button></div>
-        : <div className="row">
-          <button className="btn primary" onClick={() => file.current?.click()}>Load private key file</button>
-          <label className="check small"><input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} /><span>Remember on this device</span></label>
-          <input ref={file} type="file" accept="application/json,.json" hidden onChange={async e => { const f = e.target.files?.[0]; if (f) await loadKey(await f.text()); e.target.value = ''; }} />
-        </div>}
-    </div>
-    {key && <div className="card pad stack-sm">
-      <div className="row"><button className="btn primary" disabled={!!busy} onClick={fromGitHub}>Load hand-ins from GitHub</button>
+      <div className="row"><button className="btn primary" disabled={!!busy} onClick={() => withKey(fromGitHub)}>Load hand-ins</button>
         <button className="btn" disabled={!!busy || !rows.length || !archetypes} onClick={gradeAll}>Replay all grades</button>
         <button className="btn" disabled={!rows.length} onClick={csv}>Export CSV</button></div>
       <details><summary className="small">Or paste sealed codes</summary>
         <textarea rows={4} value={pasted} onChange={e => setPasted(e.target.value)} placeholder="GCM1.pilot.… (one or many)" />
-        <button className="btn" disabled={!pasted.trim() || !!busy} onClick={() => open([{ source: 'Pasted codes', text: pasted }])}>Open pasted codes</button>
+        <button className="btn" disabled={!pasted.trim() || !!busy} onClick={() => withKey(k => open(k, [{ source: 'Pasted codes', text: pasted }]))}>Open pasted codes</button>
       </details>
-    </div>}
+      <input ref={file} type="file" accept="application/json,.json" hidden onChange={async e => { const f = e.target.files?.[0]; if (f) await loadKey(await f.text()); else pending.current = null; e.target.value = ''; }} />
+    </div>
     {busy && <p className="c-notice" role="status">{busy}</p>}
     {error && <p className="c-notice" role="alert">{error}</p>}
     {rows.length > 0 && <div className="card"><div className="table-wrap"><table className="years inbox">

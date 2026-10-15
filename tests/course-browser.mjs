@@ -103,11 +103,11 @@ try {
   if (process.env.COURSE_PRIVATE_KEY) {
     const lecturer = await context.newPage(); lecturer.on('pageerror', e => errors.push(e.message));
     await lecturer.goto('https://gcm.test/going-concern-machine/#/course/lecturer');
-    await lecturer.locator('input[type=file]').setInputFiles(process.env.COURSE_PRIVATE_KEY);
-    await lecturer.getByText('Key loaded').waitFor();
+    // The key file is asked for the first time it's needed, then remembered.
     await lecturer.getByText('Or paste sealed codes').click();
     await lecturer.getByPlaceholder(/GCM1\.pilot/).fill(`some text ${sealed} more text`);
-    await lecturer.getByRole('button', { name: 'Open pasted codes' }).click();
+    const [chooser] = await Promise.all([lecturer.waitForEvent('filechooser'), lecturer.getByRole('button', { name: 'Open pasted codes' }).click()]);
+    await chooser.setFiles(process.env.COURSE_PRIVATE_KEY);
     await lecturer.getByText('Test Student').waitFor();
     assert.ok(await lecturer.getByText(code).count(), 'the lecturer sees the same verification code');
     const [again] = await Promise.all([lecturer.waitForEvent('download', { timeout: 60000 }), lecturer.getByRole('button', { name: 'PDF' }).click()]);
@@ -115,6 +115,12 @@ try {
     const theirs = await readFile('artifacts/course-lecturer.pdf');
     assert.deepEqual(theirs, pdf, 'the lecturer’s PDF is byte-for-byte the student’s');
     await lecturer.screenshot({ path: 'artifacts/course-lecturer.png', fullPage: true });
+    await lecturer.reload(); await lecturer.getByText('Or paste sealed codes').click();
+    await lecturer.getByPlaceholder(/GCM1\.pilot/).fill(sealed);
+    let asked = false; lecturer.once('filechooser', () => { asked = true; });
+    await lecturer.getByRole('button', { name: 'Open pasted codes' }).click();
+    await lecturer.getByText('Test Student').waitFor();
+    assert.ok(!asked, 'the key is remembered on this device');
   }
 
   // Phone width: no sideways scroll on the module and hand-in pages, in dark mode.
