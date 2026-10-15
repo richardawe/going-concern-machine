@@ -149,6 +149,7 @@
 .course .vcode{font:500 15px var(--mono);color:var(--c-ink);letter-spacing:.05em}
 .course .inbox td,.course .inbox th{vertical-align:top}
 .course details summary{cursor:pointer;color:var(--c-muted);margin-bottom:8px}
+.course details textarea{font:11px/1.5 var(--mono)}
 
 /* Fig: Anatomy-style isometric card */
 .course .iso-card{margin:0;background:var(--c-card);border-radius:12px;box-shadow:var(--c-lift);overflow:hidden}

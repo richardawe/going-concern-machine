@@ -111,7 +111,7 @@ export async function submissionPdf({ payload, course, code, grades }: PdfInput)
     w.add();
     w.text(`MODULE ${def.number} · ${def.topic.toUpperCase()}`, { font: f.bold, size: 7.5, color: grey, gap: 4 });
     w.text(def.title, { font: f.bold, size: 15, gap: 4 });
-    if (g) w.text(`Outcome ${g.outcome.grade} · Judgement ${g.judgement.grade} · ${g.verdict}. Cash ${money(g.startCash, g.currency)} → ${money(g.finalCash, g.currency)}${g.emergencies ? `, ${g.emergencies} emergency loan${g.emergencies > 1 ? 's' : ''}` : ''}.`, { size: 9, color: grey, gap: 8 });
+    if (g) w.text(`Outcome ${g.outcome.grade} · Judgement ${g.judgement.grade} · ${g.verdict}. Cash ${money(g.startCash, g.currency)} to ${money(g.finalCash, g.currency)}${g.emergencies ? `, ${g.emergencies} emergency loan${g.emergencies > 1 ? 's' : ''}` : ''}.`, { size: 9, color: grey, gap: 8 });
     else w.text(m.completed ? 'Grades not computed.' : 'Decisions not finished, so no grade yet.', { size: 9, color: grey, gap: 8 });
     w.rule();
     if (m.decisions.length) {
