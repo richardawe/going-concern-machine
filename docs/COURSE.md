@@ -22,27 +22,23 @@ That is 18 typed responses per module. Pasting is allowed but **flagged** in the
 ## Hand-in: GitHub Issues and Actions, for now
 
 ```
-Browser: seal (gzip, then AES-GCM, with the key wrapped by RSA-OAEP)
+Browser: packs the submission into one code (GCM0: gzip + base64url, NOT encrypted)
   → GitHub issue form (.github/ISSUE_TEMPLATE/submission.yml)
   → Action .github/workflows/course-intake.yml (scripts/course-intake.ts)
-      opens it with the SUBMISSION_PRIVATE_KEY secret, validates every field, replays the decisions,
-      replies with a receipt and verification code, labels the issue (received or invalid) and closes it
-  → Lecturer page (#/course/lecturer): loads the hand-in issues, opens them with the private key file
-      in the browser, and rebuilds each student's PDF
+      validates every field, replays the decisions, replies with a receipt and verification code,
+      labels the issue (received or invalid) and closes it
+  → Lecturer page (#/course/lecturer): reads the hand-in issues from GitHub as soon as it opens,
+      lists every student, and rebuilds each student's PDF
 ```
 
-- The repository is public, so issues are public. A hand-in issue shows only the sealed code and the student's GitHub username. The bot's reply carries no name, ID or grade.
+- **Prototype only: hand-ins are not encrypted.** All pilot data is fictional, so anyone who opens a hand-in issue can read it. This keeps the demo to one step: a student hands in and the work appears on the lecturer page, with no key to manage.
 - Grades are never sent. They are recomputed from the decisions wherever a hand-in is read: in the browser, in the Action and on the lecturer page.
 - The **verification code** (`GCM-XXXX-XXXX-XXXX`) is a SHA-256 fingerprint of the submission. The student's PDF and the lecturer's rebuilt PDF are byte-for-byte identical (checked by `tests/course-browser.mjs`).
-- Students need a GitHub account. The final version replaces the issue and the Action with a server endpoint that accepts the same sealed payload (`src/course/payload.ts`), so the rest stays as it is.
+- Students need a GitHub account. The real version replaces the issue and the Action with a server endpoint and university sign-in.
 
-### Setup (once)
+### Encryption, for later
 
-1. `npm run course:keygen` writes the public key to `public/course/submission-key.json` (commit it) and the private key to `course-private-key.json` (git ignores it).
-2. In the repository, go to **Settings → Secrets and variables → Actions → New repository secret**, and add `SUBMISSION_PRIVATE_KEY` with the contents of the private key file.
-3. Give the private key file to the lecturer, who loads it on `#/course/lecturer`. It never leaves their browser.
-
-Without the secret, hand-ins are still kept as issues, and the bot replies "Saved, not yet checked". Codes sealed with an older key need that older private key to open them.
+`src/course/seal.ts` also implements an encrypted format (GCM1: gzip, then AES-GCM, with the key wrapped by RSA-OAEP), and every reader still accepts it. `npm run course:keygen` makes the key pair; the intake Action opens GCM1 codes with the `SUBMISSION_PRIVATE_KEY` secret, and the lecturer page opens them only if the key is remembered on that device. Switch the hand-in page back to `seal()` when real student data is involved.
 
 ### Known limits of the prototype
 
@@ -55,7 +51,7 @@ Without the secret, hand-ins are still kept as issues, and the bot replies "Save
 | Path | What it does |
 | --- | --- |
 | `src/course/modules.ts` | Courses and module content: concepts, check questions, planned modules |
-| `src/course/seal.ts` | Sealing and opening (Web Crypto; the same code runs in the browser, tests and the Action) |
+| `src/course/seal.ts` | Hand-in codes: the prototype's packed format and the encrypted format for later (the same code runs in the browser, tests and the Action) |
 | `src/course/payload.ts` | Building, validating and fingerprinting a hand-in |
 | `src/course/grade.ts`, `grade.worker.ts` | Replaying decisions into outcome and judgement grades |
 | `src/course/pdf.ts` | The submission PDF (pdf-lib) |

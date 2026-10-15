@@ -4,10 +4,11 @@ import type { CompanyDataset } from '../src/ontology/types';
 import { gradeModule, moduleStart } from '../src/course/grade';
 import { courseById, moduleById } from '../src/course/modules';
 import { stats, validatePayload, verificationCode } from '../src/course/payload';
-import { findSealed, unseal } from '../src/course/seal';
+import { findSealed, isPacked, openCode } from '../src/course/seal';
 
-// The hand-in intake, run by .github/workflows/course-intake.yml when a hand-in issue opens. It opens the sealed code
-// with the private key from Actions secrets, checks every field, replays the decisions, and writes the public reply.
+// The hand-in intake, run by .github/workflows/course-intake.yml when a hand-in issue opens. It opens the hand-in code
+// (prototype GCM0 codes need no key; encrypted GCM1 codes need the SUBMISSION_PRIVATE_KEY secret), checks every field,
+// replays the decisions, and writes the public reply.
 // The reply goes on a public issue, so it carries the verification code and counts only: no name, ID or grade.
 // Writes the reply to $INTAKE_COMMENT and status=received|invalid|unconfigured to $GITHUB_OUTPUT.
 
@@ -17,17 +18,17 @@ const finish = async (status: 'received' | 'invalid' | 'unconfigured', body: str
   if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `status=${status}\n`);
   console.log(`${status}\n${body}`);
 };
-const retry = 'Go back to the **Submit** page, seal your work again and open a new hand-in. Your saved work is still in your browser.';
+const retry = 'Go back to the **Hand in** page, prepare your hand-in again and open a new issue. Your saved work is still in your browser.';
 
 try {
   const event = JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH ?? '', 'utf8').catch(() => '{}')) as { issue?: { body?: string | null } };
   const body = (event.issue?.body ?? process.env.ISSUE_BODY ?? '').slice(0, 200_000), code = findSealed(body);
   const keyText = process.env.SUBMISSION_PRIVATE_KEY?.trim();
-  if (!code) await finish('invalid', `**Not received.** This issue doesn’t contain a sealed submission code (it starts with \`GCM1.\`).\n\n${retry}`);
-  else if (!keyText) await finish('unconfigured', '**Saved, not yet checked.** The course key isn’t set up on this repository, so the hand-in couldn’t be opened and checked. Your sealed code is kept here, and your lecturer can still open it.');
+  if (!code) await finish('invalid', `**Not received.** This issue doesn’t contain a hand-in code (it starts with \`GCM0.\`).\n\n${retry}`);
+  else if (!isPacked(code) && !keyText) await finish('unconfigured', '**Saved, not yet checked.** The course key isn’t set up on this repository, so the hand-in couldn’t be opened and checked. Your sealed code is kept here, and your lecturer can still open it.');
   else {
     let opened;
-    try { opened = validatePayload(await unseal(code, JSON.parse(keyText) as JsonWebKey)); }
+    try { opened = validatePayload(await openCode(code, keyText ? JSON.parse(keyText) as JsonWebKey : null)); }
     catch (e) { opened = { ok: false as const, error: e instanceof Error ? e.message : 'The code could not be opened.' }; }
     if (!opened.ok) await finish('invalid', `**Not received.** ${opened.error}\n\n${retry}`);
     else {

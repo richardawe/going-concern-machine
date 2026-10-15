@@ -8,7 +8,7 @@ import { gradeModule, moduleStart } from '../src/course/grade';
 import { courseById, modules, moduleById } from '../src/course/modules';
 import { buildPayload, canonical, stats, validatePayload, verificationCode } from '../src/course/payload';
 import { submissionPdf } from '../src/course/pdf';
-import { findSealed, generateKeys, seal, unseal } from '../src/course/seal';
+import { findAllSealed, findSealed, generateKeys, openCode, pack, seal, unpack, unseal } from '../src/course/seal';
 import { answer, complete, wordCount } from '../src/course/text';
 import { MIN_WORDS, type Progress } from '../src/course/types';
 
@@ -70,6 +70,20 @@ test('a submission seals, opens and validates; edits change its verification cod
   const other = await generateKeys();
   await assert.rejects(unseal(code, other.privateKey));
   await assert.rejects(unseal(code.slice(0, -8) + 'AAAAAAAA', privateKey));
+});
+
+test('prototype hand-in codes (GCM0) open without a key; encrypted ones still need it', async () => {
+  const payload = buildPayload(finished(), course, '2026-10-15T21:14:00.000Z');
+  const code = await pack(payload, course.id);
+  assert.match(code, /^GCM0\.pilot\.[A-Za-z0-9_-]+$/);
+  assert.equal(findSealed(`Hand-in code\n\n${code}\n`), code);
+  const opened = validatePayload(await openCode(code));
+  assert.ok(opened.ok && canonical(opened.payload) === canonical(payload));
+  await assert.rejects(unpack(code.slice(0, -10)));
+  const { publicKey, privateKey } = await generateKeys(), sealed = await seal(payload, course.id, publicKey);
+  assert.deepEqual(findAllSealed(`${code} and ${sealed}`), [code, sealed]);
+  await assert.rejects(openCode(sealed), /needs the course key/);
+  assert.ok(validatePayload(await openCode(sealed, privateKey)).ok);
 });
 
 test('validation rejects malformed or invented content and recomputes word counts', () => {

@@ -41,9 +41,33 @@ export async function seal(value: unknown, course: string, publicKey: JsonWebKey
   return [SEAL_PREFIX, course.replace(/[^A-Za-z0-9_-]/g, ''), b64(wrapped), b64(iv), b64(body)].join('.');
 }
 
-/** The first sealed code in some text (an issue body, a pasted list), or null. */
+// PROTOTYPE format (GCM0): the same submission gzipped and base64url-encoded, but NOT encrypted, so a hand-in can be
+// read by anyone who has the code. The pilot uses it because all its data is fictional; the real server will use GCM1.
+export const PACK_PREFIX = 'GCM0';
+export async function pack(value: unknown, course: string): Promise<string> {
+  const plain = await pipe(new TextEncoder().encode(JSON.stringify(value)), new CompressionStream('gzip'));
+  return [PACK_PREFIX, course.replace(/[^A-Za-z0-9_-]/g, ''), b64(plain)].join('.');
+}
+export const isPacked = (code: string) => code.startsWith(`${PACK_PREFIX}.`);
+export async function unpack(code: string): Promise<unknown> {
+  if (code.length > MAX_SEALED) throw new Error('The hand-in code is too long.');
+  const [prefix, , body] = code.trim().split('.');
+  if (prefix !== PACK_PREFIX || !body) throw new Error('This is not a hand-in code.');
+  let bytes: Uint8Array;
+  try { bytes = await pipe(unb64(body), new DecompressionStream('gzip'), MAX_PLAIN); }
+  catch { throw new Error('The code could not be read: it is incomplete or edited.'); }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+/** Opens either format; GCM1 needs the course private key. */
+export async function openCode(code: string, privateKey?: JsonWebKey | null): Promise<unknown> {
+  if (isPacked(code)) return unpack(code);
+  if (!privateKey) throw new Error('This hand-in is encrypted and needs the course key.');
+  return unseal(code, privateKey);
+}
+
+/** The first hand-in code in some text (an issue body, a pasted list), or null. */
 export const findSealed = (text: string) => findAllSealed(text)[0] ?? null;
-export const findAllSealed = (text: string) => [...text.matchAll(/GCM1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g)].map(m => m[0]).filter(c => c.length <= MAX_SEALED);
+export const findAllSealed = (text: string) => [...text.matchAll(/GCM1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+|GCM0\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g)].map(m => m[0]).filter(c => c.length <= MAX_SEALED);
 export const sealedCourse = (code: string) => code.split('.')[1] ?? '';
 
 export async function unseal(code: string, privateKey: JsonWebKey): Promise<unknown> {

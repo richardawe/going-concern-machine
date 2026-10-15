@@ -4,7 +4,6 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 // Going Concern Modules end to end on the production build: a student completes Module 1 (8 concepts, 5 decisions with
 // reasons, debrief, check), seals and hands in, downloads the PDF; the lecturer opens the sealed code and rebuilds the PDF.
-// The lecturer half needs the course private key: COURSE_PRIVATE_KEY=path/to/key.json (skipped without it).
 const words = (n, w = 'margin') => Array.from({ length: n }, (_, i) => `${w}${i % 7 ? '' : ' cash'}`).join(' ');
 const browser = await chromium.launch({ headless: true });
 try {
@@ -84,10 +83,10 @@ try {
   await page.getByRole('button', { name: 'Hand in →' }).click();
   await page.getByRole('heading', { name: 'Hand in your work' }).waitFor();
   await page.getByLabel('I confirm these answers are my own work.').check();
-  await page.getByRole('button', { name: 'Seal my work' }).click();
+  await page.getByRole('button', { name: 'Prepare my hand-in' }).click();
   await page.locator('#sealed-code').waitFor({ timeout: 8000 }).catch(async () => { await shot('seal-fail'); console.log(await page.locator('.sendbox').innerText()); });
   const sealed = await page.locator('#sealed-code').inputValue();
-  assert.match(sealed, /^GCM1\.pilot\./);
+  assert.match(sealed, /^GCM0\.pilot\./);
   const code = (await page.locator('.vcode').textContent()).trim();
   assert.match(code, /^GCM-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/);
   const href = await page.getByRole('link', { name: /Open the hand-in form/ }).getAttribute('href');
@@ -99,28 +98,18 @@ try {
   assert.equal(download.suggestedFilename(), 'GCM101_20419377_Student.pdf');
   await writeFile('artifacts/course-sealed.txt', sealed);
 
-  // Lecturer: load the key, open the pasted code, rebuild the PDF.
-  if (process.env.COURSE_PRIVATE_KEY) {
+  // Lecturer: the page reads hand-in issues from GitHub as soon as it opens (stubbed here) and needs no key.
+  {
+    await context.route('https://api.github.com/**', route => route.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify([{ number: 42, html_url: 'https://github.com/richardawe/going-concern-machine/issues/42', user: { login: 'student' }, body: `### Hand-in code\n\n${sealed}` }]) }));
     const lecturer = await context.newPage(); lecturer.on('pageerror', e => errors.push(e.message));
     await lecturer.goto('https://gcm.test/going-concern-machine/#/course/lecturer');
-    // The key file is asked for the first time it's needed, then remembered.
-    await lecturer.getByText('Or paste sealed codes').click();
-    await lecturer.getByPlaceholder(/GCM1\.pilot/).fill(`some text ${sealed} more text`);
-    const [chooser] = await Promise.all([lecturer.waitForEvent('filechooser'), lecturer.getByRole('button', { name: 'Open pasted codes' }).click()]);
-    await chooser.setFiles(process.env.COURSE_PRIVATE_KEY);
     await lecturer.getByText('Test Student').waitFor();
     assert.ok(await lecturer.getByText(code).count(), 'the lecturer sees the same verification code');
+    assert.ok(await lecturer.getByRole('link', { name: '#42' }).count(), 'linked to its issue');
     const [again] = await Promise.all([lecturer.waitForEvent('download', { timeout: 60000 }), lecturer.getByRole('button', { name: 'PDF' }).click()]);
     await again.saveAs('artifacts/course-lecturer.pdf');
-    const theirs = await readFile('artifacts/course-lecturer.pdf');
-    assert.deepEqual(theirs, pdf, 'the lecturer’s PDF is byte-for-byte the student’s');
+    assert.deepEqual(await readFile('artifacts/course-lecturer.pdf'), pdf, 'the lecturer’s PDF is byte-for-byte the student’s');
     await lecturer.screenshot({ path: 'artifacts/course-lecturer.png', fullPage: true });
-    await lecturer.reload(); await lecturer.getByText('Or paste sealed codes').click();
-    await lecturer.getByPlaceholder(/GCM1\.pilot/).fill(sealed);
-    let asked = false; lecturer.once('filechooser', () => { asked = true; });
-    await lecturer.getByRole('button', { name: 'Open pasted codes' }).click();
-    await lecturer.getByText('Test Student').waitFor();
-    assert.ok(!asked, 'the key is remembered on this device');
   }
 
   // Phone width: no sideways scroll on the module and hand-in pages, in dark mode.

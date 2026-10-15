@@ -1,7 +1,7 @@
 name: Course hand-in intake
-# Prototype backend for Going Concern Modules: a student hands in by opening an issue that holds a sealed (encrypted)
-# submission. This opens and checks it with the SUBMISSION_PRIVATE_KEY secret, replies with a receipt, labels and
-# closes the issue. The issue body is untrusted: it is read from the event file by the script, never interpolated here.
+# Prototype backend for Going Concern Modules: a student hands in by opening an issue that holds a hand-in code.
+# This opens and checks it (encrypted GCM1 codes use the SUBMISSION_PRIVATE_KEY secret), replies with a receipt,
+# labels and closes the issue. The issue body is untrusted: it is read from the event file by the script, never interpolated here.
 on:
   issues:
     types: [opened]
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   intake:
-    if: contains(github.event.issue.body, 'GCM1.')
+    if: contains(github.event.issue.body, 'GCM0.') || contains(github.event.issue.body, 'GCM1.')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

@@ -1,21 +1,22 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ArchetypeFile } from '../../ceo/archetypes';
 import type { ModuleGrade } from '../grade';
 import { courseById, SUBMISSION_REPO } from '../modules';
 import { stats, validatePayload, verificationCode } from '../payload';
 import { pdfName, submissionPdf } from '../pdf';
 import { download } from '../progress';
-import { findAllSealed, unseal } from '../seal';
+import { findAllSealed, openCode } from '../seal';
 import type { Payload } from '../types';
 import { gradesFor } from './Submit';
 
-// The lecturer's inbox. Hand-ins are public GitHub issues holding sealed codes; this page reads them, opens each with
-// the private key file (asked for the first time it's needed, then remembered on this device; it never leaves the
-// browser), and rebuilds each student's PDF here.
+// The lecturer's inbox. Hand-ins are GitHub issues holding hand-in codes; this page reads them as soon as it opens and
+// rebuilds each student's PDF here. Prototype codes (GCM0) are not encrypted, so no key is needed; an encrypted code
+// (GCM1) opens only if the course key is remembered on this device.
 
 interface Row { issue?: number; url?: string; author?: string; payload: Payload; code: string; superseded: number; grades?: Record<string, ModuleGrade | null> }
 interface Failure { source: string; reason: string }
 const KEY = 'gcm:course:lecturer-key';
+const rememberedKey = (): JsonWebKey | null => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } };
 const csvCell = (v: string | number) => { const s = String(v); return /[",\n]/.test(s) || /^[=+\-@]/.test(s) ? `"${s.replace(/^([=+\-@])/, "'$1").replace(/"/g, '""')}"` : s; };
 
 async function loadIssues(): Promise<{ number: number; html_url: string; user?: { login: string }; body: string | null }[]> {
@@ -25,38 +26,25 @@ async function loadIssues(): Promise<{ number: number; html_url: string; user?: 
     if (r.status === 403) throw new Error('GitHub’s rate limit for this network was reached. Try again in an hour, or paste the codes below.');
     if (!r.ok) throw new Error(`GitHub returned ${r.status}.`);
     const batch = await r.json() as { number: number; html_url: string; user?: { login: string }; body: string | null; pull_request?: unknown }[];
-    out.push(...batch.filter(i => !i.pull_request && i.body?.includes('GCM1.')));
+    out.push(...batch.filter(i => !i.pull_request && /GCM[01]\./.test(i.body ?? '')));
     if (batch.length < 100) break;
   }
   return out;
 }
 
 export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | null }) {
-  const [key, setKey] = useState<JsonWebKey | null>(() => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } });
   const [rows, setRows] = useState<Row[]>([]), [failures, setFailures] = useState<Failure[]>([]);
-  const [busy, setBusy] = useState(''), [error, setError] = useState(''), [pasted, setPasted] = useState('');
-  const file = useRef<HTMLInputElement>(null), pending = useRef<((k: JsonWebKey) => Promise<void>) | null>(null);
+  const [busy, setBusy] = useState(''), [error, setError] = useState(''), [pasted, setPasted] = useState(''), [loaded, setLoaded] = useState('');
 
-  /** Runs an action with the course key, asking for the key file first if this device doesn't have it yet. */
-  const withKey = (action: (k: JsonWebKey) => Promise<void>) => { if (key) void action(key); else { pending.current = action; file.current?.click(); } };
-  const loadKey = async (text: string) => {
-    setError('');
-    try {
-      const jwk = JSON.parse(text) as JsonWebKey;
-      await crypto.subtle.importKey('jwk', jwk, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt']);
-      setKey(jwk); try { localStorage.setItem(KEY, JSON.stringify(jwk)); } catch { /* memory only */ }
-      const next = pending.current; pending.current = null; if (next) await next(jwk);
-    } catch { setError('That isn’t the course key file. Choose the key file you were given.'); }
-  };
-
-  async function open(key: JsonWebKey, entries: { source: string; text: string; issue?: number; url?: string; author?: string }[]) {
+  async function open(entries: { source: string; text: string; issue?: number; url?: string; author?: string }[]) {
+    const key = rememberedKey();
     const found: Row[] = [], failed: Failure[] = [];
     for (const e of entries) {
       const codes = findAllSealed(e.text);
       if (!codes.length) { failed.push({ source: e.source, reason: 'No sealed code found.' }); continue; }
       for (const c of codes) {
         try {
-          const v = validatePayload(await unseal(c, key));
+          const v = validatePayload(await openCode(c, key));
           if (!v.ok) failed.push({ source: e.source, reason: v.error });
           else found.push({ issue: e.issue, url: e.url, author: e.author, payload: v.payload, code: await verificationCode(v.payload), superseded: 0 });
         } catch (err) { failed.push({ source: e.source, reason: err instanceof Error ? err.message : 'Could not be opened.' }); }
@@ -71,12 +59,13 @@ export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | n
     setRows([...latest.values()].sort((a, b) => a.payload.student.name.localeCompare(b.payload.student.name)));
     setFailures(failed);
   }
-  const fromGitHub = async (key: JsonWebKey) => {
+  const fromGitHub = async () => {
     setBusy('Reading hand-ins from GitHub…'); setError('');
-    try { const issues = await loadIssues(); await open(key, issues.map(i => ({ source: `Issue #${i.number}`, text: i.body ?? '', issue: i.number, url: i.html_url, author: i.user?.login }))); }
+    try { const issues = await loadIssues(); await open(issues.map(i => ({ source: `Issue #${i.number}`, text: i.body ?? '', issue: i.number, url: i.html_url, author: i.user?.login }))); }
     catch (e) { setError(e instanceof Error ? e.message : 'GitHub could not be read.'); }
-    setBusy('');
+    setLoaded(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })); setBusy('');
   };
+  useEffect(() => { void fromGitHub(); }, []);
   const gradeAll = async () => {
     if (!archetypes) return;
     for (let i = 0; i < rows.length; i++) {
@@ -104,14 +93,14 @@ export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | n
   return <section className="stack-lg">
     <h1>Hand-ins</h1>
     <div className="card pad stack-sm">
-      <div className="row"><button className="btn primary" disabled={!!busy} onClick={() => withKey(fromGitHub)}>Load hand-ins</button>
+      <div className="row"><button className="btn primary" disabled={!!busy} onClick={fromGitHub}>Refresh</button>
         <button className="btn" disabled={!!busy || !rows.length || !archetypes} onClick={gradeAll}>Replay all grades</button>
-        <button className="btn" disabled={!rows.length} onClick={csv}>Export CSV</button></div>
-      <details><summary className="small">Or paste sealed codes</summary>
-        <textarea rows={4} value={pasted} onChange={e => setPasted(e.target.value)} placeholder="GCM1.pilot.… (one or many)" />
-        <button className="btn" disabled={!pasted.trim() || !!busy} onClick={() => withKey(k => open(k, [{ source: 'Pasted codes', text: pasted }]))}>Open pasted codes</button>
+        <button className="btn" disabled={!rows.length} onClick={csv}>Export CSV</button>
+        {loaded && <span className="small muted">{rows.length} hand-in{rows.length === 1 ? '' : 's'} · updated {loaded}</span>}</div>
+      <details><summary className="small">Or paste hand-in codes</summary>
+        <textarea rows={4} value={pasted} onChange={e => setPasted(e.target.value)} placeholder="GCM0.pilot.… (one or many)" />
+        <button className="btn" disabled={!pasted.trim() || !!busy} onClick={() => open([{ source: 'Pasted codes', text: pasted }])}>Open pasted codes</button>
       </details>
-      <input ref={file} type="file" accept="application/json,.json" hidden onChange={async e => { const f = e.target.files?.[0]; if (f) await loadKey(await f.text()); else pending.current = null; e.target.value = ''; }} />
     </div>
     {busy && <p className="c-notice" role="status">{busy}</p>}
     {error && <p className="c-notice" role="alert">{error}</p>}

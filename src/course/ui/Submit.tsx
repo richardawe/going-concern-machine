@@ -5,16 +5,10 @@ import { moduleById, SUBMISSION_REPO } from '../modules';
 import { buildPayload, stats, verificationCode } from '../payload';
 import { pdfName, submissionPdf } from '../pdf';
 import { download, readHandin, saveHandin, type Handin } from '../progress';
-import { seal } from '../seal';
+import { pack } from '../seal';
 import type { Course, Payload, Progress } from '../types';
 import { grade } from './grading';
 
-/** The course's public key, published with the site by `npm run course:keygen`. */
-async function publicKey(): Promise<JsonWebKey> {
-  const r = await fetch(`${import.meta.env.BASE_URL}course/submission-key.json`, { cache: 'no-cache' });
-  if (!r.ok) throw new Error('The course key isn’t published yet, so work can’t be sealed. Ask your lecturer.');
-  return (await r.json()).publicKey;
-}
 /** Grades for every finished module in a submission, replayed in a worker. */
 export async function gradesFor(payload: Payload, archetypes: ArchetypeFile): Promise<Record<string, ModuleGrade | null>> {
   const out: Record<string, ModuleGrade | null> = {};
@@ -39,12 +33,12 @@ export default function Submit({ course, progress, archetypes, home }: { course:
   useEffect(() => { setCopied(''); }, [handin?.code]);
 
   const doSeal = async () => {
-    setBusy('Sealing…'); setError('');
+    setBusy('Preparing…'); setError('');
     try {
       const payload = buildPayload(progress, course, new Date().toISOString());
-      const h = { payload, sealed: await seal(payload, course.id, await publicKey()), code: await verificationCode(payload) };
+      const h = { payload, sealed: await pack(payload, course.id), code: await verificationCode(payload) };
       saveHandin(course.id, h); setHandin(h);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Sealing failed.'); }
+    } catch (e) { setError(e instanceof Error ? e.message : 'Preparing the hand-in failed.'); }
     setBusy('');
   };
   const copy = async () => {
@@ -63,7 +57,7 @@ export default function Submit({ course, progress, archetypes, home }: { course:
 
   return <section className="stack-lg">
     <div className="banner"><div className="stack-sm"><span className="eyebrow">Hand in · {course.code}</span><h1>Hand in your work</h1>
-      <p className="muted lede">Your work is sealed (encrypted) in this browser and handed in through GitHub, which passes it to your lecturer. Then download the PDF and upload it to Canvas. Both show the same verification code.</p></div></div>
+      <p className="muted lede">Your work is handed in through GitHub and appears on your lecturer’s page straight away. Then download the PDF and upload it to Canvas. Both show the same verification code.</p></div></div>
     <div className="submit">
       <div className="card pad stack">
         <span className="eyebrow">What you are handing in</span>
@@ -77,15 +71,15 @@ export default function Submit({ course, progress, archetypes, home }: { course:
       </div>
       <aside className="card pad stack sendbox">
         <label className="check"><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /><span>I confirm these answers are my own work.</span></label>
-        <div className={`hstep ${handin && !changed ? 'done' : 'now'}`}><i>1</i><div className="stack-sm"><b>Seal your work</b><span className="small muted">Encrypted here, so only your lecturer can read it.</span>
-          <button className="btn primary" disabled={!agree || !details || !!busy || !s.responses} onClick={doSeal}>{handin && !changed ? 'Seal again' : 'Seal my work'}</button>
-          {changed && <span className="small warn-text">You’ve changed your work since sealing. Seal again before handing in.</span>}
+        <div className={`hstep ${handin && !changed ? 'done' : 'now'}`}><i>1</i><div className="stack-sm"><b>Prepare your hand-in</b><span className="small muted">Packs everything you’ve written into one code.</span>
+          <button className="btn primary" disabled={!agree || !details || !!busy || !s.responses} onClick={doSeal}>{handin && !changed ? 'Prepare again' : 'Prepare my hand-in'}</button>
+          {changed && <span className="small warn-text">You’ve changed your work since preparing it. Prepare it again before handing in.</span>}
         </div></div>
         {handin && <>
           <div className="hstep now"><i>2</i><div className="stack-sm"><b>Hand in on GitHub</b>
-            <span className="small muted">{issue!.prefilled ? 'The form opens with your sealed code filled in. Press Create.' : 'Copy the code, open the form, paste it into the box and press Create.'} You need to be signed in to GitHub. Don’t add your name: the page is public.</span>
+            <span className="small muted">{issue!.prefilled ? 'The form opens with your code filled in. Press Create.' : 'Copy the code, open the form, paste it into the box and press Create.'} You need to be signed in to GitHub.</span>
             <textarea id="sealed-code" className="sealed" readOnly value={handin.sealed} rows={4} onFocus={e => e.currentTarget.select()} />
-            <div className="row"><button className="btn" onClick={copy}>Copy sealed code</button><a className="btn primary" href={issue!.url} target="_blank" rel="noopener noreferrer">Open the hand-in form ↗</a></div>
+            <div className="row"><button className="btn" onClick={copy}>Copy the code</button><a className="btn primary" href={issue!.url} target="_blank" rel="noopener noreferrer">Open the hand-in form ↗</a></div>
             {copied && <span className="small" role="status">{copied}</span>}
           </div></div>
           <div className="hstep"><i>3</i><div className="stack-sm"><b>Check your receipt</b><span className="small muted">Within a minute or two a reply on your issue confirms it with this verification code:</span><code className="vcode">{handin.code}</code></div></div>
