@@ -6,9 +6,9 @@ import { play, statusQuo } from '../ceo/game';
 import type { CaseDef, Game, StartCompany } from '../ceo/types';
 import type { ModuleDef } from './types';
 
-// Grades are recomputed from a student's card choices every time a submission is read, in the browser and in the
-// intake Action alike. Modules play the case on its own fictional company with default levers, so a module's world is
-// fixed by the case seed and the published industry archetypes.
+// Grades are recomputed from a student's card choices every time a submission is read, on the student and lecturer
+// pages alike. Modules play the case on its own fictional company with default levers, so a module's world is fixed by
+// the case seed and the published industry archetypes.
 
 export const caseFor = (m: ModuleDef): CaseDef => {
   const c = cases.find(x => x.id === m.caseId); if (!c) throw new Error(`Module ${m.id} has no case.`);

@@ -49,7 +49,7 @@ export interface ModuleProgress {
 export interface Student { name: string; id: string; email: string }
 export interface Progress { course: string; student: Student; modules: Record<string, ModuleProgress> }
 
-/** What a student hands in. Sealed for the lecturer; it carries answers and decisions, never grades. */
+/** What a student hands in: answers and decisions, never grades. */
 export interface Payload {
   v: 1; course: string; student: Student; submittedAt: string;
   modules: { id: string; completed: boolean; concepts: Record<string, Answer>; decisions: DecisionEntry[]; reflection?: Answer; check: Record<string, CheckAnswer> }[];

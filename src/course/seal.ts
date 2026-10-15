@@ -1,5 +1,5 @@
-// Sealing: a submission is posted as a GitHub issue on a public repository, so it is encrypted in the student's
-// browser before it leaves. The JSON is gzipped, encrypted with a fresh AES-256-GCM key, and that key is wrapped with
+// Hand-in codes, kept for the move to a real server (the prototype hands in within the browser and doesn't use them).
+// Sealing: a submission is encrypted in the student's browser before it leaves. The JSON is gzipped, encrypted with a fresh AES-256-GCM key, and that key is wrapped with
 // the course's RSA-OAEP public key. Only the private key (an Actions secret, and the lecturer's key file) opens it.
 // Uses Web Crypto and compression streams only, so the same code runs in the browser, in tests and in the Action.
 

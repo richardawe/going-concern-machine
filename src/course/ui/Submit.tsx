@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { ArchetypeFile } from '../../ceo/archetypes';
 import { moduleStart, type ModuleGrade } from '../grade';
-import { moduleById, SUBMISSION_REPO } from '../modules';
+import { moduleById } from '../modules';
 import { buildPayload, stats, verificationCode } from '../payload';
 import { pdfName, submissionPdf } from '../pdf';
-import { download, readHandin, saveHandin, type Handin } from '../progress';
-import { pack } from '../seal';
+import { addToInbox, download, readHandin, saveHandin, type Handin } from '../progress';
 import type { Course, Payload, Progress } from '../types';
 import { grade } from './grading';
 
@@ -18,33 +17,22 @@ export async function gradesFor(payload: Payload, archetypes: ArchetypeFile): Pr
   }
   return out;
 }
-const issueUrl = (course: Course, sealed: string) => {
-  const base = `https://github.com/${SUBMISSION_REPO}/issues/new?template=submission.yml&title=${encodeURIComponent(`Hand-in ${course.code}`)}`;
-  const filled = `${base}&sealed=${encodeURIComponent(sealed)}`;
-  return filled.length < 7500 ? { url: filled, prefilled: true } : { url: base, prefilled: false };
-};
 
-export default function Submit({ course, progress, archetypes, home }: { course: Course; progress: Progress; archetypes: ArchetypeFile | null; home: () => void }) {
+export default function Submit({ course, progress, archetypes, home, lecturer }: { course: Course; progress: Progress; archetypes: ArchetypeFile | null; home: () => void; lecturer: string }) {
   const [handin, setHandin] = useState<Handin | null>(() => readHandin(course.id));
-  const [agree, setAgree] = useState(false), [busy, setBusy] = useState(''), [error, setError] = useState(''), [copied, setCopied] = useState('');
+  const [agree, setAgree] = useState(false), [busy, setBusy] = useState(''), [error, setError] = useState(''), [at, setAt] = useState('');
   const draft = buildPayload(progress, course, new Date().toISOString()), s = stats(draft);
   const details = !!progress.student.name.trim() && !!progress.student.id.trim();
   const changed = !!handin && (JSON.stringify(handin.payload.modules) !== JSON.stringify(draft.modules) || JSON.stringify(handin.payload.student) !== JSON.stringify(draft.student));
-  useEffect(() => { setCopied(''); }, [handin?.code]);
 
-  const doSeal = async () => {
-    setBusy('Preparing…'); setError('');
+  const handIn = async () => {
+    setBusy('Handing in…'); setError('');
     try {
-      const payload = buildPayload(progress, course, new Date().toISOString());
-      const h = { payload, sealed: await pack(payload, course.id), code: await verificationCode(payload) };
-      saveHandin(course.id, h); setHandin(h);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Preparing the hand-in failed.'); }
+      const payload = buildPayload(progress, course, new Date().toISOString()), h = { payload, code: await verificationCode(payload) };
+      if (!addToInbox(h)) throw new Error('This browser blocked saving the hand-in. Allow site data for this page and try again.');
+      saveHandin(course.id, h); setHandin(h); setAt(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+    } catch (e) { setError(e instanceof Error ? e.message : 'Handing in failed.'); }
     setBusy('');
-  };
-  const copy = async () => {
-    if (!handin) return;
-    try { await navigator.clipboard.writeText(handin.sealed); setCopied('Copied. Paste it into the hand-in form.'); }
-    catch { const el = document.getElementById('sealed-code') as HTMLTextAreaElement | null; el?.select(); setCopied('Selected. Copy it with Ctrl+C or ⌘C.'); }
   };
   const pdf = async () => {
     if (!handin || !archetypes) return;
@@ -53,7 +41,7 @@ export default function Submit({ course, progress, archetypes, home }: { course:
     catch (e) { setError(e instanceof Error ? e.message : 'The PDF could not be built.'); }
     setBusy('');
   };
-  const issue = handin && issueUrl(course, handin.sealed);
+  const done = !!handin && !changed;
 
   return <section className="stack-lg">
     <div className="banner"><div className="stack-sm"><span className="eyebrow">Hand in · {course.code}</span><h1>Hand in your work</h1>
@@ -71,22 +59,16 @@ export default function Submit({ course, progress, archetypes, home }: { course:
       </div>
       <aside className="card pad stack sendbox">
         <label className="check"><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /><span>I confirm these answers are my own work.</span></label>
-        <div className={`hstep ${handin && !changed ? 'done' : 'now'}`}><i>1</i><div className="stack-sm"><b>Prepare your hand-in</b><span className="small muted">Packs everything you’ve written into one code.</span>
-          <button className="btn primary" disabled={!agree || !details || !!busy || !s.responses} onClick={doSeal}>{handin && !changed ? 'Prepare again' : 'Prepare my hand-in'}</button>
-          {changed && <span className="small warn-text">You’ve changed your work since preparing it. Prepare it again before handing in.</span>}
+        <div className={`hstep ${done ? 'done' : 'now'}`}><i>1</i><div className="stack-sm"><b>Hand it in</b>
+          <button className="btn primary" disabled={!agree || !details || !!busy || !s.responses} onClick={handIn}>{handin ? 'Hand in again' : 'Hand it in'}</button>
+          {changed && <span className="small warn-text">You’ve changed your work since handing in. Hand in again so your lecturer sees the latest version.</span>}
+          {done && <span className="small" role="status">Handed in{at ? ` at ${at}` : ''}. <a href={lecturer}>Open the lecturer page</a></span>}
+          {handin && <><span className="small muted">Verification code</span><code className="vcode">{handin.code}</code></>}
         </div></div>
-        {handin && <>
-          <div className="hstep now"><i>2</i><div className="stack-sm"><b>Hand it in</b>
-            <span className="small muted">{issue!.prefilled ? 'The form opens with your code filled in. Press Create.' : 'Copy the code, open the form, paste it into the box and press Create.'}</span>
-            <textarea id="sealed-code" className="sealed" readOnly value={handin.sealed} rows={4} onFocus={e => e.currentTarget.select()} />
-            <div className="row"><button className="btn" onClick={copy}>Copy the code</button><a className="btn primary" href={issue!.url} target="_blank" rel="noopener noreferrer">Open the hand-in form ↗</a></div>
-            {copied && <span className="small" role="status">{copied}</span>}
-          </div></div>
-          <div className="hstep"><i>3</i><div className="stack-sm"><b>Check your receipt</b><span className="small muted">Within a minute or two a reply on your issue confirms it with this verification code:</span><code className="vcode">{handin.code}</code></div></div>
-          <hr />
-          <button className="btn" disabled={!archetypes || !!busy} onClick={pdf}>Download PDF for Canvas</button>
+        {handin && <div className={`hstep ${done ? 'now' : ''}`}><i>2</i><div className="stack-sm"><b>Download the PDF for Canvas</b>
+          <button className="btn" disabled={!archetypes || !!busy} onClick={pdf}>Download PDF</button>
           <span className="small muted">{pdfName(course, handin.payload)}</span>
-        </>}
+        </div></div>}
         {busy && <p className="small" role="status">{busy}</p>}
         {error && <p className="c-notice" role="alert">{error}</p>}
       </aside>

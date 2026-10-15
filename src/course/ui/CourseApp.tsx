@@ -49,7 +49,7 @@ export default function CourseApp() {
         ? <ModuleRunner def={def} progress={progress.modules[def.id] ?? emptyModule()} update={f => update(p => updateModule(p, def.id, f))}
             start={start} startError={startError} home={() => nav('')} submit={() => nav('/submit')} />
         : <p className="c-notice">That module isn’t available yet. <a href={`#/course${suffix}`}>Back to modules</a></p>)}
-      {view === 'submit' && <Submit course={course} progress={progress} archetypes={archetypes} home={() => nav('')} />}
+      {view === 'submit' && <Submit course={course} progress={progress} archetypes={archetypes} home={() => nav('')} lecturer={`#/course/lecturer${suffix}`} />}
       {view === 'lecturer' && <Lecturer archetypes={archetypes} />}
     </main>
     <footer className="course-foot">A teaching simulation on fictional companies. It is not financial advice or a forecast of any real company.</footer>

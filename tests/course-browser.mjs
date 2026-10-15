@@ -3,7 +3,8 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 // Going Concern Modules end to end on the production build: a student completes Module 1 (8 concepts, 5 decisions with
-// reasons, debrief, check), seals and hands in, downloads the PDF; the lecturer opens the sealed code and rebuilds the PDF.
+// reasons, debrief, check), hands in and downloads the PDF; the hand-in appears on the lecturer page open in another tab
+// of the same browser, with no server and no GitHub, and the lecturer rebuilds the identical PDF.
 const words = (n, w = 'margin') => Array.from({ length: n }, (_, i) => `${w}${i % 7 ? '' : ' cash'}`).join(' ');
 const browser = await chromium.launch({ headless: true });
 try {
@@ -82,35 +83,35 @@ try {
   // Hand in: seal, then download the PDF.
   await page.getByRole('button', { name: 'Hand in →' }).click();
   await page.getByRole('heading', { name: 'Hand in your work' }).waitFor();
+  // The lecturer page is already open in another tab, with nothing in it yet.
+  const outside = []; context.on('request', r => { if (!r.url().startsWith('https://gcm.test/') && !r.url().startsWith('https://fonts.')) outside.push(r.url()); });
+  const lecturer = await context.newPage(); lecturer.on('pageerror', e => errors.push(e.message));
+  await lecturer.goto('https://gcm.test/going-concern-machine/#/course/lecturer');
+  await lecturer.getByText('No hand-ins yet.').waitFor();
+  await page.bringToFront();
   await page.getByLabel('I confirm these answers are my own work.').check();
-  await page.getByRole('button', { name: 'Prepare my hand-in' }).click();
-  await page.locator('#sealed-code').waitFor({ timeout: 8000 }).catch(async () => { await shot('seal-fail'); console.log(await page.locator('.sendbox').innerText()); });
-  const sealed = await page.locator('#sealed-code').inputValue();
-  assert.match(sealed, /^GCM0\.pilot\./);
+  await page.getByRole('button', { name: 'Hand it in' }).click();
+  await page.getByText(/^Handed in/).waitFor();
   const code = (await page.locator('.vcode').textContent()).trim();
   assert.match(code, /^GCM-[A-Z2-9]{4}-[A-Z2-9]{4}-[A-Z2-9]{4}$/);
-  const href = await page.getByRole('link', { name: /Open the hand-in form/ }).getAttribute('href');
-  assert.ok(href.startsWith('https://github.com/richardawe/going-concern-machine/issues/new?template=submission.yml'));
   await shot('handin');
-  const [download] = await Promise.all([page.waitForEvent('download', { timeout: 60000 }), page.getByRole('button', { name: 'Download PDF for Canvas' }).click()]);
+  const [download] = await Promise.all([page.waitForEvent('download', { timeout: 60000 }), page.getByRole('button', { name: 'Download PDF' }).click()]);
   const pdfPath = 'artifacts/course-student.pdf'; await download.saveAs(pdfPath);
   const pdf = await readFile(pdfPath); assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
   assert.equal(download.suggestedFilename(), 'GCM101_20419377_Student.pdf');
-  await writeFile('artifacts/course-sealed.txt', sealed);
 
-  // Lecturer: the page reads hand-in issues from GitHub as soon as it opens (stubbed here) and needs no key.
-  {
-    await context.route('https://api.github.com/**', route => route.fulfill({ contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify([{ number: 42, html_url: 'https://github.com/richardawe/going-concern-machine/issues/42', user: { login: 'student' }, body: `### Hand-in code\n\n${sealed}` }]) }));
-    const lecturer = await context.newPage(); lecturer.on('pageerror', e => errors.push(e.message));
-    await lecturer.goto('https://gcm.test/going-concern-machine/#/course/lecturer');
-    await lecturer.getByText('Test Student').waitFor();
-    assert.ok(await lecturer.getByText(code).count(), 'the lecturer sees the same verification code');
-    assert.ok(await lecturer.getByRole('link', { name: '#42' }).count(), 'linked to its issue');
-    const [again] = await Promise.all([lecturer.waitForEvent('download', { timeout: 60000 }), lecturer.getByRole('button', { name: 'PDF' }).click()]);
-    await again.saveAs('artifacts/course-lecturer.pdf');
-    assert.deepEqual(await readFile('artifacts/course-lecturer.pdf'), pdf, 'the lecturer’s PDF is byte-for-byte the student’s');
-    await lecturer.screenshot({ path: 'artifacts/course-lecturer.png', fullPage: true });
-  }
+  // The hand-in appears in the lecturer's tab without a refresh, with the same code and an identical PDF.
+  await lecturer.getByText('Test Student').waitFor();
+  assert.ok(await lecturer.getByText(code).count(), 'the lecturer sees the same verification code');
+  const [again] = await Promise.all([lecturer.waitForEvent('download', { timeout: 60000 }), lecturer.getByRole('button', { name: 'PDF', exact: true }).click()]);
+  await again.saveAs('artifacts/course-lecturer.pdf');
+  assert.deepEqual(await readFile('artifacts/course-lecturer.pdf'), pdf, 'the lecturer’s PDF is byte-for-byte the student’s');
+  // Handing in again replaces the earlier hand-in rather than adding a second row.
+  await page.getByRole('button', { name: 'Hand in again' }).click();
+  await lecturer.getByText('handed in 2 times').waitFor();
+  assert.equal(await lecturer.locator('.inbox tbody tr').count(), 1);
+  await lecturer.screenshot({ path: 'artifacts/course-lecturer.png', fullPage: true });
+  assert.deepEqual(outside, [], 'nothing leaves the browser');
 
   // Phone width: no sideways scroll on the module and hand-in pages, in dark mode.
   await page.setViewportSize({ width: 390, height: 900 }); await page.emulateMedia({ colorScheme: 'dark' });

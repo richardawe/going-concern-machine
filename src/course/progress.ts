@@ -36,9 +36,24 @@ export function useProgress(course: Course): [Progress, (f: (p: Progress) => Pro
 export const updateModule = (p: Progress, id: string, f: (m: ModuleProgress) => ModuleProgress): Progress => ({ ...p, modules: { ...p.modules, [id]: f(p.modules[id] ?? emptyModule()) } });
 
 /** The last hand-in: kept so the PDF can be downloaded again with the same verification code. */
-export interface Handin { payload: Payload; sealed: string; code: string }
+export interface Handin { payload: Payload; code: string }
 export function readHandin(course: string): Handin | null { try { return JSON.parse(localStorage.getItem(handinKey(course)) || 'null'); } catch { return null; } }
 export function saveHandin(course: string, h: Handin) { try { localStorage.setItem(handinKey(course), JSON.stringify(h)); } catch { /* still usable this session */ } }
+
+// PROTOTYPE inbox: handing in puts the work here, and the lecturer page reads it. It lives in this browser's storage,
+// so the student and lecturer pages must be open in the same browser (ideal for a demo; a server replaces it later).
+// A student's new hand-in replaces their earlier one, matched by course and student ID (or name).
+const INBOX = 'gcm:course:v1:inbox';
+export interface InboxEntry extends Handin { handedInAt: string; replaced: number }
+export function readInbox(): InboxEntry[] { try { const x = JSON.parse(localStorage.getItem(INBOX) || '[]'); return Array.isArray(x) ? x : []; } catch { return []; } }
+const who = (p: Payload) => `${p.course}|${(p.student.id || p.student.name).trim().toLowerCase()}`;
+export function addToInbox(h: Handin): boolean {
+  const all = readInbox(), prev = all.find(e => who(e.payload) === who(h.payload));
+  const entry: InboxEntry = { ...h, handedInAt: new Date().toISOString(), replaced: prev ? prev.replaced + 1 : 0 };
+  try { localStorage.setItem(INBOX, JSON.stringify([...all.filter(e => e !== prev), entry])); return true; } catch { return false; }
+}
+export function clearInbox() { try { localStorage.removeItem(INBOX); } catch { /* nothing stored */ } }
+export const INBOX_KEY = INBOX;
 
 export function download(name: string, data: BlobPart, type: string) {
   const url = URL.createObjectURL(new Blob([data], { type })), a = document.createElement('a');

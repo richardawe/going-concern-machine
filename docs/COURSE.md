@@ -19,31 +19,19 @@ That is 18 typed responses per module. Pasting is allowed but **flagged** in the
 
 **Module 1, The Price War**, is complete. Its figure is an Anatomy-style isometric *margin gearbox* (`src/course/ui/MarginGearbox.tsx`): a price lever drives a flywheel (gross profit), which fills a cash tank that fixed overheads drain. Modules 2–6 are listed with the 8 concepts each will cover, and open once their content and figures are written. Content lives in `src/course/modules.ts`.
 
-## Hand-in: GitHub Issues and Actions, for now
+## Hand-in (prototype)
 
-```
-Browser: packs the submission into one code (GCM0: gzip + base64url, NOT encrypted)
-  → GitHub issue form (.github/ISSUE_TEMPLATE/submission.yml)
-  → Action .github/workflows/course-intake.yml (scripts/course-intake.ts)
-      validates every field, replays the decisions, replies with a receipt and verification code,
-      labels the issue (received or invalid) and closes it
-  → Lecturer page (#/course/lecturer): reads the hand-in issues from GitHub as soon as it opens,
-      lists every student, and rebuilds each student's PDF
-```
+Clicking **Hand it in** saves the student's work to an inbox in the browser's storage, and the lecturer page (`#/course/lecturer`) reads it from there. A hand-in in another tab of the same browser appears without a refresh. Handing in again replaces the student's earlier hand-in. The student then downloads the PDF for Canvas.
 
-- **Prototype only: hand-ins are not encrypted.** All pilot data is fictional, so anyone who opens a hand-in issue can read it. This keeps the demo to one step: a student hands in and the work appears on the lecturer page, with no key to manage.
-- Grades are never sent. They are recomputed from the decisions wherever a hand-in is read: in the browser, in the Action and on the lecturer page.
+- **The student and lecturer pages must be open in the same browser.** That suits a demo on one laptop. Moving answers between devices needs a server, which replaces the inbox later.
+- Nothing leaves the browser; no GitHub, no third-party service.
+- Grades are never stored with the hand-in. They are recomputed from the decisions when the lecturer replays them or builds a PDF.
 - The **verification code** (`GCM-XXXX-XXXX-XXXX`) is a SHA-256 fingerprint of the submission. The student's PDF and the lecturer's rebuilt PDF are byte-for-byte identical (checked by `tests/course-browser.mjs`).
-- Students need a GitHub account. The real version replaces the issue and the Action with a server endpoint and university sign-in.
-
-### Encryption, for later
-
-`src/course/seal.ts` also implements an encrypted format (GCM1: gzip, then AES-GCM, with the key wrapped by RSA-OAEP), and every reader still accepts it. `npm run course:keygen` makes the key pair; the intake Action opens GCM1 codes with the `SUBMISSION_PRIVATE_KEY` secret, and the lecturer page opens them only if the key is remembered on that device. Switch the hand-in page back to `seal()` when real student data is involved.
+- `src/course/seal.ts` keeps an encrypted hand-in format and `npm run course:keygen` for the move to a server; the prototype doesn't use them.
 
 ### Known limits of the prototype
 
 - Grades depend on the industry archetypes, which are rebuilt from the published SEC datasets. If the data refreshes between hand-in and marking, a replayed grade can shift slightly. The verification code does not change, because it covers only the student's answers and decisions.
-- The lecturer page reads issues through GitHub's public API without signing in, which allows 60 requests an hour per network (100 hand-ins per request). Pasting codes works without the API.
 - One pilot course (`?c=pilot`) is defined in `src/course/modules.ts`.
 
 ## Code
@@ -51,10 +39,11 @@ Browser: packs the submission into one code (GCM0: gzip + base64url, NOT encrypt
 | Path | What it does |
 | --- | --- |
 | `src/course/modules.ts` | Courses and module content: concepts, check questions, planned modules |
-| `src/course/seal.ts` | Hand-in codes: the prototype's packed format and the encrypted format for later (the same code runs in the browser, tests and the Action) |
+| `src/course/seal.ts` | Hand-in codes for the move to a server (unused by the prototype) |
 | `src/course/payload.ts` | Building, validating and fingerprinting a hand-in |
 | `src/course/grade.ts`, `grade.worker.ts` | Replaying decisions into outcome and judgement grades |
 | `src/course/pdf.ts` | The submission PDF (pdf-lib) |
+| `src/course/progress.ts` | Saved progress, and the prototype's hand-in inbox |
 | `src/course/ui/` | Course app: home, module runner, figure, hand-in, lecturer |
-| `scripts/course-intake.ts`, `scripts/course-keygen.ts` | The intake Action's script and key generation |
+| `scripts/course-keygen.ts` | Key generation for the encrypted format (for later) |
 | `tests/course.test.ts`, `tests/course-browser.mjs` | Unit tests, and the full student and lecturer flow in a browser |

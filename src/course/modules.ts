@@ -100,5 +100,3 @@ export const courses: Course[] = [
 ];
 export const courseById = (id: string | null | undefined) => courses.find(c => c.id === id) ?? courses[0];
 
-/** Where submissions are handed in for now: issues on this repository. A server endpoint replaces this later. */
-export const SUBMISSION_REPO = 'richardawe/going-concern-machine';

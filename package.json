@@ -18,8 +18,7 @@
     "test:browser": "node tests/browser.mjs && node tests/ceo-browser.mjs && node tests/course-browser.mjs",
     "demo:record": "node scripts/record-demo.mjs",
     "test:live": "node tests/live-browser.mjs",
-    "course:keygen": "node --import tsx scripts/course-keygen.ts",
-    "course:intake": "node --import tsx scripts/course-intake.ts"
+    "course:keygen": "node --import tsx scripts/course-keygen.ts"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.2",
