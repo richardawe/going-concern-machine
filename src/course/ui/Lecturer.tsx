@@ -23,8 +23,8 @@ async function loadIssues(): Promise<{ number: number; html_url: string; user?: 
   const out = [];
   for (let page = 1; page <= 10; page++) {
     const r = await fetch(`https://api.github.com/repos/${SUBMISSION_REPO}/issues?state=all&per_page=100&page=${page}`, { headers: { Accept: 'application/vnd.github+json' } });
-    if (r.status === 403) throw new Error('GitHub’s rate limit for this network was reached. Try again in an hour, or paste the codes below.');
-    if (!r.ok) throw new Error(`GitHub returned ${r.status}.`);
+    if (r.status === 403) throw new Error('Too many requests from this network. Try again in an hour, or paste the codes below.');
+    if (!r.ok) throw new Error(`Hand-ins couldn’t be loaded (error ${r.status}).`);
     const batch = await r.json() as { number: number; html_url: string; user?: { login: string }; body: string | null; pull_request?: unknown }[];
     out.push(...batch.filter(i => !i.pull_request && /GCM[01]\./.test(i.body ?? '')));
     if (batch.length < 100) break;
@@ -60,9 +60,9 @@ export default function Lecturer({ archetypes }: { archetypes: ArchetypeFile | n
     setFailures(failed);
   }
   const fromGitHub = async () => {
-    setBusy('Reading hand-ins from GitHub…'); setError('');
+    setBusy('Loading hand-ins…'); setError('');
     try { const issues = await loadIssues(); await open(issues.map(i => ({ source: `Issue #${i.number}`, text: i.body ?? '', issue: i.number, url: i.html_url, author: i.user?.login }))); }
-    catch (e) { setError(e instanceof Error ? e.message : 'GitHub could not be read.'); }
+    catch (e) { setError(e instanceof Error ? e.message : 'Hand-ins couldn’t be loaded.'); }
     setLoaded(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })); setBusy('');
   };
   useEffect(() => { void fromGitHub(); }, []);

@@ -40,7 +40,7 @@ export default function CourseApp() {
           <ThemeSwitch />
         </nav>
       </div>
-      <p className="course-proto">Prototype · hand-ins go through GitHub for now</p>
+      <p className="course-proto">Prototype</p>
     </header>
     <main className="course-main">
       {!view && <Home course={course} progress={progress} restore={restore} open={m => nav(`/m/${m}`)} submit={() => nav('/submit')}

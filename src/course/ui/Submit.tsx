@@ -57,7 +57,7 @@ export default function Submit({ course, progress, archetypes, home }: { course:
 
   return <section className="stack-lg">
     <div className="banner"><div className="stack-sm"><span className="eyebrow">Hand in · {course.code}</span><h1>Hand in your work</h1>
-      <p className="muted lede">Your work is handed in through GitHub and appears on your lecturer’s page straight away. Then download the PDF and upload it to Canvas. Both show the same verification code.</p></div></div>
+      <p className="muted lede">Hand in your work and it appears on your lecturer’s page straight away. Then download the PDF and upload it to Canvas. Both show the same verification code.</p></div></div>
     <div className="submit">
       <div className="card pad stack">
         <span className="eyebrow">What you are handing in</span>
@@ -76,8 +76,8 @@ export default function Submit({ course, progress, archetypes, home }: { course:
           {changed && <span className="small warn-text">You’ve changed your work since preparing it. Prepare it again before handing in.</span>}
         </div></div>
         {handin && <>
-          <div className="hstep now"><i>2</i><div className="stack-sm"><b>Hand in on GitHub</b>
-            <span className="small muted">{issue!.prefilled ? 'The form opens with your code filled in. Press Create.' : 'Copy the code, open the form, paste it into the box and press Create.'} You need to be signed in to GitHub.</span>
+          <div className="hstep now"><i>2</i><div className="stack-sm"><b>Hand it in</b>
+            <span className="small muted">{issue!.prefilled ? 'The form opens with your code filled in. Press Create.' : 'Copy the code, open the form, paste it into the box and press Create.'}</span>
             <textarea id="sealed-code" className="sealed" readOnly value={handin.sealed} rows={4} onFocus={e => e.currentTarget.select()} />
             <div className="row"><button className="btn" onClick={copy}>Copy the code</button><a className="btn primary" href={issue!.url} target="_blank" rel="noopener noreferrer">Open the hand-in form ↗</a></div>
             {copied && <span className="small" role="status">{copied}</span>}
