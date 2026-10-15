@@ -1,0 +1,50 @@
+name: Course hand-in intake
+# Prototype backend for Going Concern Modules: a student hands in by opening an issue that holds a sealed (encrypted)
+# submission. This opens and checks it with the SUBMISSION_PRIVATE_KEY secret, replies with a receipt, labels and
+# closes the issue. The issue body is untrusted: it is read from the event file by the script, never interpolated here.
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: course-intake-${{ github.event.issue.number }}
+  cancel-in-progress: false
+jobs:
+  intake:
+    if: contains(github.event.issue.body, 'GCM1.')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Open and check the hand-in
+        id: intake
+        env:
+          SUBMISSION_PRIVATE_KEY: ${{ secrets.SUBMISSION_PRIVATE_KEY }}
+          INTAKE_COMMENT: ${{ runner.temp }}/comment.md
+        run: node --import tsx scripts/course-intake.ts
+      - name: Reply, label and close
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          STATUS: ${{ steps.intake.outputs.status || 'invalid' }}
+        run: |
+          [ -s "$RUNNER_TEMP/comment.md" ] || printf '**Not received.** The hand-in could not be checked. Seal your work again and open a new hand-in.\n' > "$RUNNER_TEMP/comment.md"
+          gh label create submission --color 1543ad --description "Course hand-in" --force --repo "$GITHUB_REPOSITORY"
+          gh label create "$STATUS" --color "$([ "$STATUS" = received ] && echo 2c9761 || echo c02f1f)" --force --repo "$GITHUB_REPOSITORY"
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label submission --add-label "$STATUS"
+          if [ "$STATUS" = received ] || [ "$STATUS" = unconfigured ]; then
+            gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --reason completed
+          else
+            gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --reason "not planned"
+          fi

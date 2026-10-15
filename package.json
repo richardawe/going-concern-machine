@@ -15,15 +15,18 @@
     "demo": "node --import tsx scripts/demo.ts",
     "data:publish": "node --import tsx scripts/publish-sec.ts",
     "ceo:balance": "node --import tsx scripts/balance-ceo.ts",
-    "test:browser": "node tests/browser.mjs && node tests/ceo-browser.mjs",
+    "test:browser": "node tests/browser.mjs && node tests/ceo-browser.mjs && node tests/course-browser.mjs",
     "demo:record": "node scripts/record-demo.mjs",
-    "test:live": "node tests/live-browser.mjs"
+    "test:live": "node tests/live-browser.mjs",
+    "course:keygen": "node --import tsx scripts/course-keygen.ts",
+    "course:intake": "node --import tsx scripts/course-intake.ts"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.2",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
     "lucide-react": "0.562.0",
+    "pdf-lib": "^1.17.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "sonner": "^2.0.8",
