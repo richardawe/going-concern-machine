@@ -9,7 +9,7 @@ export interface Concept {
   id: string; title: string; short: string;
   /** What the idea is, in two or three sentences. */ body: string;
   formula?: string;
-  /** What to do on the figure, and the price the figure is set to when the concept opens. */ task: string; price: number;
+  /** What to do on the figure, and where the figure's lever is set when the concept opens. */ task: string; lever: number;
   /** The "in your own words" prompt. */ prompt: string;
 }
 export interface McqQuestion { id: string; kind: 'mcq'; stem: string; options: string[]; answer: number; why: string }
@@ -19,10 +19,12 @@ export interface TextQuestion {
 }
 export type Question = McqQuestion | TextQuestion;
 
+import type { FigureId } from './figures';
+
 export interface ModuleDef {
   id: string; number: number; title: string; topic: string; summary: string;
   /** The CEO-mode case whose five annual decisions the module plays. */ caseId: string;
-  figure: 'margin-gearbox' | null; figureTitle: string;
+  figure: FigureId | null; figureTitle: string;
   outcomes: string[];
   concepts: Concept[];
   check: Question[];

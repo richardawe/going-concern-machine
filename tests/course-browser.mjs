@@ -25,7 +25,7 @@ try {
   await page.getByLabel('Full name').fill('Test Student');
   await page.getByLabel('Student ID').fill('20419377');
   await page.getByLabel('University email').fill('test@student.example.ac.uk');
-  assert.equal(await page.locator('.mod:disabled').count(), 5, 'modules 2–6 are listed but not open yet');
+  assert.equal(await page.locator('.mod').count(), 6); assert.equal(await page.locator('.mod:disabled').count(), 0, 'all six modules are open');
   await shot('home');
   await page.locator('.mod').first().click();
   await page.getByRole('heading', { name: 'The Price War' }).waitFor();
@@ -113,9 +113,26 @@ try {
   await lecturer.screenshot({ path: 'artifacts/course-lecturer.png', fullPage: true });
   assert.deepEqual(outside, [], 'nothing leaves the browser');
 
+  // Modules 2–6 open on their own figure, and each figure's lever works from the keyboard.
+  await page.bringToFront();
+  for (const [id, title, n] of [['talent-exodus', 'Talent Exodus', 2], ['cash-crunch', 'Cash Crunch', 3], ['growth-at-any-cost', 'Growth at Any Cost?', 4], ['automation-bet', 'The Automation Bet', 5], ['dividend-pressure', 'Dividend Pressure', 6]]) {
+    await page.goto(`https://gcm.test/going-concern-machine/#/course/m/${id}`);
+    await page.getByRole('heading', { name: title }).waitFor();
+    await page.getByRole('button', { name: /Start concept 1/ }).click();
+    await page.getByText('Concept 1 of 8').waitFor();
+    const fig = page.locator('svg.iso');
+    assert.ok(await page.getByText(`Fig ${n}`, { exact: true }).isVisible(), `${id} shows its figure`);
+    const before = await fig.getAttribute('aria-valuenow');
+    await fig.focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowRight'); await page.waitForTimeout(300);
+    assert.notEqual(await fig.getAttribute('aria-valuenow'), before, `${id}: the lever moves`);
+    assert.ok((await page.locator('.iso-corner.br').textContent()).length > 20, `${id}: the readout is filled`);
+    assert.ok(await fig.locator('.knob').count(), `${id}: the lever is drawn`);
+    await shot(`module-${n}`);
+  }
+
   // Phone width: no sideways scroll on the module and hand-in pages, in dark mode.
   await page.setViewportSize({ width: 390, height: 900 }); await page.emulateMedia({ colorScheme: 'dark' });
-  for (const route of ['#/course', '#/course/m/price-war', '#/course/submit']) {
+  for (const route of ['#/course', '#/course/m/price-war', '#/course/m/automation-bet', '#/course/submit']) {
     await page.goto(`https://gcm.test/going-concern-machine/${route}`); await page.waitForTimeout(400);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0, `${route} fits a phone`);
   }

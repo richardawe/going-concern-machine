@@ -5,8 +5,9 @@ import { money, percent } from '../../presentation';
 import { caseFor, moduleGame } from '../grade';
 import { complete } from '../text';
 import { MIN_WORDS, type Answer, type ModuleDef, type ModuleProgress, type Stage } from '../types';
+import { figures } from '../figures';
 import { grade, type Graded } from './grading';
-import MarginGearbox from './MarginGearbox';
+import IsoFigure from './IsoFigure';
 import TypedAnswer from './TypedAnswer';
 
 const STAGES: { id: Stage; label: string }[] = [{ id: 'briefing', label: 'Briefing' }, { id: 'concepts', label: 'Concepts' }, { id: 'decisions', label: 'Decisions' }, { id: 'debrief', label: 'Debrief' }, { id: 'check', label: 'Check' }];
@@ -65,12 +66,12 @@ function Briefing({ def, start, startError, begin }: { def: ModuleDef; start: St
 
 function Concepts({ def, progress, update, done }: { def: ModuleDef; progress: ModuleProgress; update: (f: (m: ModuleProgress) => ModuleProgress) => void; done: () => void }) {
   const i = Math.min(progress.concept, def.concepts.length - 1), c = def.concepts[i], last = i === def.concepts.length - 1;
-  const [price, setPrice] = useState(c.price);
-  useEffect(() => setPrice(c.price), [c.id]);
+  const [lever, setLever] = useState(c.lever);
+  useEffect(() => setLever(c.lever), [c.id]);
   const answered = (k: number) => complete(progress.concepts[def.concepts[k].id], MIN_WORDS.concept);
   const open = (k: number) => { update(m => ({ ...m, concept: k })); };
   return <div className="play">
-    <MarginGearbox price={price} onPrice={setPrice} title={def.figureTitle} />
+    {def.figure && <IsoFigure spec={figures[def.figure]} value={lever} onChange={setLever} title={def.figureTitle} figure={def.number} />}
     <div className="stack">
       <nav className="rail" aria-label="Concepts">
         {def.concepts.map((k, n) => <button key={k.id} className={n === i ? 'now' : answered(n) ? 'done' : ''} disabled={n > i && !def.concepts.slice(0, n).every((_, x) => answered(x))} onClick={() => open(n)} aria-current={n === i ? 'step' : undefined}>{answered(n) && n !== i ? '✓' : n + 1} {k.short}</button>)}

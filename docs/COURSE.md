@@ -17,7 +17,18 @@ Briefing → **8 concepts** → **5 decisions** → debrief → **end-of-module 
 
 That is 18 typed responses per module. Pasting is allowed but **flagged** in the PDF and on the lecturer page.
 
-**Module 1, The Price War**, is complete. Its figure is an Anatomy-style isometric *margin gearbox* (`src/course/ui/MarginGearbox.tsx`): a price lever drives a flywheel (gross profit), which fills a cash tank that fixed overheads drain. Modules 2–6 are listed with the 8 concepts each will cover, and open once their content and figures are written. Content lives in `src/course/modules.ts`.
+All six modules are complete. Each has its own Anatomy-style isometric figure, worked by a single lever, on a deliberately simple illustrative business so students can check every number by hand. The decisions run on the matching CEO-mode case.
+
+| Module | Topic | Figure (`src/course/figures/`) | Lever |
+| --- | --- | --- | --- |
+| 1 · The Price War | Pricing and margin | Margin gearbox (`gearbox.ts`) | Price |
+| 2 · Talent Exodus | People economics | Leaking pressure vessel with a pay valve (`vessel.ts`) | Pay against today |
+| 3 · Cash Crunch | Liquidity | Reservoir on a rotary conveyor (`conveyor.ts`) | Debtor days |
+| 4 · Growth at Any Cost? | Unit economics | Bucket elevator with holed buckets (`elevator.ts`) | Churn |
+| 5 · The Automation Bet | Capital investment | Press with a payback dial (`press.ts`) | Discount rate |
+| 6 · Dividend Pressure | Capital allocation | Three-way splitter valve (`splitter.ts`) | Payout ratio |
+
+Each figure file holds its model (lever value → numbers) alongside its drawing; `src/course/ui/IsoFigure.tsx` runs the animation, lever and readout for all six, and `src/course/ui/iso.ts` is the shared drawing kit. Each concept sets the lever where its task starts. Content lives in `src/course/modules.ts`, and `tests/course.test.ts` checks every figure number the concepts and check questions quote against the models.
 
 ## Hand-in (prototype)
 
@@ -44,6 +55,7 @@ Clicking **Hand it in** saves the student's work to an inbox in the browser's st
 | `src/course/grade.ts`, `grade.worker.ts` | Replaying decisions into outcome and judgement grades |
 | `src/course/pdf.ts` | The submission PDF (pdf-lib) |
 | `src/course/progress.ts` | Saved progress, and the prototype's hand-in inbox |
-| `src/course/ui/` | Course app: home, module runner, figure, hand-in, lecturer |
+| `src/course/figures/` | The six module figures: each one's illustrative model and drawing |
+| `src/course/ui/` | Course app: home, module runner, figure component and drawing kit, hand-in, lecturer |
 | `scripts/course-keygen.ts` | Key generation for the encrypted format (for later) |
 | `tests/course.test.ts`, `tests/course-browser.mjs` | Unit tests, and the full student and lecturer flow in a browser |

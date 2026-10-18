@@ -156,7 +156,7 @@
 .course .iso-stage{position:relative;padding:44px 18px 56px}
 .course .iso-corner{position:absolute;font:11.5px var(--mono);color:var(--c-muted);letter-spacing:.02em}
 .course .iso-corner.tl{top:16px;left:18px}.course .iso-corner.tr{top:16px;right:18px;color:var(--c-ink)}
-.course .iso-corner.bl{bottom:16px;left:18px}
+.course .iso-corner.bl{bottom:16px;left:18px;max-width:26%}
 .course .iso-corner.br{bottom:14px;right:18px;text-align:right;color:var(--c-ink);max-width:70%}
 .course .iso-corner.br[data-loss=true]{color:var(--c-bad)}
 .course .iso{display:block;width:100%;height:auto;touch-action:none}
@@ -193,3 +193,6 @@
   .course .iso-corner.bl{bottom:44px}
   .course .choice{grid-template-columns:minmax(0,1fr)}
 }
+.course .iso .l.warn{stroke:var(--warn1);stroke-width:1.6}.course .iso .l.needle{stroke:var(--c-ink);stroke-width:1.2}
+.course .iso .drop{fill:var(--warn1)}.course .iso .hole{fill:var(--n2)}
+.course .iso .flow.keep{stroke:var(--n5)}
