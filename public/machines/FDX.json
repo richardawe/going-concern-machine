@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "FDX",
-  "name": "FEDEX CORP",
-  "retrieved": "2026-10-26",
+  "name": "FedEx Corporation",
+  "retrieved": "2026-11-02",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
