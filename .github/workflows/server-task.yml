@@ -1,0 +1,79 @@
+name: Server task
+# Run one operation from a fixed menu on the production server, over SSH (deploy/server-task.sh).
+# Start it from the Actions tab (Run workflow), or let Claude start it and read the log.
+# This repository is public, so the log is too: emails passed in are masked, and the script prints no secrets.
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: What to do
+        type: choice
+        required: true
+        options:
+          - preflight
+          - status
+          - add-admin
+          - list-admins
+          - reset-2fa
+          - install-cron
+          - backup-now
+          - maintenance-dry-run
+          - recent-errors
+          - rollback
+      email:
+        description: Email (add-admin, reset-2fa)
+        required: false
+        default: ''
+      name:
+        description: Name (add-admin)
+        required: false
+        default: ''
+      release:
+        description: Release id (rollback; blank = the previous release)
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: server-task
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: deploy
+      - name: Check the inputs
+        env:
+          TASK: ${{ inputs.task }}
+          EMAIL: ${{ inputs.email }}
+          NAME: ${{ inputs.name }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          [ -n "$EMAIL" ] && echo "::add-mask::$EMAIL"
+          case "$TASK" in add-admin|reset-2fa) [[ "$EMAIL" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]] || { echo "Enter a valid email for $TASK."; exit 1; };; esac
+          [[ "$NAME" =~ ^[[:alnum:][:space:].\'()-]*$ ]] || { echo "Use letters, spaces and . ' ( ) - only in the name."; exit 1; }
+          [[ "$RELEASE" =~ ^[A-Za-z0-9._-]*$ ]] || { echo "Invalid release id."; exit 1; }
+      - name: Run on the server
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          APP_DIR: ${{ vars.APP_DIR }}
+          TASK: ${{ inputs.task }}
+          EMAIL: ${{ inputs.email }}
+          NAME: ${{ inputs.name }}
+          RELEASE: ${{ inputs.release }}
+        run: |
+          set -euo pipefail
+          [ -n "$EMAIL" ] && echo "::add-mask::$EMAIL"
+          : "${SSH_KEY:?Add the SSH_KEY repository secret (docs/DEPLOYMENT.md, section 4)}" "${SSH_HOST:?Add the SSH_HOST repository secret}" "${APP_DIR:?Add the APP_DIR repository variable}"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -i ~/.ssh/deploy -p "${SSH_PORT:-22}" -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" \
+            bash -s -- "$(printf '%q' "$APP_DIR")" "$(printf '%q' "$TASK")" "$(printf '%q' "$EMAIL")" "$(printf '%q' "$NAME")" "$(printf '%q' "$RELEASE")" < deploy/server-task.sh

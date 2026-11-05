@@ -2,6 +2,8 @@
 
 CEO mode rebuilt for courses. Students work through **modules**, type their understanding throughout, and hand in once. The lecturer receives every hand-in, and the student uploads the same PDF to Canvas.
 
+**Production:** the hosted, multi-university version (accounts, courses, server hand-ins) is described in [PLATFORM.md](PLATFORM.md). This page describes the browser-only prototype, which still runs at `#/course` on the public site.
+
 Open it at `#/course` (for example `https://<user>.github.io/going-concern-machine/#/course`). The lecturer page is `#/course/lecturer`.
 
 ## A module
