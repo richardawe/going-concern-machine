@@ -30,7 +30,11 @@ const CSP = [
 
 export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrader: () => void = () => {}): Promise<FastifyInstance> {
   const app = Fastify({
-    logger: config.NODE_ENV === 'test' ? false : { level: 'info', redact: ['req.headers.cookie', 'req.headers.authorization'] },
+    // Logs carry no personal data: no cookies, and no query strings (a sign-in link can carry an email address).
+    logger: config.NODE_ENV === 'test' ? false : {
+      level: 'info',
+      serializers: { req: r => ({ method: r.method, url: String(r.url).split('?')[0], host: r.headers?.host }) },
+    },
     trustProxy: ['127.0.0.1', '::1'],
     bodyLimit: 1_000_000,
   });

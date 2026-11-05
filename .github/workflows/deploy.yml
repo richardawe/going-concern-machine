@@ -69,7 +69,7 @@ jobs:
           retention-days: 30
 
   staging:
-    if: github.event_name != 'pull_request' && vars.STAGING_ENABLED == 'true'
+    if: github.event_name != 'pull_request' && vars.STAGING_ENABLED == 'true' && vars.STAGING_APP_DIR != ''
     needs: check
     runs-on: ubuntu-latest
     environment:
@@ -86,12 +86,13 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
-          APP_DIR: ${{ vars.APP_DIR }}
+          APP_DIR: ${{ vars.STAGING_APP_DIR }}
         run: bash deploy/ship.sh
 
   production:
     # Runs after staging when staging is on, or straight after the checks when it is off; never after a failed staging deploy.
-    if: always() && github.event_name != 'pull_request' && needs.check.result == 'success' && (needs.staging.result == 'success' || needs.staging.result == 'skipped')
+    # Skipped until the server is configured (the APP_DIR repository variable is set).
+    if: always() && github.event_name != 'pull_request' && vars.APP_DIR != '' && needs.check.result == 'success' && (needs.staging.result == 'success' || needs.staging.result == 'skipped')
     needs: [check, staging]
     runs-on: ubuntu-latest
     # Add yourself as a required reviewer on this environment (Settings → Environments → production),

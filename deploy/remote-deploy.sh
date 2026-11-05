@@ -39,6 +39,7 @@ for i in $(seq 1 30); do
   sleep 2
 done
 echo "✗ $RELEASE did not become healthy; rolling back to ${PREVIOUS:-nothing}"
-pm2 logs --nostream --lines 40 || true
+# The repository is public, so Actions logs are too: show recent errors with email addresses masked.
+tail -n 40 shared/logs/error.log 2>/dev/null | sed -E 's/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/[email]/g' || true
 if [ -n "$PREVIOUS" ]; then switch "$PREVIOUS"; pm2 startOrReload current/ecosystem.config.cjs --update-env; fi
 exit 1
