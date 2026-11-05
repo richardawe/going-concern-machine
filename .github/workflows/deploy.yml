@@ -1,0 +1,111 @@
+name: Test and deploy
+# Every pull request: typecheck, unit tests, server tests against a real PostgreSQL, and a build.
+# Every push to main (and on demand): the same, then one release is built and deployed to staging automatically,
+# then to production once a required reviewer approves the "production" environment in GitHub.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Test database (a non-superuser role, so row-level security is really tested)
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h 127.0.0.1 -U postgres -c "create role gcm_test login password 'gcm_test' nosuperuser"
+          psql -h 127.0.0.1 -U postgres -c "create database gcm_test owner gcm_test"
+      - run: npm run data:archetypes
+      - run: npm run typecheck
+      - run: npm test
+      - name: Server tests
+        env:
+          TEST_DATABASE_URL: postgres://gcm_test:gcm_test@127.0.0.1:5432/gcm_test
+        run: npm run test:server
+      - name: Build
+        env:
+          BASE_PATH: /
+        run: npm run build && npm run build:server
+      - name: Package the release
+        if: github.event_name != 'pull_request'
+        run: |
+          RELEASE="$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}"
+          echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
+          tar -czf release.tgz dist dist-server migrations package.json package-lock.json ecosystem.config.cjs deploy
+          echo "$RELEASE" > release-id.txt
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          name: release
+          path: |
+            release.tgz
+            release-id.txt
+            deploy/ship.sh
+          retention-days: 30
+
+  staging:
+    if: github.event_name != 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+      - name: Deploy to staging
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          APP_DIR: ${{ vars.APP_DIR }}
+        run: bash deploy/ship.sh
+
+  production:
+    if: github.event_name != 'pull_request'
+    needs: staging
+    runs-on: ubuntu-latest
+    # Add yourself as a required reviewer on this environment (Settings → Environments → production),
+    # so nothing reaches production without your approval.
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+      - name: Deploy to production
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          APP_DIR: ${{ vars.APP_DIR }}
+        run: bash deploy/ship.sh

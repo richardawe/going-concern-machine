@@ -70,3 +70,5 @@ jobs:
           git push
           # Pushes made with the workflow token do not start other workflows, so start the Pages deploy explicitly.
           gh workflow run pages.yml --ref "${GITHUB_REF_NAME}"
+          # The platform server: new data goes to staging at once, and to production when you approve it.
+          gh workflow run deploy.yml --ref "${GITHUB_REF_NAME}"

@@ -15,7 +15,7 @@ export const publicRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
   });
 
   app.get('/api/context', async req => {
-    const base = { kind: req.site.kind, release: d.config.RELEASE, environment: d.config.ENVIRONMENT_NAME, baseDomain: d.config.BASE_DOMAIN };
+    const base = { kind: req.site.kind, release: d.config.RELEASE, environment: d.config.ENVIRONMENT_NAME, baseDomain: d.config.BASE_DOMAIN, emailFrom: d.config.EMAIL_FROM };
     if (req.site.kind === 'platform') return { ...base, admin: req.admin };
     if (req.site.kind !== 'tenant') return base;
     const t = req.tenant;

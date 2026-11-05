@@ -104,7 +104,8 @@ test('platform console: emailed code, then an authenticator app, before anything
 
   const log = await call(h.app, { url: '/api/platform/audit', host: admin, cookie });
   assert.ok(['university.provision', 'person.invite', 'terms.accept', 'university.suspended'].every(a => log.json.some((e: { action: string }) => e.action === a)));
-  assert.equal((await call(h.app, { url: '/api/platform/system', host: admin, cookie })).json.database.migrations[0], '001_init.sql');
+  const system = (await call(h.app, { url: '/api/platform/system', host: admin, cookie })).json;
+  assert.equal(system.database.migrations[0], '001_init.sql'); assert.match(system.database.version, /^\d+/);
 });
 
 test('the console only answers on its own host', async () => {

@@ -58,7 +58,7 @@ export const teachRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
             s.payload, s.code, s.handed_in_at, s.late, s.attempt, s.grades, s.grade_error
        from enrolments e join users u on u.id = e.user_id left join submissions s on s.course_id = e.course_id and s.user_id = u.id
       where e.course_id = $1 order by lower(coalesce(nullif(u.name, ''), u.email))`, [courseId]);
-  const gradeText = (g: Grades | null) => g ? Object.entries(g).filter(([, x]) => x).map(([id, x]) => `${allModules.find(m => m.id === id)?.number ?? id}: ${x!.outcome.grade}/${x!.judgement.grade}`).join(' · ') : '';
+  const gradeText = (g: Grades | null) => g ? Object.entries(g).filter(([, x]) => x).sort(([a], [b]) => (allModules.find(m => m.id === a)?.number ?? 0) - (allModules.find(m => m.id === b)?.number ?? 0)).map(([id, x]) => `${allModules.find(m => m.id === id)?.number ?? id}: ${x!.outcome.grade}/${x!.judgement.grade}`).join(' · ') : '';
   const courseOut = async (q: Q, c: CourseRow) => ({
     id: c.id, code: c.code, title: c.title, term: c.term, modules: c.modules, dueAt: c.due_at, latePolicy: c.late_policy,
     joinCode: formatJoin(c.join_code), joinOpen: c.join_open, archived: c.archived, snapshotId: c.snapshot_id, createdAt: c.created_at,

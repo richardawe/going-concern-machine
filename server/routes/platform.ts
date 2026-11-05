@@ -250,7 +250,7 @@ export const platformRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
     needPlatform(req);
     const db = await d.db.platform(async q => ({
       size: (await q.one<{ size: string }>('select pg_size_pretty(pg_database_size(current_database())) as size')).size,
-      version: (await q.one<{ v: string }>('show server_version')).v as unknown as string,
+      version: (await q.one<{ v: string }>("select current_setting('server_version') as v")).v,
       queue: (await q.one<{ n: number }>('select count(*)::int as n from submissions where grades is null and grade_error is null')).n,
       gradeErrors: (await q.one<{ n: number }>('select count(*)::int as n from submissions where grade_error is not null')).n,
       deadlines: await q.many(
