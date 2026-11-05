@@ -1,0 +1,1935 @@
+{
+ "about": "UK universities and degree-awarding institutions for the platform console. Domains are the main staff and student email domains, offered as suggestions: confirm them with the university before provisioning. Compiled November 2026.",
+ "universities": [
+  {
+   "id": "aberdeen",
+   "name": "University of Aberdeen",
+   "aliases": [
+    "Aberdeen Business School"
+   ],
+   "domains": [
+    "abdn.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "aberdeen"
+  },
+  {
+   "id": "abertay",
+   "name": "Abertay University",
+   "aliases": [
+    "Abertay"
+   ],
+   "domains": [
+    "abertay.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "abertay"
+  },
+  {
+   "id": "aber",
+   "name": "Aberystwyth University",
+   "aliases": [
+    "Aber"
+   ],
+   "domains": [
+    "aber.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "aber"
+  },
+  {
+   "id": "aru",
+   "name": "Anglia Ruskin University",
+   "aliases": [
+    "ARU",
+    "Anglia Ruskin"
+   ],
+   "domains": [
+    "aru.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "aru"
+  },
+  {
+   "id": "arden",
+   "name": "Arden University",
+   "aliases": [],
+   "domains": [
+    "arden.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "arden"
+  },
+  {
+   "id": "ual",
+   "name": "University of the Arts London",
+   "aliases": [
+    "UAL"
+   ],
+   "domains": [
+    "arts.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ual"
+  },
+  {
+   "id": "aub",
+   "name": "Arts University Bournemouth",
+   "aliases": [
+    "AUB"
+   ],
+   "domains": [
+    "aub.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "aub"
+  },
+  {
+   "id": "aup",
+   "name": "Arts University Plymouth",
+   "aliases": [
+    "Plymouth College of Art"
+   ],
+   "domains": [
+    "aup.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "aup"
+  },
+  {
+   "id": "aston",
+   "name": "Aston University",
+   "aliases": [
+    "Aston Business School"
+   ],
+   "domains": [
+    "aston.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "aston"
+  },
+  {
+   "id": "bangor",
+   "name": "Bangor University",
+   "aliases": [],
+   "domains": [
+    "bangor.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "bangor"
+  },
+  {
+   "id": "bath",
+   "name": "University of Bath",
+   "aliases": [
+    "Bath School of Management"
+   ],
+   "domains": [
+    "bath.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bath"
+  },
+  {
+   "id": "bathspa",
+   "name": "Bath Spa University",
+   "aliases": [],
+   "domains": [
+    "bathspa.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bathspa"
+  },
+  {
+   "id": "beds",
+   "name": "University of Bedfordshire",
+   "aliases": [],
+   "domains": [
+    "beds.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "beds"
+  },
+  {
+   "id": "birkbeck",
+   "name": "Birkbeck, University of London",
+   "aliases": [
+    "Birkbeck"
+   ],
+   "domains": [
+    "bbk.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "birkbeck"
+  },
+  {
+   "id": "birmingham",
+   "name": "University of Birmingham",
+   "aliases": [
+    "Birmingham Business School"
+   ],
+   "domains": [
+    "bham.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "birmingham"
+  },
+  {
+   "id": "bcu",
+   "name": "Birmingham City University",
+   "aliases": [
+    "BCU"
+   ],
+   "domains": [
+    "bcu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bcu"
+  },
+  {
+   "id": "newman",
+   "name": "Birmingham Newman University",
+   "aliases": [
+    "Newman University"
+   ],
+   "domains": [
+    "newman.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "newman"
+  },
+  {
+   "id": "bishopg",
+   "name": "Bishop Grosseteste University",
+   "aliases": [
+    "BGU"
+   ],
+   "domains": [
+    "bishopg.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bishopg"
+  },
+  {
+   "id": "bolton",
+   "name": "University of Bolton",
+   "aliases": [],
+   "domains": [
+    "bolton.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bolton"
+  },
+  {
+   "id": "bournemouth",
+   "name": "Bournemouth University",
+   "aliases": [],
+   "domains": [
+    "bournemouth.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bournemouth"
+  },
+  {
+   "id": "bpp",
+   "name": "BPP University",
+   "aliases": [
+    "BPP"
+   ],
+   "domains": [
+    "bpp.com"
+   ],
+   "nation": "England",
+   "slug": "bpp"
+  },
+  {
+   "id": "bradford",
+   "name": "University of Bradford",
+   "aliases": [
+    "Bradford School of Management"
+   ],
+   "domains": [
+    "bradford.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bradford"
+  },
+  {
+   "id": "brighton",
+   "name": "University of Brighton",
+   "aliases": [],
+   "domains": [
+    "brighton.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "brighton"
+  },
+  {
+   "id": "bristol",
+   "name": "University of Bristol",
+   "aliases": [
+    "Bristol Business School"
+   ],
+   "domains": [
+    "bristol.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bristol"
+  },
+  {
+   "id": "brunel",
+   "name": "Brunel University of London",
+   "aliases": [
+    "Brunel University London",
+    "Brunel"
+   ],
+   "domains": [
+    "brunel.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "brunel"
+  },
+  {
+   "id": "buckingham",
+   "name": "University of Buckingham",
+   "aliases": [],
+   "domains": [
+    "buckingham.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "buckingham"
+  },
+  {
+   "id": "bucks",
+   "name": "Buckinghamshire New University",
+   "aliases": [
+    "BNU",
+    "Bucks New"
+   ],
+   "domains": [
+    "bucks.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bucks"
+  },
+  {
+   "id": "cambridge",
+   "name": "University of Cambridge",
+   "aliases": [
+    "Cambridge Judge Business School",
+    "Judge"
+   ],
+   "domains": [
+    "cam.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "cambridge"
+  },
+  {
+   "id": "canterbury",
+   "name": "Canterbury Christ Church University",
+   "aliases": [
+    "CCCU"
+   ],
+   "domains": [
+    "canterbury.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "canterbury"
+  },
+  {
+   "id": "cardiffmet",
+   "name": "Cardiff Metropolitan University",
+   "aliases": [
+    "Cardiff Met"
+   ],
+   "domains": [
+    "cardiffmet.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "cardiffmet"
+  },
+  {
+   "id": "cardiff",
+   "name": "Cardiff University",
+   "aliases": [
+    "Cardiff Business School"
+   ],
+   "domains": [
+    "cardiff.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "cardiff"
+  },
+  {
+   "id": "uclan",
+   "name": "University of Central Lancashire",
+   "aliases": [
+    "UCLan"
+   ],
+   "domains": [
+    "uclan.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uclan"
+  },
+  {
+   "id": "chester",
+   "name": "University of Chester",
+   "aliases": [],
+   "domains": [
+    "chester.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "chester"
+  },
+  {
+   "id": "chichester",
+   "name": "University of Chichester",
+   "aliases": [],
+   "domains": [
+    "chi.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "chichester"
+  },
+  {
+   "id": "citystgeorges",
+   "name": "City St George's, University of London",
+   "aliases": [
+    "City University",
+    "Bayes Business School",
+    "Cass Business School",
+    "St George's"
+   ],
+   "domains": [
+    "citystgeorges.ac.uk",
+    "city.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "citystgeorges"
+  },
+  {
+   "id": "courtauld",
+   "name": "The Courtauld",
+   "aliases": [
+    "Courtauld Institute of Art"
+   ],
+   "domains": [
+    "courtauld.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "courtauld"
+  },
+  {
+   "id": "coventry",
+   "name": "Coventry University",
+   "aliases": [],
+   "domains": [
+    "coventry.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "coventry"
+  },
+  {
+   "id": "cranfield",
+   "name": "Cranfield University",
+   "aliases": [
+    "Cranfield School of Management"
+   ],
+   "domains": [
+    "cranfield.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "cranfield"
+  },
+  {
+   "id": "cumbria",
+   "name": "University of Cumbria",
+   "aliases": [],
+   "domains": [
+    "cumbria.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "cumbria"
+  },
+  {
+   "id": "dmu",
+   "name": "De Montfort University",
+   "aliases": [
+    "DMU"
+   ],
+   "domains": [
+    "dmu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "dmu"
+  },
+  {
+   "id": "derby",
+   "name": "University of Derby",
+   "aliases": [],
+   "domains": [
+    "derby.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "derby"
+  },
+  {
+   "id": "dundee",
+   "name": "University of Dundee",
+   "aliases": [],
+   "domains": [
+    "dundee.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "dundee"
+  },
+  {
+   "id": "durham",
+   "name": "Durham University",
+   "aliases": [
+    "Durham University Business School"
+   ],
+   "domains": [
+    "durham.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "durham"
+  },
+  {
+   "id": "uea",
+   "name": "University of East Anglia",
+   "aliases": [
+    "UEA",
+    "Norwich Business School"
+   ],
+   "domains": [
+    "uea.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uea"
+  },
+  {
+   "id": "uel",
+   "name": "University of East London",
+   "aliases": [
+    "UEL"
+   ],
+   "domains": [
+    "uel.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uel"
+  },
+  {
+   "id": "edgehill",
+   "name": "Edge Hill University",
+   "aliases": [],
+   "domains": [
+    "edgehill.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "edgehill"
+  },
+  {
+   "id": "edinburgh",
+   "name": "University of Edinburgh",
+   "aliases": [
+    "University of Edinburgh Business School"
+   ],
+   "domains": [
+    "ed.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "edinburgh"
+  },
+  {
+   "id": "napier",
+   "name": "Edinburgh Napier University",
+   "aliases": [
+    "Napier"
+   ],
+   "domains": [
+    "napier.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "napier"
+  },
+  {
+   "id": "essex",
+   "name": "University of Essex",
+   "aliases": [
+    "Essex Business School"
+   ],
+   "domains": [
+    "essex.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "essex"
+  },
+  {
+   "id": "exeter",
+   "name": "University of Exeter",
+   "aliases": [
+    "Exeter Business School"
+   ],
+   "domains": [
+    "exeter.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "exeter"
+  },
+  {
+   "id": "falmouth",
+   "name": "Falmouth University",
+   "aliases": [],
+   "domains": [
+    "falmouth.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "falmouth"
+  },
+  {
+   "id": "glasgow",
+   "name": "University of Glasgow",
+   "aliases": [
+    "Adam Smith Business School"
+   ],
+   "domains": [
+    "glasgow.ac.uk",
+    "gla.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "glasgow"
+  },
+  {
+   "id": "gcu",
+   "name": "Glasgow Caledonian University",
+   "aliases": [
+    "GCU"
+   ],
+   "domains": [
+    "gcu.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "gcu"
+  },
+  {
+   "id": "gsa",
+   "name": "The Glasgow School of Art",
+   "aliases": [
+    "GSA"
+   ],
+   "domains": [
+    "gsa.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "gsa"
+  },
+  {
+   "id": "glos",
+   "name": "University of Gloucestershire",
+   "aliases": [],
+   "domains": [
+    "glos.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "glos"
+  },
+  {
+   "id": "goldsmiths",
+   "name": "Goldsmiths, University of London",
+   "aliases": [
+    "Goldsmiths"
+   ],
+   "domains": [
+    "gold.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "goldsmiths"
+  },
+  {
+   "id": "greenwich",
+   "name": "University of Greenwich",
+   "aliases": [],
+   "domains": [
+    "greenwich.ac.uk",
+    "gre.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "greenwich"
+  },
+  {
+   "id": "guildhall",
+   "name": "Guildhall School of Music & Drama",
+   "aliases": [
+    "Guildhall"
+   ],
+   "domains": [
+    "gsmd.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "guildhall"
+  },
+  {
+   "id": "harperadams",
+   "name": "Harper Adams University",
+   "aliases": [],
+   "domains": [
+    "harper-adams.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "harperadams"
+  },
+  {
+   "id": "hartpury",
+   "name": "Hartpury University",
+   "aliases": [],
+   "domains": [
+    "hartpury.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "hartpury"
+  },
+  {
+   "id": "heriotwatt",
+   "name": "Heriot-Watt University",
+   "aliases": [
+    "Edinburgh Business School"
+   ],
+   "domains": [
+    "hw.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "heriotwatt"
+  },
+  {
+   "id": "herts",
+   "name": "University of Hertfordshire",
+   "aliases": [
+    "Herts"
+   ],
+   "domains": [
+    "herts.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "herts"
+  },
+  {
+   "id": "uhi",
+   "name": "University of the Highlands and Islands",
+   "aliases": [
+    "UHI"
+   ],
+   "domains": [
+    "uhi.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "uhi"
+  },
+  {
+   "id": "huddersfield",
+   "name": "University of Huddersfield",
+   "aliases": [],
+   "domains": [
+    "hud.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "huddersfield"
+  },
+  {
+   "id": "hull",
+   "name": "University of Hull",
+   "aliases": [],
+   "domains": [
+    "hull.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "hull"
+  },
+  {
+   "id": "hult",
+   "name": "Hult International Business School",
+   "aliases": [
+    "Hult",
+    "Ashridge"
+   ],
+   "domains": [
+    "hult.edu"
+   ],
+   "nation": "England",
+   "slug": "hult"
+  },
+  {
+   "id": "imperial",
+   "name": "Imperial College London",
+   "aliases": [
+    "Imperial",
+    "Imperial College Business School"
+   ],
+   "domains": [
+    "imperial.ac.uk",
+    "ic.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "imperial"
+  },
+  {
+   "id": "icr",
+   "name": "The Institute of Cancer Research",
+   "aliases": [
+    "ICR"
+   ],
+   "domains": [
+    "icr.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "icr"
+  },
+  {
+   "id": "keele",
+   "name": "Keele University",
+   "aliases": [],
+   "domains": [
+    "keele.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "keele"
+  },
+  {
+   "id": "kent",
+   "name": "University of Kent",
+   "aliases": [
+    "Kent Business School"
+   ],
+   "domains": [
+    "kent.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "kent"
+  },
+  {
+   "id": "kcl",
+   "name": "King's College London",
+   "aliases": [
+    "KCL",
+    "King's Business School"
+   ],
+   "domains": [
+    "kcl.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "kcl"
+  },
+  {
+   "id": "kingston",
+   "name": "Kingston University",
+   "aliases": [],
+   "domains": [
+    "kingston.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "kingston"
+  },
+  {
+   "id": "lancaster",
+   "name": "Lancaster University",
+   "aliases": [
+    "Lancaster University Management School",
+    "LUMS"
+   ],
+   "domains": [
+    "lancaster.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lancaster"
+  },
+  {
+   "id": "leeds",
+   "name": "University of Leeds",
+   "aliases": [
+    "Leeds University Business School"
+   ],
+   "domains": [
+    "leeds.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leeds"
+  },
+  {
+   "id": "leedsarts",
+   "name": "Leeds Arts University",
+   "aliases": [],
+   "domains": [
+    "leeds-art.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leedsarts"
+  },
+  {
+   "id": "leedsbeckett",
+   "name": "Leeds Beckett University",
+   "aliases": [],
+   "domains": [
+    "leedsbeckett.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leedsbeckett"
+  },
+  {
+   "id": "leedsconservatoire",
+   "name": "Leeds Conservatoire",
+   "aliases": [],
+   "domains": [
+    "leedsconservatoire.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leedsconservatoire"
+  },
+  {
+   "id": "leedstrinity",
+   "name": "Leeds Trinity University",
+   "aliases": [],
+   "domains": [
+    "leedstrinity.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leedstrinity"
+  },
+  {
+   "id": "leicester",
+   "name": "University of Leicester",
+   "aliases": [],
+   "domains": [
+    "leicester.ac.uk",
+    "le.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "leicester"
+  },
+  {
+   "id": "lincoln",
+   "name": "University of Lincoln",
+   "aliases": [],
+   "domains": [
+    "lincoln.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lincoln"
+  },
+  {
+   "id": "liverpool",
+   "name": "University of Liverpool",
+   "aliases": [
+    "University of Liverpool Management School"
+   ],
+   "domains": [
+    "liverpool.ac.uk",
+    "liv.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "liverpool"
+  },
+  {
+   "id": "hope",
+   "name": "Liverpool Hope University",
+   "aliases": [],
+   "domains": [
+    "hope.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "hope"
+  },
+  {
+   "id": "ljmu",
+   "name": "Liverpool John Moores University",
+   "aliases": [
+    "LJMU"
+   ],
+   "domains": [
+    "ljmu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ljmu"
+  },
+  {
+   "id": "lstm",
+   "name": "Liverpool School of Tropical Medicine",
+   "aliases": [
+    "LSTM"
+   ],
+   "domains": [
+    "lstmed.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lstm"
+  },
+  {
+   "id": "london",
+   "name": "University of London",
+   "aliases": [
+    "UoL"
+   ],
+   "domains": [
+    "london.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "london"
+  },
+  {
+   "id": "lbs",
+   "name": "London Business School",
+   "aliases": [
+    "LBS"
+   ],
+   "domains": [
+    "london.edu"
+   ],
+   "nation": "England",
+   "slug": "lbs"
+  },
+  {
+   "id": "lis",
+   "name": "London Interdisciplinary School",
+   "aliases": [
+    "LIS"
+   ],
+   "domains": [
+    "lis.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lis"
+  },
+  {
+   "id": "londonmet",
+   "name": "London Metropolitan University",
+   "aliases": [
+    "London Met"
+   ],
+   "domains": [
+    "londonmet.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "londonmet"
+  },
+  {
+   "id": "lse",
+   "name": "London School of Economics and Political Science",
+   "aliases": [
+    "LSE",
+    "London School of Economics"
+   ],
+   "domains": [
+    "lse.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lse"
+  },
+  {
+   "id": "lshtm",
+   "name": "London School of Hygiene & Tropical Medicine",
+   "aliases": [
+    "LSHTM"
+   ],
+   "domains": [
+    "lshtm.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lshtm"
+  },
+  {
+   "id": "lsbu",
+   "name": "London South Bank University",
+   "aliases": [
+    "LSBU"
+   ],
+   "domains": [
+    "lsbu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lsbu"
+  },
+  {
+   "id": "lboro",
+   "name": "Loughborough University",
+   "aliases": [
+    "Loughborough Business School"
+   ],
+   "domains": [
+    "lboro.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "lboro"
+  },
+  {
+   "id": "manchester",
+   "name": "University of Manchester",
+   "aliases": [
+    "Alliance Manchester Business School",
+    "AMBS"
+   ],
+   "domains": [
+    "manchester.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "manchester"
+  },
+  {
+   "id": "mmu",
+   "name": "Manchester Metropolitan University",
+   "aliases": [
+    "MMU",
+    "Manchester Met"
+   ],
+   "domains": [
+    "mmu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "mmu"
+  },
+  {
+   "id": "mdx",
+   "name": "Middlesex University",
+   "aliases": [
+    "Middlesex"
+   ],
+   "domains": [
+    "mdx.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "mdx"
+  },
+  {
+   "id": "newcastle",
+   "name": "Newcastle University",
+   "aliases": [
+    "Newcastle University Business School"
+   ],
+   "domains": [
+    "newcastle.ac.uk",
+    "ncl.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "newcastle"
+  },
+  {
+   "id": "northampton",
+   "name": "University of Northampton",
+   "aliases": [],
+   "domains": [
+    "northampton.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "northampton"
+  },
+  {
+   "id": "nulondon",
+   "name": "Northeastern University London",
+   "aliases": [
+    "NCH",
+    "New College of the Humanities"
+   ],
+   "domains": [
+    "nulondon.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "nulondon"
+  },
+  {
+   "id": "northumbria",
+   "name": "Northumbria University",
+   "aliases": [
+    "Newcastle Business School"
+   ],
+   "domains": [
+    "northumbria.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "northumbria"
+  },
+  {
+   "id": "nua",
+   "name": "Norwich University of the Arts",
+   "aliases": [
+    "NUA"
+   ],
+   "domains": [
+    "nua.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "nua"
+  },
+  {
+   "id": "nottingham",
+   "name": "University of Nottingham",
+   "aliases": [
+    "Nottingham University Business School"
+   ],
+   "domains": [
+    "nottingham.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "nottingham"
+  },
+  {
+   "id": "ntu",
+   "name": "Nottingham Trent University",
+   "aliases": [
+    "NTU"
+   ],
+   "domains": [
+    "ntu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ntu"
+  },
+  {
+   "id": "open",
+   "name": "The Open University",
+   "aliases": [
+    "OU",
+    "Open University Business School"
+   ],
+   "domains": [
+    "open.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "open"
+  },
+  {
+   "id": "oxford",
+   "name": "University of Oxford",
+   "aliases": [
+    "Oxford",
+    "Saïd Business School",
+    "Said Business School"
+   ],
+   "domains": [
+    "ox.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "oxford"
+  },
+  {
+   "id": "brookes",
+   "name": "Oxford Brookes University",
+   "aliases": [
+    "Brookes"
+   ],
+   "domains": [
+    "brookes.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "brookes"
+  },
+  {
+   "id": "plymouth",
+   "name": "University of Plymouth",
+   "aliases": [],
+   "domains": [
+    "plymouth.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "plymouth"
+  },
+  {
+   "id": "marjon",
+   "name": "Plymouth Marjon University",
+   "aliases": [
+    "Marjon"
+   ],
+   "domains": [
+    "marjon.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "marjon"
+  },
+  {
+   "id": "portsmouth",
+   "name": "University of Portsmouth",
+   "aliases": [],
+   "domains": [
+    "port.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "portsmouth"
+  },
+  {
+   "id": "qmu",
+   "name": "Queen Margaret University",
+   "aliases": [
+    "QMU"
+   ],
+   "domains": [
+    "qmu.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "qmu"
+  },
+  {
+   "id": "qmul",
+   "name": "Queen Mary University of London",
+   "aliases": [
+    "QMUL",
+    "Queen Mary"
+   ],
+   "domains": [
+    "qmul.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "qmul"
+  },
+  {
+   "id": "qub",
+   "name": "Queen's University Belfast",
+   "aliases": [
+    "QUB",
+    "Queen's Management School"
+   ],
+   "domains": [
+    "qub.ac.uk"
+   ],
+   "nation": "Northern Ireland",
+   "slug": "qub"
+  },
+  {
+   "id": "ravensbourne",
+   "name": "Ravensbourne University London",
+   "aliases": [
+    "Ravensbourne"
+   ],
+   "domains": [
+    "rave.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ravensbourne"
+  },
+  {
+   "id": "reading",
+   "name": "University of Reading",
+   "aliases": [
+    "Henley Business School",
+    "Henley"
+   ],
+   "domains": [
+    "reading.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "reading"
+  },
+  {
+   "id": "regents",
+   "name": "Regent's University London",
+   "aliases": [
+    "Regent's"
+   ],
+   "domains": [
+    "regents.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "regents"
+  },
+  {
+   "id": "richmond",
+   "name": "Richmond American University London",
+   "aliases": [
+    "Richmond"
+   ],
+   "domains": [
+    "richmond.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "richmond"
+  },
+  {
+   "id": "rgu",
+   "name": "Robert Gordon University",
+   "aliases": [
+    "RGU"
+   ],
+   "domains": [
+    "rgu.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "rgu"
+  },
+  {
+   "id": "roehampton",
+   "name": "University of Roehampton",
+   "aliases": [
+    "Roehampton"
+   ],
+   "domains": [
+    "roehampton.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "roehampton"
+  },
+  {
+   "id": "bruford",
+   "name": "Rose Bruford College",
+   "aliases": [],
+   "domains": [
+    "bruford.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "bruford"
+  },
+  {
+   "id": "ram",
+   "name": "Royal Academy of Music",
+   "aliases": [],
+   "domains": [
+    "ram.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ram"
+  },
+  {
+   "id": "rau",
+   "name": "Royal Agricultural University",
+   "aliases": [
+    "RAU"
+   ],
+   "domains": [
+    "rau.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "rau"
+  },
+  {
+   "id": "rca",
+   "name": "Royal College of Art",
+   "aliases": [
+    "RCA"
+   ],
+   "domains": [
+    "rca.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "rca"
+  },
+  {
+   "id": "rcm",
+   "name": "Royal College of Music",
+   "aliases": [
+    "RCM"
+   ],
+   "domains": [
+    "rcm.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "rcm"
+  },
+  {
+   "id": "rcs",
+   "name": "Royal Conservatoire of Scotland",
+   "aliases": [
+    "RCS"
+   ],
+   "domains": [
+    "rcs.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "rcs"
+  },
+  {
+   "id": "royalholloway",
+   "name": "Royal Holloway, University of London",
+   "aliases": [
+    "Royal Holloway",
+    "RHUL"
+   ],
+   "domains": [
+    "rhul.ac.uk",
+    "royalholloway.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "royalholloway"
+  },
+  {
+   "id": "rncm",
+   "name": "Royal Northern College of Music",
+   "aliases": [
+    "RNCM"
+   ],
+   "domains": [
+    "rncm.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "rncm"
+  },
+  {
+   "id": "rvc",
+   "name": "Royal Veterinary College",
+   "aliases": [
+    "RVC"
+   ],
+   "domains": [
+    "rvc.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "rvc"
+  },
+  {
+   "id": "rwcmd",
+   "name": "Royal Welsh College of Music & Drama",
+   "aliases": [
+    "RWCMD"
+   ],
+   "domains": [
+    "rwcmd.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "rwcmd"
+  },
+  {
+   "id": "salford",
+   "name": "University of Salford",
+   "aliases": [
+    "Salford Business School"
+   ],
+   "domains": [
+    "salford.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "salford"
+  },
+  {
+   "id": "sruc",
+   "name": "Scotland's Rural College",
+   "aliases": [
+    "SRUC"
+   ],
+   "domains": [
+    "sruc.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "sruc"
+  },
+  {
+   "id": "sheffield",
+   "name": "University of Sheffield",
+   "aliases": [
+    "Sheffield University Management School"
+   ],
+   "domains": [
+    "sheffield.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "sheffield"
+  },
+  {
+   "id": "shu",
+   "name": "Sheffield Hallam University",
+   "aliases": [
+    "SHU",
+    "Hallam"
+   ],
+   "domains": [
+    "shu.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "shu"
+  },
+  {
+   "id": "soas",
+   "name": "SOAS University of London",
+   "aliases": [
+    "SOAS"
+   ],
+   "domains": [
+    "soas.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "soas"
+  },
+  {
+   "id": "solent",
+   "name": "Solent University",
+   "aliases": [
+    "Southampton Solent"
+   ],
+   "domains": [
+    "solent.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "solent"
+  },
+  {
+   "id": "southwales",
+   "name": "University of South Wales",
+   "aliases": [
+    "USW"
+   ],
+   "domains": [
+    "southwales.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "southwales"
+  },
+  {
+   "id": "southampton",
+   "name": "University of Southampton",
+   "aliases": [
+    "Southampton Business School"
+   ],
+   "domains": [
+    "soton.ac.uk",
+    "southampton.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "southampton"
+  },
+  {
+   "id": "standrews",
+   "name": "University of St Andrews",
+   "aliases": [
+    "St Andrews"
+   ],
+   "domains": [
+    "st-andrews.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "standrews"
+  },
+  {
+   "id": "stmarysbelfast",
+   "name": "St Mary's University College Belfast",
+   "aliases": [],
+   "domains": [
+    "stmarys-belfast.ac.uk"
+   ],
+   "nation": "Northern Ireland",
+   "slug": "stmarysbelfast"
+  },
+  {
+   "id": "stmarys",
+   "name": "St Mary's University, Twickenham",
+   "aliases": [
+    "St Mary's Twickenham"
+   ],
+   "domains": [
+    "stmarys.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "stmarys"
+  },
+  {
+   "id": "staffs",
+   "name": "Staffordshire University",
+   "aliases": [
+    "Staffs"
+   ],
+   "domains": [
+    "staffs.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "staffs"
+  },
+  {
+   "id": "stirling",
+   "name": "University of Stirling",
+   "aliases": [
+    "Stirling Management School"
+   ],
+   "domains": [
+    "stir.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "stirling"
+  },
+  {
+   "id": "stranmillis",
+   "name": "Stranmillis University College",
+   "aliases": [],
+   "domains": [
+    "stran.ac.uk"
+   ],
+   "nation": "Northern Ireland",
+   "slug": "stranmillis"
+  },
+  {
+   "id": "strathclyde",
+   "name": "University of Strathclyde",
+   "aliases": [
+    "Strathclyde Business School"
+   ],
+   "domains": [
+    "strath.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "strathclyde"
+  },
+  {
+   "id": "suffolk",
+   "name": "University of Suffolk",
+   "aliases": [],
+   "domains": [
+    "uos.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "suffolk"
+  },
+  {
+   "id": "sunderland",
+   "name": "University of Sunderland",
+   "aliases": [],
+   "domains": [
+    "sunderland.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "sunderland"
+  },
+  {
+   "id": "surrey",
+   "name": "University of Surrey",
+   "aliases": [
+    "Surrey Business School"
+   ],
+   "domains": [
+    "surrey.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "surrey"
+  },
+  {
+   "id": "sussex",
+   "name": "University of Sussex",
+   "aliases": [
+    "University of Sussex Business School"
+   ],
+   "domains": [
+    "sussex.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "sussex"
+  },
+  {
+   "id": "swansea",
+   "name": "Swansea University",
+   "aliases": [
+    "Swansea University School of Management"
+   ],
+   "domains": [
+    "swansea.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "swansea"
+  },
+  {
+   "id": "teesside",
+   "name": "Teesside University",
+   "aliases": [],
+   "domains": [
+    "tees.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "teesside"
+  },
+  {
+   "id": "ulster",
+   "name": "Ulster University",
+   "aliases": [
+    "Ulster University Business School"
+   ],
+   "domains": [
+    "ulster.ac.uk"
+   ],
+   "nation": "Northern Ireland",
+   "slug": "ulster"
+  },
+  {
+   "id": "ucb",
+   "name": "University College Birmingham",
+   "aliases": [
+    "UCB"
+   ],
+   "domains": [
+    "ucb.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ucb"
+  },
+  {
+   "id": "ucl",
+   "name": "University College London",
+   "aliases": [
+    "UCL",
+    "UCL School of Management"
+   ],
+   "domains": [
+    "ucl.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "ucl"
+  },
+  {
+   "id": "uca",
+   "name": "University for the Creative Arts",
+   "aliases": [
+    "UCA"
+   ],
+   "domains": [
+    "uca.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uca"
+  },
+  {
+   "id": "law",
+   "name": "The University of Law",
+   "aliases": [
+    "ULaw"
+   ],
+   "domains": [
+    "law.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "law"
+  },
+  {
+   "id": "uwtsd",
+   "name": "University of Wales Trinity Saint David",
+   "aliases": [
+    "UWTSD"
+   ],
+   "domains": [
+    "uwtsd.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "uwtsd"
+  },
+  {
+   "id": "warwick",
+   "name": "University of Warwick",
+   "aliases": [
+    "Warwick Business School",
+    "WBS"
+   ],
+   "domains": [
+    "warwick.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "warwick"
+  },
+  {
+   "id": "uwl",
+   "name": "University of West London",
+   "aliases": [
+    "UWL"
+   ],
+   "domains": [
+    "uwl.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uwl"
+  },
+  {
+   "id": "uwe",
+   "name": "University of the West of England",
+   "aliases": [
+    "UWE",
+    "UWE Bristol"
+   ],
+   "domains": [
+    "uwe.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "uwe"
+  },
+  {
+   "id": "uws",
+   "name": "University of the West of Scotland",
+   "aliases": [
+    "UWS"
+   ],
+   "domains": [
+    "uws.ac.uk"
+   ],
+   "nation": "Scotland",
+   "slug": "uws"
+  },
+  {
+   "id": "westminster",
+   "name": "University of Westminster",
+   "aliases": [
+    "Westminster Business School"
+   ],
+   "domains": [
+    "westminster.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "westminster"
+  },
+  {
+   "id": "winchester",
+   "name": "University of Winchester",
+   "aliases": [],
+   "domains": [
+    "winchester.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "winchester"
+  },
+  {
+   "id": "wlv",
+   "name": "University of Wolverhampton",
+   "aliases": [],
+   "domains": [
+    "wlv.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "wlv"
+  },
+  {
+   "id": "worcester",
+   "name": "University of Worcester",
+   "aliases": [],
+   "domains": [
+    "worc.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "worcester"
+  },
+  {
+   "id": "wrexham",
+   "name": "Wrexham University",
+   "aliases": [
+    "Glyndŵr University",
+    "Glyndwr"
+   ],
+   "domains": [
+    "wrexham.ac.uk",
+    "glyndwr.ac.uk"
+   ],
+   "nation": "Wales",
+   "slug": "wrexham"
+  },
+  {
+   "id": "york",
+   "name": "University of York",
+   "aliases": [
+    "York Management School"
+   ],
+   "domains": [
+    "york.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "york"
+  },
+  {
+   "id": "yorksj",
+   "name": "York St John University",
+   "aliases": [
+    "YSJ"
+   ],
+   "domains": [
+    "yorksj.ac.uk"
+   ],
+   "nation": "England",
+   "slug": "yorksj"
+  }
+ ]
+}
