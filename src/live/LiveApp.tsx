@@ -1,6 +1,5 @@
 import { lazy, Suspense, type ReactNode, useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, CircleAlert, CircleCheck, Focus, Gauge as GaugeIcon, Info, Newspaper, Pause, Play as PlayIcon, RotateCcw, TrendingUp, Wallet, X } from 'lucide-react';
-import ThemeSwitch from '../components/ThemeSwitch';
+import { ArrowRight, Check, CircleAlert, CircleCheck, Focus, Gauge as GaugeIcon, Info, Newspaper, Pause, Play as PlayIcon, RotateCcw, TrendingUp, Wallet, X } from 'lucide-react';
 import Inspector from '../components/Inspector';
 import { leverRange, type CompanyChoice } from '../ceo/challenge';
 import { prepareStart } from '../ceo/company';
@@ -17,6 +16,8 @@ import { healthLabels, sceneFrame, type Health } from './frame';
 import type { Labels, Part } from './scene/Campus';
 import '../ceo/ui/ceo.css';
 import './live.css';
+import SiteNav from '../site/SiteNav';
+import { Drawing } from '../site/Drawing';
 
 // LIVE COMPANY (#/live): CEO mode's game, played on a 3D company campus. It reuses the game engine and the CEO mode
 // screens as they are and keeps its own saved game, so CEO mode and the machine workbench are untouched.
@@ -60,9 +61,11 @@ export default function LiveApp() {
   const ready = game && saved;
 
   return <main className="app-shell ceo-app live-app">
+    <SiteNav current="live" />
     <header className="masthead ceo-masthead">
-      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>LIVE COMPANY / 3D</span> <ThemeSwitch /></div><h1>The Going Concern Machine</h1><p>Run the company and watch it live: every building, flow and figure on site is driven by the game’s numbers.</p></div>
-      <nav className="ceo-nav"><a className="text-button back-link" href="#/ceo">CEO mode</a><a className="text-button back-link" href="#/"><ArrowLeft size={13} /> Company machines</a></nav>
+      <Drawing name="artOfMilling" className="page-drawing" fit="cover" position="30% 40%" />
+      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>LIVE COMPANY / 3D</span></div><h1>The Going Concern Machine</h1><p>Run the company and watch it live: every building, flow and figure on site is driven by the game’s numbers.</p></div>
+      <nav className="ceo-nav"><a className="text-button back-link" href="#/ceo">CEO mode</a></nav>
     </header>
     {error && <div className="notice" role="alert">{error} <button className="text-button" onClick={() => setError('')}>Dismiss</button></div>}
     {!saved && (archetypes ? <Setup archetypes={archetypes} begin={(caseId, choice, sandbox) => { setError(''); update({ caseId, choice, sandbox, decisions: [], stage: 'briefing' }); }} /> : !error && <p className="empty-state">Loading industries…</p>)}

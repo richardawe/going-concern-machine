@@ -8,11 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../site-static.css">
+<script src="../site-static.js"></script>
 <style>
 /* A bench of framed instrument cards, matching the course app. */
 :root{--page:#f3f4f5;--card:#fbfbfb;--ink:#17191c;--text:#373c43;--muted:#737d8c;--rule:#dee0e3;--soft:#ecedee;--accent:#194fcc;--accent-soft:#e3eafb;--good:#2c9761;--good-soft:#e2f3ea;
   --lift:0 0 0 1px #17191c12,0 1px 1px -.5px #17191c0d,0 8px 14px -6px #17191c14;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--display:'Archivo',Arial,sans-serif;--body:'DM Sans',Arial,sans-serif;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--page:#121417;--card:#1a1d22;--ink:#e4e6e8;--text:#c0c4ca;--muted:#7e8591;--rule:#2b3038;--soft:#22262c;--accent:#6f98f7;--accent-soft:#1c2740;--good:#5acf95;--good-soft:#16281f;--lift:inset 0 1px 0 #ffffff08,0 0 0 1px #00000060,0 8px 14px -6px #00000070;color-scheme:dark}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--page:#121417;--card:#1a1d22;--ink:#e4e6e8;--text:#c0c4ca;--muted:#7e8591;--rule:#2b3038;--soft:#22262c;--accent:#6f98f7;--accent-soft:#1c2740;--good:#5acf95;--good-soft:#16281f;--lift:inset 0 1px 0 #ffffff08,0 0 0 1px #00000060,0 8px 14px -6px #00000070;color-scheme:dark}}
+:root[data-theme=dark]{--page:#121417;--card:#1a1d22;--ink:#e4e6e8;--text:#c0c4ca;--muted:#7e8591;--rule:#2b3038;--soft:#22262c;--accent:#6f98f7;--accent-soft:#1c2740;--good:#5acf95;--good-soft:#16281f;--lift:inset 0 1px 0 #ffffff08,0 0 0 1px #00000060,0 8px 14px -6px #00000070;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--text);font:16px/1.6 var(--body);padding:0 max(16px,env(safe-area-inset-right)) 64px max(16px,env(safe-area-inset-left))}
 h1,h2,h3{font-family:var(--display);color:var(--ink);margin:0;letter-spacing:-.015em;text-wrap:balance}
@@ -67,11 +70,13 @@ tr:last-child td{border-bottom:0}
 </style>
 </head>
 <body>
+<nav class="site-nav" aria-label="Site"><div class="site-nav-inner">
+  <a class="site-logo" href="../#/"><i aria-hidden="true"></i>Going Concern Lab</a>
+  <div class="site-links"><a href="../#/">Home</a><a href="../#/machine">Company machine</a><a href="../#/ceo">CEO mode</a><a href="../#/live">Live 3D</a><a href="../#/course">Modules</a><a href="./" aria-current="page">For universities</a><div class="site-menu-extra"><div class="site-theme" role="group" aria-label="Colour theme"><button type="button" data-theme-mode="system" title="Follow my device" aria-label="System theme">◐</button><button type="button" data-theme-mode="light" title="Light" aria-label="Light theme">☀</button><button type="button" data-theme-mode="dark" title="Dark" aria-label="Dark theme">☾</button></div></div></div>
+  <div class="site-actions"><div class="site-theme" role="group" aria-label="Colour theme"><button type="button" data-theme-mode="system" title="Follow my device" aria-label="System theme">◐</button><button type="button" data-theme-mode="light" title="Light" aria-label="Light theme">☀</button><button type="button" data-theme-mode="dark" title="Dark" aria-label="Dark theme">☾</button></div><a class="site-btn" href="/sign-in" data-platform>Sign in</a><a class="site-btn primary" href="../#/course">Try the modules →</a></div>
+  <button class="site-burger" type="button" aria-expanded="false" aria-label="Menu">☰</button>
+</div></nav>
 <div class="wrap">
-  <header class="top">
-    <a class="brand" href="./">GOING CONCERN · MODULES<span>for universities</span></a>
-    <div class="row"><a class="btn" href="../#/course/lecturer">Lecturer view</a><a class="btn primary" href="../#/course">Try the modules →</a></div>
-  </header>
 
   <div class="hero">
     <div class="hero-text">
@@ -80,7 +85,7 @@ tr:last-child td{border-bottom:0}
       <p class="lede">Each module puts students in charge of a fictional business through five years of decisions. They explore every concept on a working model, explain it in their own words, and hand in a PDF that drops straight into Canvas. The grades come from replaying their decisions, so a result can’t be faked.</p>
       <div class="row"><a class="btn primary" href="../#/course">Try the modules →</a><span class="note">About 45 minutes. Runs in the browser, with nothing to install.</span></div>
     </div>
-    <figure class="shot" style="margin:0"><img src="img/concept.jpg" alt="A concept screen: an isometric machine where a price lever turns a flywheel and fills a cash tank, beside the concept explanation and a typed answer box." width="1400" height="760"><figcaption>Concept 3 of 8, break-even volume. Students move the price lever and watch gross profit and cash respond, then explain the concept in their own words.</figcaption></figure>
+    <figure class="running-engine" style="margin:0"><div class="engine-stage" aria-hidden="true"><div class="drawing engine-base" style="-webkit-mask:url(../drawings/engine-base.webp) center/contain no-repeat;mask:url(../drawings/engine-base.webp) center/contain no-repeat"></div><div class="drawing engine-flywheel" style="-webkit-mask:url(../drawings/engine-flywheel.webp) center/contain no-repeat;mask:url(../drawings/engine-flywheel.webp) center/contain no-repeat"></div><div class="drawing engine-governor" style="-webkit-mask:url(../drawings/engine-governor.webp) center/contain no-repeat;mask:url(../drawings/engine-governor.webp) center/contain no-repeat"></div></div><figcaption><span>Every module runs on a working machine</span><a href="../#/credits">Beam engine, St Croix · HAER</a></figcaption></figure>
   </div>
 
   <section>
@@ -170,7 +175,13 @@ tr:last-child td{border-bottom:0}
     </div>
   </section>
 
-  <footer class="foot">Going Concern Modules · a teaching simulation on fictional companies. It is not financial advice or a forecast of any real company.</footer>
+  <p class="foot">Going Concern Modules · a teaching simulation on fictional companies. It is not financial advice or a forecast of any real company.</p>
 </div>
+<footer class="site-footer"><div class="site-footer-cols">
+  <div><a class="site-logo" href="../#/"><i aria-hidden="true"></i>Going Concern Lab</a><p>A business is a machine that must keep capturing value to keep running. We make that machine visible.</p></div>
+  <div><h4>Product</h4><a href="../#/machine">Company machine</a><a href="../#/ceo">CEO mode</a><a href="../#/live">Live 3D company</a><a href="../#/course">Going Concern Modules</a><a href="../#/machine/build">Build your own business</a><a href="../demo/">Demo video</a></div>
+  <div><h4>Universities</h4><a href="./">University edition</a><a href="../#/course/lecturer">Lecturer view</a><a href="../#/ceo/instructor">CEO instructor view</a><a href="/sign-in" data-platform>University sign-in</a></div>
+  <div><h4>About</h4><a href="../#/credits">Drawings and credits</a><a href="/legal/privacy" data-platform>Privacy</a><a href="/legal/accessibility" data-platform>Accessibility</a></div>
+</div><div class="site-legal"><span>© 2026 Going Concern Lab</span><span>Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div></footer>
 </body>
 </html>

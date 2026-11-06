@@ -1,0 +1,153 @@
+/* Going Concern Lab: the site shell (nav, footer), the home page, and drawings. Colours come from theme.css roles;
+   drawings use --draw-ink so they read as blue ink on paper in light mode and as a blueprint in dark mode. */
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* A drawing: white line art used as a mask, filled with the theme's ink. */
+.drawing{background:var(--draw-ink);opacity:var(--draw-strength)}
+
+/* ── Nav ─────────────────────────────────────────────── */
+.site-nav{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--draw-paper) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--n9);font-family:'DM Sans',Arial,sans-serif}
+.site-nav-inner{max-width:1240px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;gap:18px}
+.site-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--n0);font:800 18px 'Archivo',Arial,sans-serif;letter-spacing:-.01em;white-space:nowrap}
+.site-logo i{width:24px;height:24px;border-radius:50%;border:3px solid var(--accent2);position:relative;display:block;animation:site-spin 8s linear infinite;flex:none}
+.site-logo i:before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:3px;margin-left:-1.5px;background:var(--accent2)}
+.site-logo i:after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--accent2)}
+.site-links{display:flex;gap:2px;flex:1;min-width:0}
+.site-links a{white-space:nowrap;text-decoration:none;color:var(--n3);font-size:14px;font-weight:500;padding:8px 11px;border-radius:6px}
+.site-links a:hover,.site-links a[aria-current=page]{background:var(--n10);color:var(--n0)}
+.site-actions{display:flex;gap:10px;align-items:center}
+.site-theme{display:flex;border:1px solid var(--n8);border-radius:7px;overflow:hidden}
+.site-theme button{border:0;border-radius:0;background:transparent;color:var(--n4);padding:7px 9px;min-height:0;display:grid;place-items:center}
+.site-theme button[aria-pressed=true]{background:var(--n0);color:var(--n12)}
+.site-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 14px 'DM Sans',Arial,sans-serif;padding:10px 16px;border-radius:7px;border:1px solid var(--n7);color:var(--n0);background:transparent;white-space:nowrap;cursor:pointer;line-height:1.2}
+.site-btn:hover{border-color:var(--n4)}
+.site-btn.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.site-btn.primary:hover{background:var(--accent1);border-color:var(--accent1)}
+.site-btn.big{padding:14px 22px;font-size:15px}
+.site-burger{display:none;margin-left:auto;background:none;border:1px solid var(--n7);color:var(--n0);border-radius:7px;padding:8px 10px}
+@keyframes site-spin{to{transform:rotate(360deg)}}
+
+/* ── Page shell ──────────────────────────────────────── */
+.site{background:var(--draw-paper);color:var(--n0);font-family:'DM Sans',Arial,sans-serif;font-size:16px;line-height:1.55;min-height:100vh;background-image:linear-gradient(var(--n10) 1px,transparent 1px),linear-gradient(90deg,var(--n10) 1px,transparent 1px);background-size:32px 32px}
+.site h1,.site h2,.site h3{font-family:'Archivo',Arial,sans-serif;letter-spacing:-.02em;margin:0;color:var(--n0)}
+.site a{color:inherit}
+.site-kicker{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--n4);display:flex;align-items:center;gap:8px}
+.site-tag{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;border:1px solid var(--n7);border-radius:4px;padding:1px 6px}
+.site-block,.site-hero,.site-stats>*{max-width:1240px;margin-inline:auto}
+.site-block{padding:84px 24px 0}
+.site-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:34px}
+.site-head h2{font-size:clamp(28px,3.4vw,42px);line-height:1.1;margin-top:10px;max-width:18em}
+.site-head p{color:var(--n4);max-width:30em;margin:0}
+
+/* ── Hero and the running engine ─────────────────────── */
+.site-hero{display:grid;grid-template-columns:.9fr 1.25fr;gap:28px;align-items:center;padding:52px 24px 44px}
+.site-hero h1{font-size:clamp(40px,5.4vw,66px);line-height:1.02;margin:14px 0 20px}
+.site-hero h1 em{font-style:normal;color:var(--accent2)}
+.site-lede{font-size:19px;color:var(--n3);max-width:34em;margin:0 0 28px}
+.site-ticker{display:flex;gap:8px;max-width:460px;margin-bottom:14px}
+.site-ticker input{flex:1;min-width:0;background:var(--n12);border:1px solid var(--n7);color:var(--n0);border-radius:7px;padding:13px 14px;font:500 15px 'IBM Plex Mono',monospace}
+.site-quick{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:28px;font:500 12px 'IBM Plex Mono',monospace;color:var(--n4)}
+.site-quick a{border:1px solid var(--n7);border-radius:999px;padding:5px 11px;color:var(--n3);text-decoration:none;background:var(--n12)}
+.site-quick a:hover{border-color:var(--accent2);color:var(--accent2)}
+.site-cta{display:flex;gap:12px;flex-wrap:wrap}
+.running-engine{margin:0}
+.engine-stage{position:relative;width:100%;aspect-ratio:1610/1190}
+.engine-stage .drawing{position:absolute}
+.engine-base{inset:0}
+.engine-flywheel{left:10.92%;top:13.04%;width:47.64%;aspect-ratio:1;animation:site-spin 16s linear infinite}
+.engine-governor{left:56.09%;top:24.12%;width:7.83%;height:13.53%;animation:site-governor 1.4s ease-in-out infinite}
+.engine-stage.still .drawing{animation:none}
+@keyframes site-governor{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.2)}}
+.running-engine figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:6px;font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--n4)}
+.running-engine figcaption a{text-decoration:none}.running-engine figcaption a:hover{color:var(--accent2)}
+.engine-speed b{color:var(--accent2)}
+
+/* ── Stats ───────────────────────────────────────────── */
+.site-stats{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--n9);background:var(--n11);padding-inline:max(0px,calc((100% - 1240px)/2))}
+.site-stats>div{padding:26px 24px;border-left:1px solid var(--n9);margin:0}.site-stats>div:first-child{border-left:0}
+.site-stats b{display:block;font:800 34px 'Archivo',Arial,sans-serif;letter-spacing:-.02em}
+.site-stats span{color:var(--n4);font-size:14px}
+
+/* ── Feature cards ───────────────────────────────────── */
+.site-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.site-card{grid-column:span 2;display:flex;flex-direction:column;border:1px solid var(--n9);border-radius:12px;background:var(--n12);overflow:hidden;text-decoration:none;transition:border-color .2s,transform .2s,box-shadow .2s}
+.site-card.wide{grid-column:span 3}
+.site-card:hover{border-color:var(--accent2);transform:translateY(-3px);box-shadow:0 24px 60px color-mix(in srgb,var(--n0) 18%,transparent)}
+.site-card-art{position:relative;aspect-ratio:16/8;overflow:hidden;border-bottom:1px solid var(--n9);background:var(--n11)}
+.site-card-art .drawing{position:absolute;inset:-6%;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.site-card:hover .site-card-art .drawing{transform:scale(1.07) translate(-1.5%,-1%)}
+.site-card-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.site-card h3{font-size:22px}.site-card p{margin:0;color:var(--n3);font-size:15px}
+.site-go{margin-top:auto;padding-top:10px;color:var(--accent2);font-weight:600;font-size:14px}
+
+/* ── How it works: the mill plots itself in ──────────── */
+.site-how{border:1px solid var(--n9);border-radius:14px;background:var(--n12);overflow:hidden}
+.site-plot{position:relative;aspect-ratio:2000/1359;margin:18px 18px 0;clip-path:inset(0 100% 0 0);transition:clip-path 2.6s cubic-bezier(.45,.05,.2,1)}
+.site-plot.in{clip-path:inset(0 0 0 0)}
+.site-plot>.drawing{position:absolute;inset:0}
+.site-marker{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent2);color:#fff;font:700 13px 'IBM Plex Mono',monospace;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent2) 22%,transparent);opacity:0;transition:opacity .4s}
+.site-plot.in .site-marker{opacity:1}
+.site-plot.in .site-marker:nth-of-type(1){transition-delay:.7s}.site-plot.in .site-marker:nth-of-type(2){transition-delay:1.3s}.site-plot.in .site-marker:nth-of-type(3){transition-delay:1.9s}.site-plot.in .site-marker:nth-of-type(4){transition-delay:2.5s}
+.site-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--n9)}
+.site-steps li{padding:22px;border-left:1px solid var(--n9)}.site-steps li:first-child{border-left:0}
+.site-steps b{font:800 14px 'IBM Plex Mono',monospace;color:var(--accent2)}
+.site-steps h3{font-size:18px;margin:8px 0 6px}.site-steps p{margin:0;color:var(--n4);font-size:14px}
+
+/* ── Audiences, demo, universities ───────────────────── */
+.site-audiences{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.site-audiences div{border-top:2px solid var(--accent2);padding-top:18px}
+.site-audiences h3{font-size:20px;margin-bottom:8px}.site-audiences p{color:var(--n3);margin:0 0 12px;font-size:15px}
+.site-audiences a{color:var(--accent2);font-weight:600;font-size:14px;text-decoration:none}
+.site-demo{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center}
+.site-demo video{width:100%;border-radius:12px;border:1px solid var(--n7);background:#000;aspect-ratio:16/9}
+.site-demo h2{font-size:34px;margin:10px 0 12px}.site-demo p{color:var(--n3)}
+.site-uni{position:relative;overflow:hidden;border:1px solid var(--n8);border-radius:16px;padding:44px;display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center;background:var(--n11)}
+.site-uni-art{position:absolute;right:-4%;top:-10%;width:62%;height:130%;opacity:var(--draw-faint)}
+.site-uni>*:not(.site-uni-art){position:relative}
+.site-uni h2{font-size:34px;margin:10px 0 12px}.site-uni p{color:var(--n3);margin:0 0 22px}
+.site-uni ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.site-uni li{padding-left:22px;position:relative;color:var(--n2);font-size:15px}.site-uni li:before{content:"✓";position:absolute;left:0;color:var(--good1)}
+
+/* ── Credits ─────────────────────────────────────────── */
+.site-credit-list{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.site-credit-list li{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:center;border:1px solid var(--n9);border-radius:12px;background:var(--n12);padding:14px}
+.site-credit-art{position:relative;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:var(--n11)}
+.site-credit-art>.drawing{position:absolute;inset:0}
+.site-credit-list h3{font-size:18px;margin-bottom:4px}.site-credit-list p{margin:0 0 4px;color:var(--n3)}
+.site-credit-meta{font-size:13px;color:var(--n4)!important}
+.site-credit-list a{color:var(--accent2);font-weight:600;font-size:14px;text-decoration:none}
+.site-credit-foot{color:var(--n4);font-size:14px;margin:24px 0 0}
+
+/* ── Footer ──────────────────────────────────────────── */
+.site-footer{border-top:1px solid var(--n9);margin-top:84px;padding:48px max(24px,calc((100% - 1192px)/2)) 32px;background:var(--n11);font-family:'DM Sans',Arial,sans-serif;color:var(--n0)}
+.site-footer-cols{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px}
+.site-footer h4{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--n4);margin:0 0 12px}
+.site-footer-cols a:not(.site-logo){display:block;text-decoration:none;color:var(--n3);font-size:14px;padding:4px 0}
+.site-footer-cols a:hover{color:var(--accent2)}
+.site-footer p{color:var(--n4);font-size:14px;max-width:24em}
+.site-legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--n9);margin-top:32px;padding-top:20px;color:var(--n5);font-size:13px}
+
+/* ── Drawn page headers inside the tools ─────────────── */
+.page-drawing{position:absolute;inset:0 0 0 auto;width:min(46%,560px);pointer-events:none;opacity:calc(var(--draw-strength)*.5)}
+.masthead,.course-top{position:relative}
+.masthead>*:not(.page-drawing),.course-top>*:not(.page-drawing){position:relative}
+
+/* ── Small screens ───────────────────────────────────── */
+@media (max-width:1080px){.site-links{display:none}.site-actions{margin-left:auto}.site-burger{display:grid;margin-left:0}
+ .site-nav.open .site-links{display:flex;flex-direction:column;position:absolute;left:0;right:0;top:62px;background:var(--draw-paper);border-bottom:1px solid var(--n9);padding:10px 16px 16px;gap:2px}
+ .site-nav.open .site-links a{padding:12px}}
+@media (max-width:900px){
+ .site-hero,.site-demo,.site-uni{grid-template-columns:1fr}.site-hero{padding-top:32px}
+ .site-stats{grid-template-columns:repeat(2,1fr)}.site-stats>div:nth-child(3){border-left:0}.site-stats>div{border-top:1px solid var(--n9)}
+ .site-cards{grid-template-columns:1fr}.site-card,.site-card.wide{grid-column:auto}
+ .site-audiences,.site-steps{grid-template-columns:1fr}.site-steps li{border-left:0;border-top:1px solid var(--n9)}.site-steps li:first-child{border-top:0}
+ .site-footer-cols{grid-template-columns:1fr 1fr}.site-head{display:block}.site-head p{margin-top:12px}.site-uni{padding:28px}
+ .site-credit-list li{grid-template-columns:1fr}.page-drawing{display:none}}
+@media (max-width:560px){.site-actions .site-btn{display:none}.site-ticker{flex-direction:column}.site-block{padding-top:56px}.site-hero h1{font-size:38px}.site-footer-cols{grid-template-columns:1fr}.site-marker{width:24px;height:24px;font-size:10px}}
+@media (prefers-reduced-motion:reduce){.site-logo i,.engine-stage .drawing{animation:none}.site-plot{clip-path:none;transition:none}.site-marker{opacity:1;transition:none}.site-card,.site-card-art .drawing{transition:none}}
+.site-nav .site-links a{color:var(--n3)}.site-nav .site-links a:hover,.site-nav .site-links a[aria-current=page]{color:var(--n0)}
+.site-nav .site-btn{color:var(--n0)}.site-nav .site-btn.primary{color:#fff}.site-nav .site-logo{color:var(--n0)}
+.course-top .page-drawing{opacity:calc(var(--draw-strength)*.22)}
+.site-menu-extra{display:none}
+@media (max-width:1080px){.site-nav.open .site-menu-extra{display:flex;align-items:center;gap:12px;padding:10px 12px 0;border-top:1px solid var(--n9);margin-top:6px}}
+@media (max-width:560px){.site-actions .site-theme{display:none}.site-nav-inner{padding:0 16px;gap:10px}.site-logo{font-size:17px}}

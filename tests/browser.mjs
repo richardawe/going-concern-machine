@@ -6,14 +6,19 @@ const browser=await chromium.launch({headless:true});
 try{
  const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route('http://gcm.test/**',async route=>{const url=new URL(route.request().url());const part=url.pathname.replace(/^\/going-concern-machine\//,'').replace(/^\//,'');const file=path.resolve('dist',part||'index.html');if(!file.startsWith(path.resolve('dist')+path.sep)){await route.abort();return}try{const body=await readFile(file);await route.fulfill({body,contentType:file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html'})}catch{await route.fulfill({status:404,body:'Not found'})}});
- await page.goto('http://gcm.test/going-concern-machine/');await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
+ // Home page: the site menu, the running engine, and a ticker typed there opens that company's machine.
+ await page.goto('http://gcm.test/going-concern-machine/');await page.getByRole('heading',{name:'See any business as a machine. Then run it.'}).waitFor();
+ assert.ok(await page.getByRole('navigation',{name:'Site'}).getByRole('link',{name:'CEO mode'}).isVisible(),'site menu on the home page');
+ await page.getByLabel('Company ticker').fill('wmt');await page.getByRole('button',{name:/Build the machine/}).click();
+ await page.waitForURL(/#\/machine\/WMT$/);await page.getByRole('group',{name:/^WMT .* economic machine$/}).waitFor();
+ await page.goto('http://gcm.test/going-concern-machine/#/machine');await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
  // Theme switch: pins light/dark on <html>, survives a reload, and System hands control back to the OS.
- await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'Dark',exact:true}).click();
+ await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'Dark theme'}).click();
  assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark');
  await page.reload();await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();
  assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark','theme choice persists');
  await page.screenshot({path:'artifacts/msft-dark.png'});
- await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'System',exact:true}).click();
+ await page.getByRole('group',{name:'Colour theme'}).getByRole('button',{name:'System theme'}).click();
  assert.equal(await page.evaluate(()=>document.documentElement.hasAttribute('data-theme')),false);
  // Levers on the machine: keyboard pull starts a scenario at once, reports the value, and propagates.
  {const lever=page.locator('g.lever[aria-label="CapEx / revenue"]');assert.match(await lever.getAttribute('aria-valuetext'),/^34\.9%; reported setting 34\.9%/);

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, GraduationCap, Swords } from 'lucide-react';
-import ThemeSwitch from '../../components/ThemeSwitch';
+import { GraduationCap, Swords } from 'lucide-react';
 import { archetypeLabels } from '../archetypes';
 import { assignmentFromHash, challengeFromHash, decodeAssignment, decodeChallenge, leverRange, type Assignment, type Challenge, type CompanyChoice } from '../challenge';
 import { resolveCase, type SandboxConfig } from '../sandbox';
@@ -13,6 +12,8 @@ import Debrief from './Debrief';
 import Instructor from './Instructor';
 import { startFor, useArchetypes } from './load';
 import './ceo.css';
+import SiteNav from '../../site/SiteNav';
+import { Drawing } from '../../site/Drawing';
 
 const STORAGE = 'gcm:ceo:v1:game';
 /** `challenge` holds the decisions of whoever sent the link, replayed in the debrief for comparison; `assignment` marks a
@@ -75,9 +76,11 @@ export default function CeoApp() {
   const instructor = route.startsWith('#/ceo/instructor');
 
   return <main className="app-shell ceo-app">
+    <SiteNav current="ceo" />
     <header className="masthead ceo-masthead">
-      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>CEO MODE / TRAINING GAME</span> <ThemeSwitch /></div><h1>The Going Concern Machine</h1><p>You are the CEO. Decide, then watch the machine play the year forward.</p></div>
-      <nav className="ceo-nav"><a className="text-button back-link" href={instructor ? '#/ceo' : '#/ceo/instructor'}><GraduationCap size={13} /> {instructor ? 'Play CEO mode' : 'Instructor view'}</a><a className="text-button back-link" href="#/"><ArrowLeft size={13} /> Company machines</a></nav>
+      <Drawing name="engineIsometric" className="page-drawing" fit="cover" position="50% 30%" />
+      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>CEO MODE / TRAINING GAME</span></div><h1>The Going Concern Machine</h1><p>You are the CEO. Decide, then watch the machine play the year forward.</p></div>
+      <nav className="ceo-nav"><a className="text-button back-link" href={instructor ? '#/ceo' : '#/ceo/instructor'}><GraduationCap size={13} /> {instructor ? 'Play CEO mode' : 'Instructor view'}</a></nav>
     </header>
     {instructor ? <Instructor archetypes={archetypes} /> : <>
     {classLink && <section className="challenge-banner" aria-labelledby="class-title">
