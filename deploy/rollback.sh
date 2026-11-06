@@ -4,7 +4,7 @@
 # Migrations only ever add, so older code runs against the newer database.
 set -euo pipefail
 APP=$1; cd "$APP"
-export PATH="/opt/cpanel/ea-nodejs22/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="/opt/cpanel/ea-nodejs22/bin:$HOME/.npm-global/bin:/usr/pgsql-18/bin:/usr/pgsql-17/bin:/usr/pgsql-16/bin:$PATH"
 CURRENT=$(basename "$(readlink current)")
 TARGET=${2:-$(ls -1t releases | grep -vx "$CURRENT" | head -1)}
 [ -d "releases/$TARGET" ] || { echo "No release $TARGET. Available:"; ls -1t releases; exit 1; }

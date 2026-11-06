@@ -3,6 +3,7 @@
 # shared/.env, sends an encrypted copy off the server and keeps 30 daily and 12 monthly copies there.
 #   deploy/backup.sh <app-dir>
 set -euo pipefail
+export PATH="/opt/cpanel/ea-nodejs22/bin:$HOME/.npm-global/bin:/usr/pgsql-18/bin:/usr/pgsql-17/bin:/usr/pgsql-16/bin:$PATH"
 APP=$1; cd "$APP"
 set -a; . shared/.env; set +a
 mkdir -p shared/backups
