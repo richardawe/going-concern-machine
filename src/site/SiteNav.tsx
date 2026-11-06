@@ -16,9 +16,9 @@ const links: [Section, string, string][] = [
 
 export function ThemeIcons() {
   const [mode, setMode] = useThemeMode();
-  const opts: [Mode, string, typeof Sun][] = [['system', 'Follow my device', Monitor], ['light', 'Light', Sun], ['dark', 'Dark', Moon]];
-  return <div className="site-theme" role="group" aria-label="Colour theme">{opts.map(([m, label, Icon]) =>
-    <button key={m} type="button" title={label} aria-label={`${label} theme`} aria-pressed={mode === m} onClick={() => setMode(m)}><Icon size={14} /></button>)}</div>;
+  const opts: [Mode, string, string, typeof Sun][] = [['system', 'System', 'Follow my device', Monitor], ['light', 'Light', 'Light', Sun], ['dark', 'Dark', 'Dark', Moon]];
+  return <div className="site-theme" role="group" aria-label="Colour theme">{opts.map(([m, label, title, Icon]) =>
+    <button key={m} type="button" title={title} aria-label={`${label} theme`} aria-pressed={mode === m} onClick={() => setMode(m)}><Icon size={14} /></button>)}</div>;
 }
 
 export default function SiteNav({ current }: { current: Section }) {

@@ -1,3 +1,5 @@
+# Downloads drawings from Wikimedia Commons, with their licence and page URL (sources.tsv).
+#   python3 -I scripts/drawings/fetch.py <out dir> scripts/drawings/sources.txt 3840
 import json, sys, time, urllib.parse, urllib.request, pathlib
 UA={"User-Agent":"GoingConcernLab-research/1.0 (image licensing research)"}
 out=pathlib.Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)

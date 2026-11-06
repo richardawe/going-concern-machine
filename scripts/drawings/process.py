@@ -1,6 +1,8 @@
+# Crops the downloaded drawings and turns them into alpha masks for the site (see docs/SITE.md).
+#   python3 -I scripts/drawings/process.py <downloaded dir> public/drawings
 import sys, math, pathlib
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 src=pathlib.Path(sys.argv[1]); out=pathlib.Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
 Image.MAX_IMAGE_PIXELS=None
 def to_mask(gray, lo=60, hi=200):
@@ -18,7 +20,9 @@ save(to_mask(crop("c03.jpg",2000,1240,1780,1280)), "mill-gearing", 1200)
 save(to_mask(crop("c04.jpg",2000,2160,60,400)), "art-of-milling", 1200)
 save(to_mask(crop("c06.jpg",1520,920,2260,1060)), "molino", 1200)
 save(to_mask(crop("c01.jpg",2600,3800,360,300)), "engine-isometric", 1200)
-save(to_mask(crop("c05.jpg",3000,2200,420,300), lo=40, hi=150), "encyclopedie-1765", 1600)
+# The engraving: a median filter and tighter levels drop the paper texture.
+enc=crop("c05.jpg",3000,2200,420,300).filter(ImageFilter.MedianFilter(3)).resize((1400,1027),Image.LANCZOS)
+save(to_mask(enc, lo=35, hi=120), "encyclopedie-1765", 1400)
 # hero: beam engine with moving parts as separate layers
 g=crop("c02.jpg",2300,1700,200,500); W,H=g.size
 cx,cy,R=799.1,769.6,532.3
@@ -35,7 +39,9 @@ base=ga.copy(); base[wm|gm]=255
 wl=np.full_like(ga,255); wl[wm]=ga[wm]
 gl=np.full_like(ga,255); gl[gm]=ga[gm]
 s=0.7
-save(to_mask(Image.fromarray(base)), "engine-base", round(W*s))
+base_img=to_mask(Image.fromarray(base)).resize((round(W*s),round(H*s)),Image.LANCZOS)
+b=np.array(base_img); b[:, :28, 3]=0; b[:, 1588:, 3]=0  # the sheet's border lines
+save(Image.fromarray(b,"RGBA"), "engine-base", round(W*s))
 r2=int(R+16); save(to_mask(Image.fromarray(wl).crop((int(cx-r2),int(cy-r2),int(cx+r2),int(cy+r2)))), "engine-flywheel", round(2*r2*s))
 save(to_mask(Image.fromarray(gl).crop((1290,410,1470,640))), "engine-governor", round(180*s))
 print("geometry (base px at scale):", dict(W=round(W*s),H=round(H*s),cx=round(cx*s,1),cy=round(cy*s,1),r2=round(r2*s,1),gov=(round(1290*s),round(410*s),round(180*s),round(230*s))))

@@ -85,7 +85,7 @@ export default function Landing() {
     </section>
 
     <section className="site-block site-demo" id="demo">
-      <video controls preload="none" playsInline src={staticPage('demo/going-concern-machine-demo.mp4')} aria-label="75-second demo of the company machine" />
+      <video controls preload="none" playsInline poster={staticPage('demo/poster.jpg')} src={staticPage('demo/going-concern-machine-demo.mp4')} aria-label="75-second demo of the company machine" />
       <div><div className="site-kicker">75-second demo</div><h2>Watch a company come apart and put itself back together</h2><p>A quick tour of the machine: loading a real company, forking a scenario, injecting a shock and reading what changed.</p><a className="site-btn" href={staticPage('demo/')}>Open the demo page</a></div>
     </section>
 
