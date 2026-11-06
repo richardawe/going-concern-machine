@@ -1,5 +1,7 @@
 # Deploying Going Concern to the VPS
 
+> **Setting up for the first time?** Follow [SETUP-GUIDE.md](SETUP-GUIDE.md), the click-by-click checklist. This page is the reference behind it.
+
 One-time setup for the Liquid Web cPanel VPS, Cloudflare, Brevo and GitHub, then how deploys, rollbacks and backups
 work day to day. The domain is **goingconcernlab.com**. There is no staging copy yet: every release goes straight to
 production after your approval, behind the tests, a database backup, a health check and automatic rollback.
