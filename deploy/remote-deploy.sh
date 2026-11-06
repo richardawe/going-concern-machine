@@ -5,7 +5,7 @@
 # symlink, reloads PM2, and checks /healthz reports the new release. If the check fails it switches back.
 set -euo pipefail
 APP=$1 RELEASE=$2 TARBALL=$3
-export PATH="/opt/cpanel/ea-nodejs22/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="/opt/cpanel/ea-nodejs22/bin:$HOME/.npm-global/bin:/usr/pgsql-18/bin:/usr/pgsql-17/bin:/usr/pgsql-16/bin:$PATH"
 cd "$APP"
 set -a; . shared/.env; set +a
 DIR="releases/$RELEASE"

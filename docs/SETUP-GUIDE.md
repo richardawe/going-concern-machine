@@ -4,14 +4,23 @@ The click-by-click version of [DEPLOYMENT.md](DEPLOYMENT.md), for getting **goin
 Web cPanel VPS. Work through the parts in order and tick each box as you go. Staging is left out for now: see
 DEPLOYMENT.md section 8 for when a second university signs.
 
+> **Status, 6 November 2026:** Parts 1–4 are done. Claude ran them through the Cloudflare, Brevo and GitHub APIs and
+> a temporary root SSH key. Where production differs from the steps below:
+> - The server's own PostgreSQL is version 13 and other sites use it, so Going Concern has its own PostgreSQL 16
+>   (service `postgresql-16-gcm`, `127.0.0.1:5433`). See DEPLOYMENT.md 2.4.
+> - On this cPanel version the wildcard proxy folder is `wildcard_safe.goingconcernlab.com`, not `_wildcard_…`.
+> - Namecheap's email-forwarding MX and SPF records were copied into Cloudflare, so mail to the domain still forwards.
+> - Brevo's DKIM records were added both under `mail.` and at the root, because Brevo's host names are ambiguous for a
+>   subdomain. Brevo shows the domain as authenticated.
+
 **Who does what**
 
 | Part | Who | Status |
 | --- | --- | --- |
-| 1. Cloudflare | You | ☐ |
-| 2. WHM (the server) | You | ☐ |
-| 3. GitHub secrets and the production environment | You | ☐ |
-| 4. Brevo (sign-in emails) | You | ☐ |
+| 1. Cloudflare | Done (Claude) | ☑ |
+| 2. WHM (the server) | Done (Claude) | ☑ |
+| 3. GitHub secrets and the production environment | Done (Claude) | ☑ |
+| 4. Brevo (sign-in emails) | Done (Claude) | ☑ |
 | 5. Setup check, first deploy, your console account, nightly jobs | Claude, through GitHub Actions. You approve the deploy. | ☐ |
 | 6. Firewall | You, with Claude's steps | ☐ |
 | 7. Provision the first university | You, in the console | ☐ |
@@ -119,6 +128,8 @@ grant pg_read_all_data to gcm_backup;
 ```
 - `gcm` is the app's account. It must **not** be a superuser: superusers skip row-level security, the database's own guarantee that one university never sees another's data.
 - `gcm_backup` is read-only and used only for backups.
+- `select version()` must show **14 or newer**. If it's older and other sites use it, don't upgrade it: run a separate
+  PostgreSQL 16 for Going Concern on port 5433 instead (DEPLOYMENT.md 2.4), and use port 5433 below and in the `.env`.
 
 Test that the app's account can log in:
 ```bash
@@ -142,7 +153,7 @@ psql "postgres://gcm:PASSWORD_1@127.0.0.1:5432/gcm_production" -c "select curren
 ### 2.6 Proxy file ☐
 In the Terminal, paste all of this:
 ```bash
-for v in goingconcernlab.com _wildcard_.goingconcernlab.com; do
+for v in goingconcernlab.com wildcard_safe.goingconcernlab.com; do
   mkdir -p /etc/apache2/conf.d/userdata/ssl/2_4/gcm/$v
   cat > /etc/apache2/conf.d/userdata/ssl/2_4/gcm/$v/gcm-proxy.conf <<'EOF'
 ProxyPreserveHost On

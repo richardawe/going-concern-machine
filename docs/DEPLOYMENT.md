@@ -48,11 +48,12 @@ Adding a university never needs a DNS change: the wildcard record and certificat
    grant pg_read_all_data to gcm_backup;
    ```
    The app roles must **not** be superusers: superusers skip row-level security, the database's own guarantee that one university never sees another's rows. PostgreSQL must listen on localhost only (the default).
+   PostgreSQL **14 or newer** is required (`pg_read_all_data`). If the server's own PostgreSQL is older and other sites depend on it, run a separate cluster instead of upgrading it. Production does this: PostgreSQL 16 from the PGDG packages, data in `/var/lib/pgsql/16/gcm`, service `postgresql-16-gcm`, listening on `127.0.0.1:5433`, so `DATABASE_URL` and `BACKUP_DATABASE_URL` use port 5433 and the commands above run with `psql -p 5433`. The deploy scripts put `/usr/pgsql-16/bin` (and 17, 18) first on `PATH`, so `pg_dump` matches the server.
 5. **Certificates.** WHM → SSL/TLS → Install an SSL Certificate on a Domain: install the Cloudflare origin certificate and key for `goingconcernlab.com` **and** for `*.goingconcernlab.com`. AutoSSL leaves a valid certificate it didn't issue alone.
 6. **Proxy to Node.** Copy [`deploy/apache/proxy.conf`](../deploy/apache/proxy.conf) to both of these paths:
    ```
    /etc/apache2/conf.d/userdata/ssl/2_4/gcm/goingconcernlab.com/gcm-proxy.conf
-   /etc/apache2/conf.d/userdata/ssl/2_4/gcm/_wildcard_.goingconcernlab.com/gcm-proxy.conf
+   /etc/apache2/conf.d/userdata/ssl/2_4/gcm/wildcard_safe.goingconcernlab.com/gcm-proxy.conf
    ```
    Then `/scripts/rebuildhttpdconf && /scripts/restartsrv_httpd`.
 7. **Firewall.** Only Cloudflare should reach ports 80 and 443. The app trusts Cloudflare's visitor-IP header for rate limits, so a direct connection could spoof it. In CSF, remove 80 and 443 from `TCP_IN` in `/etc/csf/csf.conf`, then allow Cloudflare's ranges:
