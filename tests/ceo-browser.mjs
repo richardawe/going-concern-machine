@@ -9,7 +9,7 @@ try {
  await page.route('http://gcm.test/**', async route => { const url = new URL(route.request().url()); const part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, ''); const file = path.resolve('dist', part || 'index.html'); if (!file.startsWith(path.resolve('dist') + path.sep)) { await route.abort(); return } try { const body = await readFile(file); await route.fulfill({ body, contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' }) } catch { await route.fulfill({ status: 404, body: 'Not found' }) } });
  await mkdir('artifacts', { recursive: true });
  // The company workbench links to CEO mode.
- await page.goto('http://gcm.test/going-concern-machine/'); await page.getByRole('link', { name: /CEO mode/ }).click();
+ await page.goto('http://gcm.test/going-concern-machine/'); await page.getByRole('navigation', { name: 'Site' }).getByRole('link', { name: 'CEO mode' }).click();
  await page.getByRole('radiogroup', { name: 'Scenario' }).waitFor();
  await page.screenshot({ path: 'artifacts/ceo-setup.png', fullPage: true });
  // Fictional company in The Price War.

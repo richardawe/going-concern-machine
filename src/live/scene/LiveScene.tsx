@@ -4,6 +4,7 @@ import { Environment, Lightformer, OrbitControls } from '@react-three/drei';
 import { ACESFilmicToneMapping, Color, MathUtils, Object3D, PerspectiveCamera, type AmbientLight, type DirectionalLight, type InstancedMesh } from 'three';
 import type { Health, SceneFrame, Weather } from '../frame';
 import Campus, { type Interaction, type Labels } from './Campus';
+import Drafting from './Drafting';
 
 // The canvas: a bright studio-lit site with soft shadows. Sky and weather follow your company's
 // year; a ghost company (holding course every year) can stand beside it.
@@ -88,6 +89,7 @@ export default function LiveScene({ you, ghost, labels, interaction, reduced, yo
   return <Canvas shadows dpr={[1, 2]} frameloop={reduced ? 'demand' : 'always'} gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, toneMappingExposure: .9 }}
     camera={{ position: [40, 40, 56], fov: 26, near: 1, far: 400 }} aria-hidden="true" onPointerMissed={() => interaction?.hover?.(null)}>
     <Atmosphere frame={you} reduced={reduced} offset={0} />
+    <Drafting />
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[GHOST_X / 2, -.05, 0]} receiveShadow><planeGeometry args={[400, 400]} /><meshStandardMaterial color="#dde3ed" roughness={1} /></mesh>
     <Campus frame={you} labels={labels} interaction={interaction} reduced={reduced} title={youTitle} />
     {ghost && <Campus frame={ghost} ghost reduced={reduced} position={[GHOST_X, 0, 0]} title="HOLDING COURSE" />}

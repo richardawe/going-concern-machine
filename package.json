@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "predev": "npm run data:archetypes",
-    "build": "npm run data:validate && npm run data:archetypes && tsc -b && vite build",
+    "build": "npm run data:validate && npm run data:archetypes && npm run site:static-css && tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --import tsx --test tests/*.test.ts",
     "data:refresh": "node --import tsx scripts/refresh-data.ts",
@@ -28,7 +28,8 @@
     "ops:maintenance": "node --env-file-if-exists=.env --import tsx server/cli/maintenance.ts",
     "typecheck": "tsc -b && tsc -p server/tsconfig.json",
     "test:server": "node --import tsx --test --test-concurrency=1 tests/server/*.test.ts",
-    "test:portal": "node tests/portal-browser.cjs"
+    "test:portal": "node tests/portal-browser.cjs",
+    "site:static-css": "node scripts/build-static-css.mjs"
   },
   "dependencies": {
     "@fastify/cookie": "^11.1.5",

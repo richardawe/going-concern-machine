@@ -1,0 +1,38 @@
+/* Drafting style for every machine drawing: the company machine and CEO-mode machine (svg.machine), the gauges,
+   and the course figures (svg.iso). Inside these, the theme's neutrals are remapped to two inks on paper, so each
+   part reads like the engineering drawings on the rest of the site: ink outlines, paper fills, no chrome, no
+   shadows. Money and the levers you pull are drawn in red pencil, the drafter's markup colour.
+   Only colours change here; the geometry, numbers and behaviour are the components' own. */
+svg.machine,.gauge svg,svg.iso,.iso-legend{
+  --ink-a:var(--draw-ink);--paper-a:var(--draw-paper);--pencil:#c2410c;--pencil-2:#ea580c;--pencil-3:#f97316;
+  --n0:var(--ink-a);--n1:var(--ink-a);--n2:var(--ink-a);
+  --n3:color-mix(in srgb,var(--ink-a) 85%,var(--paper-a));--n4:color-mix(in srgb,var(--ink-a) 72%,var(--paper-a));
+  --n5:color-mix(in srgb,var(--ink-a) 58%,var(--paper-a));--n6:color-mix(in srgb,var(--ink-a) 44%,var(--paper-a));
+  --n7:color-mix(in srgb,var(--ink-a) 30%,var(--paper-a));--n8:color-mix(in srgb,var(--ink-a) 20%,var(--paper-a));
+  --n9:color-mix(in srgb,var(--ink-a) 12%,var(--paper-a));--n10:color-mix(in srgb,var(--ink-a) 7%,var(--paper-a));
+  --n11:color-mix(in srgb,var(--ink-a) 3%,var(--paper-a));--n12:var(--paper-a);
+  --metal-hi:var(--paper-a);--metal-light:var(--paper-a);--metal-mid:color-mix(in srgb,var(--ink-a) 8%,var(--paper-a));--metal-dark:color-mix(in srgb,var(--ink-a) 14%,var(--paper-a));
+  --accent0:var(--pencil);--accent1:var(--pencil);--accent2:var(--pencil-2);--accent3:var(--pencil-3);--accent4:var(--pencil-3);
+  --sec0:color-mix(in srgb,var(--ink-a) 55%,var(--paper-a));--sec1:color-mix(in srgb,var(--ink-a) 45%,var(--paper-a));--sec2:color-mix(in srgb,var(--ink-a) 35%,var(--paper-a));--sec3:color-mix(in srgb,var(--ink-a) 25%,var(--paper-a));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(svg.machine,.gauge svg,svg.iso){--pencil:#fb923c;--pencil-2:#fdba74;--pencil-3:#fed7aa}}
+:root[data-theme="dark"] :is(svg.machine,.gauge svg,svg.iso){--pencil:#fb923c;--pencil-2:#fdba74;--pencil-3:#fed7aa}
+/* No drop shadows or glows on a drawing. */
+svg.machine [filter],.gauge svg [filter],svg.iso [filter]{filter:none}
+/* Solid ink fills become washes, as a drafter would shade them; text keeps its ink. */
+svg.machine :not(text,tspan)[fill="var(--n0)"],svg.machine :not(text,tspan)[fill="var(--n1)"],svg.machine :not(text,tspan)[fill="var(--n2)"],svg.machine :not(text,tspan)[fill="var(--n3)"]{fill:var(--n9)}
+svg.machine [fill$="-dark)"]{fill:var(--n8)}
+/* Pipes are drawn as two walls with paper between; the money still flows through them in red pencil. */
+svg.machine [stroke$="-brass)"]{stroke:var(--paper-a)}
+/* styles.css aliases these at the root; re-declare them so they pick up the remapped inks. */
+svg.machine,.gauge svg,svg.iso,.iso-legend{--paper:var(--n10);--ink:var(--n1);--line:var(--n7);--brass:var(--accent2);--blue:var(--sec0);--green:var(--good1);--red:var(--warn1)}
+/* Plates and ribbons are title blocks: ink outline, ink lettering, paper ground. */
+svg.machine .blue-plate{fill:var(--paper-a);stroke:var(--n1);stroke-width:1.5}
+svg.machine .white-label{fill:var(--n1)}
+.ribbon{background:var(--draw-paper);color:var(--draw-ink);border:1.5px solid var(--draw-ink)}
+/* The manual machine's allocation console, drawn rather than machined. */
+.management-console{background:var(--draw-paper);border:1.5px solid var(--draw-ink);box-shadow:inset 0 0 0 4px var(--draw-paper),inset 0 0 0 5px color-mix(in srgb,var(--draw-ink) 35%,transparent)}
+.lever-case{background:var(--draw-paper);border:1px solid var(--draw-ink);box-shadow:none}
+.lever-case input{background:linear-gradient(90deg,transparent 45%,var(--draw-ink) 45% 55%,transparent 55%);box-shadow:none}
+.lever-case input::-webkit-slider-thumb{background:var(--draw-paper);border:2px solid #c2410c;box-shadow:none}
+.lever-case input::-moz-range-thumb{background:var(--draw-paper);border:2px solid #c2410c}

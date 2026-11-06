@@ -28,7 +28,7 @@ await page.route(/fonts\.(googleapis|gstatic)\.com/, async route => {
 
 const errors = []; page.on('pageerror', e => errors.push(e.message));
 page.on('console', m => { if (m.text().startsWith('REC-ODD')) errors.push(m.text()); });
-await page.goto('http://gcm.test/going-concern-machine/');
+await page.goto('http://gcm.test/going-concern-machine/#/machine');
 await page.locator('.company-svg').waitFor();
 await page.evaluate(() => document.fonts.ready);
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import ThemeSwitch from '../components/ThemeSwitch';
 import { Link } from './router';
+import { Drawing } from '../site/Drawing';
 
 // Shared pieces for every portal page, built on the course app's instrument-card look (course.css).
 
@@ -23,6 +24,7 @@ export function Shell({ brand, place, crest, color, nav, who, role, children, on
 }) {
   return <div className="course portal" style={color ? { ['--uni' as string]: color } : undefined}>
     <header className="course-top">
+      <Drawing name="millGearing" className="page-drawing" fit="cover" />
       <div className="course-top-row">
         <Link className="course-brand portal-brand" to="/"><span className={`crest${color ? '' : ' plain'}`} aria-hidden="true">{crest}</span><b>{brand}</b>{place && <span>{place}</span>}</Link>
         <nav className="course-nav" aria-label="Main">

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import ThemeSwitch from '../../components/ThemeSwitch';
 import { useArchetypes } from '../../ceo/ui/load';
 import { moduleStart } from '../grade';
 import { courseById, moduleById } from '../modules';
@@ -9,6 +8,8 @@ import Lecturer from './Lecturer';
 import ModuleRunner from './ModuleRunner';
 import Submit from './Submit';
 import './course.css';
+import SiteNav from '../../site/SiteNav';
+import { Drawing } from '../../site/Drawing';
 
 // Going Concern Modules, the university edition: #/course (modules), #/course/m/<module>, #/course/submit and
 // #/course/lecturer. A lecturer's link can name the course with ?c=<id>.
@@ -30,14 +31,15 @@ export default function CourseApp() {
   useEffect(() => { document.title = `${def ? `${def.title} · ` : ''}Going Concern Modules`; }, [def]);
 
   return <div className="course">
+    <SiteNav current="course" />
     <header className="course-top">
+      <Drawing name="millGearing" className="page-drawing" fit="cover" />
       <div className="course-top-row">
         <a className="course-brand" href={`#/course${suffix}`}><b>GOING CONCERN · MODULES</b><span>{course.code}</span></a>
         <nav className="course-nav" aria-label="Course">
           <a href={`#/course${suffix}`} aria-current={!view ? 'page' : undefined}>Modules</a>
           <a href={`#/course/submit${suffix}`} aria-current={view === 'submit' ? 'page' : undefined}>Hand in</a>
           <a href={`#/course/lecturer${suffix}`} aria-current={view === 'lecturer' ? 'page' : undefined}>Lecturer</a>
-          <ThemeSwitch />
         </nav>
       </div>
       <p className="course-proto">Prototype</p>
