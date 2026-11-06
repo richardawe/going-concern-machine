@@ -1,5 +1,5 @@
 import qrcode from 'qrcode-generator';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { api, errorText, useLoad } from '../api';
 import type { Context } from '../PortalApp';
 import { Link, match, navigate, usePath } from '../router';
@@ -8,6 +8,9 @@ import { Action, ago, CodeInput, Empty, Kpis, Loading, Notice, plural, Shell, uk
 
 // The platform console at admin.<domain>: provision universities from the UK directory and look after them.
 
+// The modules prototype, for showing a university what its students would get before it signs up. Only here.
+const CourseApp = lazy(() => import('../../course/ui/CourseApp'));
+
 export default function PlatformApp({ ctx, reload }: { ctx: Context; reload: () => void }) {
   const path = usePath(), a = ctx.admin;
   useEffect(() => { document.title = 'Platform · Going Concern'; }, []);
@@ -15,6 +18,7 @@ export default function PlatformApp({ ctx, reload }: { ctx: Context; reload: () 
     { to: '/', label: 'Universities', active: path === '/' || path.startsWith('/universities') },
     { to: '/system', label: 'System', active: path === '/system' },
     { to: '/audit', label: 'Audit log', active: path === '/audit' },
+    { to: '/modules-demo', label: 'Demo modules', active: path === '/modules-demo' },
   ] : [];
   const shell = (body: React.ReactNode) => <Shell brand="GOING CONCERN · PLATFORM" place={ctx.environment !== 'production' ? ctx.environment : undefined} crest="G" nav={nav} who={a?.email}
     onSignOut={a ? () => void api('/api/platform/auth/sign-out', { body: {} }).then(() => { navigate('/'); reload(); }) : undefined}>{body}</Shell>;
@@ -22,6 +26,9 @@ export default function PlatformApp({ ctx, reload }: { ctx: Context; reload: () 
   if (!a) return shell(<SignIn title={<><span className="crest big plain" aria-hidden="true">G</span><h1>Platform console</h1></>} emailLabel="Your email" placeholder="you@example.com"
     codeUrl="/api/platform/auth/code" verifyUrl="/api/platform/auth/verify" onSignedIn={reload} />);
   if (!a.mfa) return shell(<SecondFactor setUp={a.totp_enabled} onDone={reload} />);
+  if (path === '/modules-demo') return <Suspense fallback={<Loading />}><CourseApp banner={<div className="demo-banner" role="note">
+    <span><b>Demo</b> · the Going Concern Modules prototype, for showing universities before they sign up. Work saves in this browser only.</span>
+    <Link to="/">← Back to the console</Link></div>} /></Suspense>;
   let m: Record<string, string> | null, page: React.ReactNode;
   if (path === '/' || path === '/universities') page = <Universities />;
   else if (path === '/universities/new') page = <Provision baseDomain={ctx.baseDomain} />;

@@ -151,3 +151,8 @@
 .site-menu-extra{display:none}
 @media (max-width:1080px){.site-nav.open .site-menu-extra{display:flex;align-items:center;gap:12px;padding:10px 12px 0;border-top:1px solid var(--n9);margin-top:6px}}
 @media (max-width:560px){.site-actions .site-theme{display:none}.site-nav-inner{padding:0 16px;gap:10px}.site-logo{font-size:17px}}
+.site-closed{position:relative;min-height:56vh}
+.site-closed h2{font-size:clamp(30px,4vw,46px);margin:12px 0 14px;max-width:16em}
+.site-closed p{color:var(--n3);max-width:38em;margin:0 0 26px;font-size:17px}
+.site-closed-art{position:absolute;right:24px;top:40px;width:min(40%,460px);aspect-ratio:1200/744;opacity:calc(var(--draw-strength)*.5)}
+@media (max-width:900px){.site-closed-art{display:none}}

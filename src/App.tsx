@@ -6,14 +6,15 @@ import {Toaster} from 'sonner';
 import {useThemeMode} from './components/ThemeSwitch';
 import Landing from './site/Landing';
 import SiteNav from './site/SiteNav';
-const LiveApp=lazy(()=>import('./live/LiveApp'));const CourseApp=lazy(()=>import('./course/ui/CourseApp'));const Credits=lazy(()=>import('./site/Credits'));
+const LiveApp=lazy(()=>import('./live/LiveApp'));const ModulesClosed=lazy(()=>import('./site/ModulesClosed'));const Credits=lazy(()=>import('./site/Credits'));
 // Routes: / is the home page; #/machine opens the company workbench (#/machine/AAPL loads a ticker, #/machine/build the
 // hypothetical business); #/ceo the training game; #/live plays it on a 3D company; #/course the university modules;
 // #/credits lists the drawings. Older links to the workbench (#/ followed by nothing) land on the home page.
 const useRoute=()=>{const [hash,setHash]=useState(location.hash);useEffect(()=>{const f=()=>{setHash(location.hash);window.scrollTo(0,0)};addEventListener('hashchange',f);return()=>removeEventListener('hashchange',f)},[]);return hash};
 export default function App(){
  const route=useRoute();const [mode]=useThemeMode();
- if(route.startsWith('#/course'))return <Suspense fallback={<p className="empty-state">Loading the course…</p>}><CourseApp/></Suspense>;
+ // The modules prototype isn't public: it opens inside the platform console (/modules-demo). Old links land here.
+ if(route.startsWith('#/course'))return <Suspense fallback={<p className="empty-state">Loading…</p>}><ModulesClosed/></Suspense>;
  if(route.startsWith('#/ceo'))return <CeoApp/>;
  if(route.startsWith('#/live'))return <Suspense fallback={<p className="empty-state">Loading the live company…</p>}><LiveApp/></Suspense>;
  if(route.startsWith('#/credits'))return <Suspense fallback={<p className="empty-state">Loading…</p>}><Credits/></Suspense>;

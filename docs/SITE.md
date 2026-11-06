@@ -7,7 +7,9 @@
 | `/` | Home page (`src/site/Landing.tsx`) |
 | `#/machine`, `#/machine/AAPL` | The company workbench, opening that ticker |
 | `#/machine/build` | A hypothetical business (manual mode) |
-| `#/ceo`, `#/live`, `#/course` | CEO mode, the live 3D company, the university modules |
+| `#/ceo`, `#/live` | CEO mode, the live 3D company |
+| `#/course` | Says the modules are for universities, with sign-in and the university edition |
+| `admin.<domain>/modules-demo` | The modules prototype, inside the platform console (signed in, with 2FA), for showing universities before they sign up |
 | `#/credits` | Every drawing on the site, with its source |
 | `universities/`, `demo/` | Static pages (`public/`), sharing the site's menu, theme and stylesheet |
 

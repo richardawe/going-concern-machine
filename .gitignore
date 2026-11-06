@@ -10,3 +10,6 @@ public/machines/definitions/
 public/ceo/archetypes.json
 course-private-key.json
 dist-server/
+
+# Conflict copies made by iCloud Drive syncing (e.g. "Landing 2.tsx")
+* 2.*

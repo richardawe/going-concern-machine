@@ -11,17 +11,30 @@ try {
   const context = await browser.newContext({ viewport: { width: 1400, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true });
   const page = await context.newPage(), errors = [];
   page.on('pageerror', e => errors.push(e.message));
+  // The modules prototype only opens inside the platform console, so serve the app as the console host
+  // (admin.<domain>/modules-demo) with a signed-in admin; the public site's #/course says it's for universities.
+  const admin = { kind: 'platform', release: 'test', environment: 'production', baseDomain: 'gcm.test', admin: { id: 'a1', email: 'admin@example.com', name: 'Admin', totp_enabled: true, mfa: true } };
   await context.route('https://gcm.test/**', async route => {
-    const url = new URL(route.request().url()), part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, ''), file = path.resolve('dist', part || 'index.html');
+    const url = new URL(route.request().url()), part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, '');
+    if (part === 'api/context') { await route.fulfill({ body: JSON.stringify(admin), contentType: 'application/json' }); return; }
+    const shell = part === 'modules-demo', file = path.resolve('dist', shell || !part ? 'index.html' : part);
     if (!file.startsWith(path.resolve('dist') + path.sep)) { await route.abort(); return; }
-    try { await route.fulfill({ body: await readFile(file), contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' }); }
+    try {
+      let body = await readFile(file);
+      if (shell) body = Buffer.from(body.toString().replace('</head>', '<meta name="gcm-host" content="platform"></head>'));
+      await route.fulfill({ body, contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' });
+    }
     catch { await route.fulfill({ status: 404, body: 'Not found' }); }
   });
   await mkdir('artifacts', { recursive: true });
   const shot = async name => { await page.screenshot({ path: `artifacts/course-${name}.png`, fullPage: true }); };
 
-  // Course home: details, then Module 1.
+  // The public site doesn't open the prototype.
   await page.goto('https://gcm.test/going-concern-machine/#/course');
+  await page.getByRole('heading', { name: 'The modules are for universities' }).waitFor();
+
+  // Course home: details, then Module 1.
+  await page.goto('https://gcm.test/modules-demo#/course');
   await page.getByLabel('Full name').fill('Test Student');
   await page.getByLabel('Student ID').fill('20419377');
   await page.getByLabel('University email').fill('test@student.example.ac.uk');
@@ -86,7 +99,7 @@ try {
   // The lecturer page is already open in another tab, with nothing in it yet.
   const outside = []; context.on('request', r => { if (!r.url().startsWith('https://gcm.test/') && !r.url().startsWith('https://fonts.')) outside.push(r.url()); });
   const lecturer = await context.newPage(); lecturer.on('pageerror', e => errors.push(e.message));
-  await lecturer.goto('https://gcm.test/going-concern-machine/#/course/lecturer');
+  await lecturer.goto('https://gcm.test/modules-demo#/course/lecturer');
   await lecturer.getByText('No hand-ins yet.').waitFor();
   await page.bringToFront();
   await page.getByLabel('I confirm these answers are my own work.').check();
@@ -116,7 +129,7 @@ try {
   // Modules 2–6 open on their own figure, and each figure's lever works from the keyboard.
   await page.bringToFront();
   for (const [id, title, n] of [['talent-exodus', 'Talent Exodus', 2], ['cash-crunch', 'Cash Crunch', 3], ['growth-at-any-cost', 'Growth at Any Cost?', 4], ['automation-bet', 'The Automation Bet', 5], ['dividend-pressure', 'Dividend Pressure', 6]]) {
-    await page.goto(`https://gcm.test/going-concern-machine/#/course/m/${id}`);
+    await page.goto(`https://gcm.test/modules-demo#/course/m/${id}`);
     await page.getByRole('heading', { name: title }).waitFor();
     await page.getByRole('button', { name: /Start concept 1/ }).click();
     await page.getByText('Concept 1 of 8').waitFor();
@@ -133,7 +146,7 @@ try {
   // Phone width: no sideways scroll on the module and hand-in pages, in dark mode.
   await page.setViewportSize({ width: 390, height: 900 }); await page.emulateMedia({ colorScheme: 'dark' });
   for (const route of ['#/course', '#/course/m/price-war', '#/course/m/automation-bet', '#/course/submit']) {
-    await page.goto(`https://gcm.test/going-concern-machine/${route}`); await page.waitForTimeout(400);
+    await page.goto(`https://gcm.test/modules-demo${route}`); await page.waitForTimeout(400);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0, `${route} fits a phone`);
   }
   await shot('phone-dark');
