@@ -78,7 +78,7 @@ export function CoursePages({ me, courseId, view, moduleId }: { me: Me; courseId
   const progress = useCourseProgress(me.id, courseId);
   const c = course.data, def = view === 'module' && moduleId ? moduleById(moduleId) : undefined;
   const start = useMemo(() => { try { return def && snapshot.data ? moduleStart(def, snapshot.data) : null; } catch { return null; } }, [def, snapshot.data]);
-  useEffect(() => { document.title = `${def ? `${def.title} · ` : ''}${c ? c.title : 'Course'} · Going Concern`; }, [c, def]);
+  useEffect(() => { document.title = `${def ? `${def.title} · ` : ''}${c ? c.title : 'Course'} · Going Concern Lab`; }, [c, def]);
 
   if (course.error) return <section className="stack"><Notice kind="error">{course.error.message}</Notice><Link to="/">Back to my courses</Link></section>;
   if (!c || !progress.loaded) return <Loading />;

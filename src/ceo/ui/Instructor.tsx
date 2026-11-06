@@ -17,19 +17,20 @@ const writeSaved = (list: SavedAssignment[]) => { try { localStorage.setItem(STO
 const REAL: Record<string, string> = { MSFT: 'Microsoft', WMT: 'Walmart', JPM: 'JPMorgan Chase' };
 const pct = (p: number) => `${Math.round(p * 100)}%`;
 
-export default function Instructor({ archetypes }: { archetypes: ArchetypeFile | null }) {
+/** `playUrl` is the public site where students play (the console and university sites are on other hosts). */
+export default function Instructor({ archetypes, playUrl }: { archetypes: ArchetypeFile | null; playUrl?: string }) {
   const [saved, setSaved] = useState<SavedAssignment[]>(readSaved);
   const [selected, setSelected] = useState<string>(() => readSaved()[0]?.code ?? '');
   const remember = (code: string) => { const next = [{ code, created: new Date().toISOString().slice(0, 10) }, ...saved.filter(a => a.code !== code)]; setSaved(next); writeSaved(next); setSelected(code); };
   return <section className="instructor" aria-labelledby="instructor-title">
-    <h2 id="instructor-title" className="ceo-section-title">Instructor view</h2>
+    <h2 id="instructor-title" className="ceo-section-title">CEO mode classes</h2>
     <p className="instructor-lead">Set a class assignment, collect results links through your usual submission box, then paste them here to grade the class. Grades are recomputed from each student’s decisions in this browser; nothing is uploaded.</p>
-    <Builder archetypes={archetypes} onCreate={remember} />
+    <Builder archetypes={archetypes} playUrl={playUrl} onCreate={remember} />
     <Review archetypes={archetypes} saved={saved} selected={selected} setSelected={setSelected} />
   </section>;
 }
 
-function Builder({ archetypes, onCreate }: { archetypes: ArchetypeFile | null; onCreate: (code: string) => void }) {
+function Builder({ archetypes, onCreate, playUrl }: { archetypes: ArchetypeFile | null; onCreate: (code: string) => void; playUrl?: string }) {
   const [title, setTitle] = useState(''), [caseId, setCaseId] = useState(cases[0].id), [kind, setKind] = useState<'fictional' | 'real'>('fictional');
   const caseDef = cases.find(c => c.id === caseId)!, available = archetypes?.archetypes.map(a => a.id) ?? [];
   const [archetype, setArchetype] = useState<ArchetypeId | null>(null), [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e6)), [ticker, setTicker] = useState('MSFT');
@@ -39,7 +40,7 @@ function Builder({ archetypes, onCreate }: { archetypes: ArchetypeFile | null; o
   useEffect(() => { let live = true; setPreview(''); if (archetypes && (kind === 'real' || industry)) startFor(choice, archetypes).then(s => live && setPreview(`${s.name} · ${s.tagline}`)).catch(() => live && setPreview('')); return () => { live = false; }; }, [archetypes, JSON.stringify(choice)]);
   const create = () => {
     const code = encodeAssignment({ id: newAssignmentId(), title: title.trim() || `${caseDef.title}`, caseId, choice });
-    const url = assignmentUrl(code); setLink(url); setStatus(''); onCreate(code);
+    const url = assignmentUrl(code, playUrl); setLink(url); setStatus(''); onCreate(code);
     navigator.clipboard?.writeText(url).then(() => setStatus('Link copied. Share it with your class.'), () => setStatus('Copy the link below and share it with your class.'));
   };
   return <section className="instructor-card" aria-labelledby="builder-title">

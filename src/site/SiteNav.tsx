@@ -45,7 +45,7 @@ export function SiteFooter() {
     <div className="site-footer-cols">
       <div><a className="site-logo" href="#/"><i aria-hidden="true" />Going Concern Lab</a><p>A business is a machine that must keep capturing value to keep running. We make that machine visible.</p></div>
       <div><h4>Product</h4><a href="#/machine">Company machine</a><a href="#/ceo">CEO mode</a><a href="#/live">Live 3D company</a><a href={staticPage('universities/')}>Going Concern Modules</a><a href="#/machine/build">Build your own business</a><a href={staticPage('demo/')}>Demo video</a></div>
-      <div><h4>Universities</h4><a href={staticPage('universities/')}>University edition</a><a href="#/ceo/instructor">CEO instructor view</a>{onPlatform() && <a href="/sign-in">University sign-in</a>}</div>
+      <div><h4>Universities</h4><a href={staticPage('universities/')}>University edition</a>{onPlatform() && <a href="/sign-in">University sign-in</a>}</div>
       <div><h4>About</h4><a href="#/credits">Drawings and credits</a>{onPlatform() && <><a href="/legal/privacy">Privacy</a><a href="/legal/accessibility">Accessibility</a></>}</div>
     </div>
     <div className="site-legal"><span>© {new Date().getFullYear()} Going Concern Lab</span><span>A teaching and analysis tool. Not financial advice or a forecast of any real company. Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div>

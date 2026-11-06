@@ -16,7 +16,7 @@ export async function api<T = unknown>(path: string, opts: { method?: string; bo
       body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
       credentials: 'same-origin', keepalive: opts.keepalive,
     });
-  } catch { throw new ApiError(0, 'Can’t reach Going Concern. Check your connection and try again.', null); }
+  } catch { throw new ApiError(0, 'Can’t reach Going Concern Lab. Check your connection and try again.', null); }
   const data = await res.json().catch(() => null);
   if (!res.ok) throw new ApiError(res.status, data?.error ?? `Something went wrong (${res.status}).`, data);
   return data as T;

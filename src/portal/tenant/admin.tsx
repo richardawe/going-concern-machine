@@ -17,13 +17,13 @@ export function Terms({ university, onAccepted }: { university: string; onAccept
   return <section className="stack-lg narrow">
     <div className="stack-sm"><span className="eyebrow">Before you start</span><h1>Terms for {university}</h1></div>
     <div className="card pad stack">
-      <p>As {university}’s administrator on Going Concern, you accept the terms of service and the data processing agreement in your contract, on the university’s behalf. In short:</p>
+      <p>As {university}’s administrator on Going Concern Lab, you accept the terms of service and the data processing agreement in your contract, on the university’s behalf. In short:</p>
       <ul className="list small">
-        <li>{university} decides whose data is held (its students and staff) and why. Going Concern processes it only to run the courses.</li>
-        <li>Data is held in the UK, on servers Going Concern runs, and in encrypted off-site backups.</li>
+        <li>{university} decides whose data is held (its students and staff) and why. Going Concern Lab processes it only to run the courses.</li>
+        <li>Data is held in the UK, on servers Going Concern Lab runs, and in encrypted off-site backups.</li>
         <li>Student work is kept for the period in your contract after each course ends, then deleted. You can export everything at any time.</li>
         <li>Anyone with an address on {university}’s email domains can sign in as a student. You decide who becomes a lecturer or an admin.</li>
-        <li>Tell Going Concern straight away if you suspect someone has misused an account.</li>
+        <li>Tell Going Concern Lab straight away if you suspect someone has misused an account.</li>
       </ul>
       <label className="check"><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /><span>I accept the terms of service and data processing agreement on behalf of {university}.</span></label>
       <Action className="btn primary" disabled={!agree} run={async () => { await api('/api/admin/terms', { body: { accept: true } }); onAccepted(); }}>Accept and continue</Action>
@@ -135,7 +135,7 @@ export function SettingsPage({ onChanged, from }: { onChanged: () => void; from:
       <div className="card pad stack-sm">
         <span className="eyebrow">Who can sign in</span>
         {data.domains.map(d => <span key={d.domain} className="mono small">@{d.domain}{d.includeSubdomains ? ` and @…${d.domain}` : ''}</span>)}
-        <p className="small muted">To change these, contact Going Concern support. Changes to who can sign in are confirmed in writing.</p>
+        <p className="small muted">To change these, contact Going Concern Lab support. Changes to who can sign in are confirmed in writing.</p>
         <span className="eyebrow" style={{ marginTop: 8 }}>Note for your IT service desk</span>
         <p className="small">Sign-in codes come from <b className="mono">{from}</b>. Please make sure mail from this sender isn’t quarantined, and that links to {location.host} aren’t blocked. No DNS or single sign-on changes are needed.</p>
       </div>
@@ -157,6 +157,6 @@ export function Activity() {
     {error && <Notice kind="error">{error.message}</Notice>}
     {data && !data.length && <Empty>Nothing yet.</Empty>}
     {data && data.length > 0 && <div className="card"><div className="table-wrap"><table className="years"><thead><tr><th>When</th><th>Who</th><th>What</th><th>About</th></tr></thead>
-      <tbody>{data.map((a, i) => <tr key={i}><td className="small">{ukDateTime(a.at)}</td><td className="small">{a.actorKind === 'platform' ? 'Going Concern support' : a.actorEmail ?? 'System'}</td><td className="mono small">{a.action}</td><td className="small">{a.target ?? ''}</td></tr>)}</tbody></table></div></div>}
+      <tbody>{data.map((a, i) => <tr key={i}><td className="small">{ukDateTime(a.at)}</td><td className="small">{a.actorKind === 'platform' ? 'Going Concern Lab support' : a.actorEmail ?? 'System'}</td><td className="mono small">{a.action}</td><td className="small">{a.target ?? ''}</td></tr>)}</tbody></table></div></div>}
   </section>;
 }

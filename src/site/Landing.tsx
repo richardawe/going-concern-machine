@@ -34,7 +34,7 @@ export default function Landing() {
     <SiteNav current="home" />
     <header className="site-hero">
       <div className="site-hero-copy">
-        <div className="site-kicker">Economic Systems Lab · est. 2026</div>
+        <div className="site-kicker">Going Concern Lab · est. 2026</div>
         <h1>See any business as a <em>machine</em>. Then run it.</h1>
         <p className="site-lede">Going Concern Lab turns real company accounts into a working machine of cash, capital and momentum. Explore {companies} public companies, take the CEO's chair in a training game, or teach a whole cohort with assessed university modules.</p>
         <form className="site-ticker" onSubmit={open}>

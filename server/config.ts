@@ -15,7 +15,7 @@ const schema = z.object({
   EMAIL_MODE: z.enum(['brevo', 'log', 'memory']).default('log'),
   BREVO_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().email().default('no-reply@example.com'),
-  EMAIL_FROM_NAME: z.string().default('Going Concern'),
+  EMAIL_FROM_NAME: z.string().default('Going Concern Lab'),
   /** Where the built web app lives (Vite's dist). */
   STATIC_DIR: z.string().default('dist'),
   /** Commit the release was built from, reported by /healthz so a deploy can check it is live. */

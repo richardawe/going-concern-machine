@@ -7,14 +7,24 @@
 | `/` | Home page (`src/site/Landing.tsx`) |
 | `#/machine`, `#/machine/AAPL` | The company workbench, opening that ticker |
 | `#/machine/build` | A hypothetical business (manual mode) |
-| `#/ceo`, `#/live` | CEO mode, the live 3D company |
+| `#/ceo`, `#/live` | CEO mode, the live 3D company. Anyone can play, including from a lecturer's class link |
+| `#/ceo/instructor` | Says the CEO class tool is for universities |
 | `#/course` | Says the modules are for universities, with sign-in and the university edition |
 | `admin.<domain>/modules-demo` | The modules prototype, inside the platform console (signed in, with 2FA), for showing universities before they sign up |
+| `admin.<domain>/ceo-classes` | The CEO mode class tool in the console, to show lecturers |
+| `<university>.<domain>/teach/ceo-classes` | The CEO mode class tool for a university's lecturers and admins. Class links point at the public site |
 | `#/credits` | Every drawing on the site, with its source |
 | `universities/`, `demo/` | Static pages (`public/`), sharing the site's menu, theme and stylesheet |
 
 Every page has the same menu and footer (`src/site/SiteNav.tsx`). The theme (System, Light, Dark) is stored in
 `localStorage` as `gcm:theme` and shared by the app and the static pages (`public/site-static.js`).
+
+## Brand
+
+One name, **Going Concern Lab**, and one logo: the flywheel mark (`.site-logo` in `src/site/site.css`, and
+`public/favicon.svg`). Products are labels beside it: Modules, Platform console. A university's own pages show its
+crest and name, with Going Concern Lab beside them (`Shell` in `src/portal/ui.tsx`). Tool pages are headed by the
+tool's name under a GOING CONCERN LAB kicker. The theme switch is the same three icons everywhere.
 
 ## Drawings
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import ThemeSwitch from '../components/ThemeSwitch';
+import { ThemeIcons } from '../site/SiteNav';
 import { Link } from './router';
 import { Drawing } from '../site/Drawing';
 
@@ -19,24 +19,28 @@ export const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocal
 
 export interface NavItem { to: string; label: string; active: boolean }
 
-export function Shell({ brand, place, crest, color, nav, who, role, children, onSignOut }: {
-  brand: string; place?: string; crest: string; color?: string | null; nav: NavItem[]; who?: string; role?: string; children: ReactNode; onSignOut?: () => void;
+/** `lab` pages (sign-in, the console, legal) carry the Going Concern Lab logo with `brand` as the product label; a
+ *  university's pages carry its crest and name, with Going Concern Lab beside them. */
+export function Shell({ brand, place, crest, color, nav, who, role, children, onSignOut, lab = false }: {
+  brand: string; place?: string; crest: string; color?: string | null; nav: NavItem[]; who?: string; role?: string; children: ReactNode; onSignOut?: () => void; lab?: boolean;
 }) {
   return <div className="course portal" style={color ? { ['--uni' as string]: color } : undefined}>
     <header className="course-top">
       <Drawing name="millGearing" className="page-drawing" fit="cover" />
       <div className="course-top-row">
-        <Link className="course-brand portal-brand" to="/"><span className={`crest${color ? '' : ' plain'}`} aria-hidden="true">{crest}</span><b>{brand}</b>{place && <span>{place}</span>}</Link>
+        {lab
+          ? <Link className="course-brand portal-brand lab-brand" to="/"><span className="site-logo"><i aria-hidden="true" />Going Concern Lab</span><span className="lab-product">{brand}</span>{place && <span>{place}</span>}</Link>
+          : <Link className="course-brand portal-brand" to="/"><span className={`crest${color ? '' : ' plain'}`} aria-hidden="true">{crest}</span><b>{place}</b><span className="lab-with">Going Concern Lab</span></Link>}
         <nav className="course-nav" aria-label="Main">
           {nav.map(n => <Link key={n.to} to={n.to} aria-current={n.active ? 'page' : undefined}>{n.label}</Link>)}
           {who && <span className="portal-who" title={who}>{role && <span className="c-tag">{role}</span>}</span>}
           {onSignOut && <button className="link small portal-signout" onClick={onSignOut}>Sign out</button>}
-          <ThemeSwitch />
+          <ThemeIcons />
         </nav>
       </div>
     </header>
     <main className="course-main">{children}</main>
-    <footer className="course-foot portal-foot"><span>{place ? `${place} · ` : ''}Going Concern</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a></span></footer>
+    <footer className="course-foot portal-foot"><span>{!lab && place ? `${place} · ` : ''}Going Concern Lab</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a></span></footer>
   </div>;
 }
 

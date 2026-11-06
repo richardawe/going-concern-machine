@@ -64,7 +64,7 @@ export default function LiveApp() {
     <SiteNav current="live" />
     <header className="masthead ceo-masthead">
       <Drawing name="artOfMilling" className="page-drawing" fit="cover" position="30% 40%" />
-      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>LIVE COMPANY / 3D</span></div><h1>The Going Concern Machine</h1><p>Run the company and watch it live: every building, flow and figure on site is driven by the game’s numbers.</p></div>
+      <div className="brand"><div className="edition">GOING CONCERN LAB <span>LIVE COMPANY / 3D</span></div><h1>Live 3D company</h1><p>Run the company and watch it live: every building, flow and figure on site is driven by the game’s numbers.</p></div>
       <nav className="ceo-nav"><a className="text-button back-link" href="#/ceo">CEO mode</a></nav>
     </header>
     {error && <div className="notice" role="alert">{error} <button className="text-button" onClick={() => setError('')}>Dismiss</button></div>}

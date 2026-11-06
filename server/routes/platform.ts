@@ -45,7 +45,7 @@ export const platformRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
       await q.exec("insert into platform_login_codes (email, code_hash, ip, expires_at) values ($1, $2, $3, now() + interval '10 minutes')", [email, hmac(d.config.SESSION_SECRET, `platform:${email}:${code}`), req.clientIp]);
       return !!known;
     });
-    if (send) await d.mailer.send(codeMail(email, code, 'the Going Concern platform console'));
+    if (send) await d.mailer.send(codeMail(email, code, 'the Going Concern Lab platform console'));
     return { sent: true };
   });
 
@@ -159,7 +159,7 @@ export const platformRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
         [body.slug, body.name, body.status, body.seatLimit, body.contractStart, body.contractEnd, body.retentionMonths, body.brandColor, body.directoryId]);
       for (const r of body.domains) await q.exec('insert into tenant_domains (tenant_id, domain, include_subdomains) values ($1, $2, $3)', [t.id, r.domain, r.includeSubdomains]);
       await audit(q, req, 'university.provision', body.name, { slug: body.slug, domains: body.domains, adminEmail: body.adminEmail }, t.id);
-      await invitePerson(d, q, req, t, body.adminEmail, body.adminName, 'admin', `${a.name || 'The Going Concern team'}`);
+      await invitePerson(d, q, req, t, body.adminEmail, body.adminName, 'admin', `${a.name || 'The Going Concern Lab team'}`);
       return t;
     });
     app.forgetTenant(tenant.slug);
@@ -234,7 +234,7 @@ export const platformRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
     await d.db.platform(async q => {
       const t = await q.maybe<{ id: string; slug: string; name: string }>('select id, slug, name from tenants where id = $1', [req.params.id]);
       if (!t) return fail(404, 'No such university.');
-      await invitePerson(d, q, req, t, body.email, body.name, 'admin', a.name || 'The Going Concern team');
+      await invitePerson(d, q, req, t, body.email, body.name, 'admin', a.name || 'The Going Concern Lab team');
     });
     return { ok: true };
   });

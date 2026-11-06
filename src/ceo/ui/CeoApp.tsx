@@ -9,7 +9,6 @@ import Setup from './Setup';
 import Briefing from './Briefing';
 import Play from './Play';
 import Debrief from './Debrief';
-import Instructor from './Instructor';
 import { startFor, useArchetypes } from './load';
 import './ceo.css';
 import SiteNav from '../../site/SiteNav';
@@ -73,16 +72,14 @@ export default function CeoApp() {
   const update = (next: Saved | null) => { setSaved(next); write(next); };
   const game: Game | null = useMemo(() => start && caseDef && saved ? { start, caseDef, seed: caseDef.seed, decisions: saved.decisions } : null, [start, caseDef, saved]);
   const ready = game && start?.id && saved;
-  const instructor = route.startsWith('#/ceo/instructor');
 
   return <main className="app-shell ceo-app">
     <SiteNav current="ceo" />
     <header className="masthead ceo-masthead">
       <Drawing name="engineIsometric" className="page-drawing" fit="cover" position="50% 30%" />
-      <div className="brand"><div className="edition">ECONOMIC SYSTEMS LAB <span>CEO MODE / TRAINING GAME</span></div><h1>The Going Concern Machine</h1><p>You are the CEO. Decide, then watch the machine play the year forward.</p></div>
-      <nav className="ceo-nav"><a className="text-button back-link" href={instructor ? '#/ceo' : '#/ceo/instructor'}><GraduationCap size={13} /> {instructor ? 'Play CEO mode' : 'Instructor view'}</a></nav>
+      <div className="brand"><div className="edition">GOING CONCERN LAB <span>TRAINING GAME</span></div><h1>CEO mode</h1><p>You are the CEO. Decide, then watch the machine play the year forward.</p></div>
     </header>
-    {instructor ? <Instructor archetypes={archetypes} /> : <>
+    <>
     {classLink && <section className="challenge-banner" aria-labelledby="class-title">
       <GraduationCap size={22} aria-hidden="true" />
       <div><h2 id="class-title">Class assignment: {classLink.title}</h2>
@@ -102,7 +99,7 @@ export default function CeoApp() {
     {ready && saved.stage === 'briefing' && <Briefing game={game} challenger={saved.challenge && { name: saved.challenge.name, refreshed: Math.round(game.start.baseline.state.revenue) !== saved.challenge.revenue }} assignment={saved.assignment} begin={() => update({ ...saved, stage: 'play' })} quit={() => update(null)} />}
     {ready && saved.stage === 'play' && <Play key={game.start.id + game.caseDef.id} game={game} decide={d => update({ ...saved, decisions: [...saved.decisions, d] })} finish={() => update({ ...saved, stage: 'debrief' })} quit={() => update(null)} />}
     {ready && saved.stage === 'debrief' && <Debrief game={game} share={{ choice: saved.choice, sandbox: saved.sandbox, assignment: saved.assignment }} challenger={saved.challenge} again={() => update({ ...saved, decisions: [], stage: 'briefing' })} quit={() => update(null)} />}
-    </>}
+    </>
     <footer className="ceo-footer">A training game on fictional or hypothetical futures. It is not financial advice or a forecast of any real company.</footer>
   </main>;
 }

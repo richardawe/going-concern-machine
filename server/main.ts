@@ -13,7 +13,7 @@ const app = await buildApp(config, db, createMailer(config), grader.kick);
 
 grader.start();
 await app.listen({ port: config.PORT, host: config.HOST });
-app.log.info(`Going Concern ${config.RELEASE} (${config.ENVIRONMENT_NAME}) on ${config.HOST}:${config.PORT} for ${config.BASE_DOMAIN}`);
+app.log.info(`Going Concern Lab ${config.RELEASE} (${config.ENVIRONMENT_NAME}) on ${config.HOST}:${config.PORT} for ${config.BASE_DOMAIN}`);
 
 // Finish requests in flight before exiting, so a PM2 reload drops nothing.
 let stopping = false;

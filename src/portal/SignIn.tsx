@@ -41,7 +41,7 @@ export default function SignIn({ title, intro, emailLabel, placeholder, codeUrl,
         <span className="muted">·</span>
         <button type="button" className="link" onClick={() => { setStep('email'); setError(''); }}>Use a different email</button>
       </div>
-      <p className="small muted center">Not there after a minute? Check your junk folder. Your IT team may need to allow emails from Going Concern.</p>
+      <p className="small muted center">Not there after a minute? Check your junk folder. Your IT team may need to allow emails from Going Concern Lab.</p>
     </form>}
     {note && <Notice kind="good">{note}</Notice>}
     {error && <Notice kind="error">{error}</Notice>}
