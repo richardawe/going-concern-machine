@@ -8,11 +8,11 @@ import Lecturer from './Lecturer';
 import ModuleRunner from './ModuleRunner';
 import Submit from './Submit';
 import './course.css';
-import SiteNav from '../../site/SiteNav';
 import { Drawing } from '../../site/Drawing';
 
 // Going Concern Modules, the university edition: #/course (modules), #/course/m/<module>, #/course/submit and
-// #/course/lecturer. A lecturer's link can name the course with ?c=<id>.
+// #/course/lecturer. A lecturer's link can name the course with ?c=<id>. This prototype isn't public: it opens only
+// inside the platform console (admin.<domain>/modules-demo), for showing universities before they sign up.
 function useRoute() {
   const [hash, setHash] = useState(location.hash);
   useEffect(() => { const f = () => setHash(location.hash); addEventListener('hashchange', f); return () => removeEventListener('hashchange', f); }, []);
@@ -20,7 +20,7 @@ function useRoute() {
   return { parts: path.split('/').filter(Boolean), course: new URLSearchParams(query ?? '').get('c') };
 }
 
-export default function CourseApp() {
+export default function CourseApp({ banner }: { banner?: React.ReactNode }) {
   const route = useRoute(), course = courseById(route.course);
   const [progress, update, restore] = useProgress(course), [archetypes, archetypeError] = useArchetypes();
   const suffix = route.course ? `?c=${route.course}` : '';
@@ -31,7 +31,7 @@ export default function CourseApp() {
   useEffect(() => { document.title = `${def ? `${def.title} · ` : ''}Going Concern Modules`; }, [def]);
 
   return <div className="course">
-    <SiteNav current="course" />
+    {banner}
     <header className="course-top">
       <Drawing name="millGearing" className="page-drawing" fit="cover" />
       <div className="course-top-row">

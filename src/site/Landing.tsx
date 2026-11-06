@@ -9,7 +9,7 @@ const cards: Card[] = [
   { name: 'gearsTrain', kicker: 'Explore', title: 'Company machine', text: 'Load a public company and see its revenue, margins, capital and free cash flow as one moving system. Pull a lever to fork a scenario and run it forward five years.', go: 'Open the machine', href: '#/machine', wide: true },
   { name: 'engineIsometric', kicker: 'Play', title: 'CEO mode', text: <>Price wars, talent exodus, cash crunch… Make five years of decisions, then get graded on <b>judgement</b> as well as outcome, and challenge a friend to the same world.</>, go: 'Choose a case', href: '#/ceo', wide: true, position: '50% 28%' },
   { name: 'artOfMilling', kicker: 'Watch', title: 'Live 3D company', text: "Play a case on a 3D site where every building, flow and figure is driven by the game's numbers.", go: 'Enter the site', href: '#/live', isNew: true, position: '30% 40%' },
-  { name: 'millGearing', kicker: 'Learn', title: 'Going Concern Modules', text: 'Six modules that teach finance by running the company, with written answers, decisions and a verifiable PDF hand-in.', go: 'Try a module', href: '#/course' },
+  { name: 'millGearing', kicker: 'Learn', title: 'Going Concern Modules', text: 'Six modules that teach finance by running the company, with written answers, decisions and a verifiable PDF hand-in. For universities.', go: 'See the university edition', href: staticPage('universities/') },
   { name: 'molino', kicker: 'Build', title: 'Your own business', text: 'No ticker needed. Enter revenue, cash, debt and capital for any business, then test it with shocks and scenarios.', go: 'Build a business', href: '#/machine/build', position: '0% 0%', size: '170%' },
 ];
 const steps: [string, string, string, number, number][] = [
@@ -66,8 +66,9 @@ export default function Landing() {
 
     <section className="site-block">
       <div className="site-head"><div><div className="site-kicker">How it works</div><h2>From filings to a running machine</h2></div><p>Raw cane goes in on the left, the gears transmit, and the engine keeps it all turning. A company works the same way.</p></div>
-      <div className="site-how">
-        <div ref={plotRef} className={`site-plot ${plotted ? 'in' : ''}`}>
+      {/* Watch the frame, not the drawing: the drawing starts fully clipped, which browsers count as not visible. */}
+      <div className="site-how" ref={plotRef}>
+        <div className={`site-plot ${plotted ? 'in' : ''}`}>
           <Drawing name="caneMillLine" />
           {steps.map(([, , n, x, y]) => <span key={n} className="site-marker" style={{ left: `${x}%`, top: `${y}%` }}>{n}</span>)}
         </div>

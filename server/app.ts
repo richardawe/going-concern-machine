@@ -117,6 +117,12 @@ export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrade
     root, index: false, wildcard: true, decorateReply: true,
     setHeaders: (res, path) => res.setHeader('cache-control', path.includes(`${join(root, 'assets')}`) ? 'public, max-age=31536000, immutable' : 'public, max-age=300'),
   });
+  // The static pages (public/universities, public/demo) are folders with an index.html. Directory indexes are off
+  // above, so serve these two explicitly, and add the trailing slash their relative links need.
+  for (const dir of ['universities', 'demo']) {
+    app.get(`/${dir}`, (_req, reply) => reply.redirect(`/${dir}/`, 301));
+    app.get(`/${dir}/`, (_req, reply) => reply.header('cache-control', 'public, max-age=300').sendFile(`${dir}/index.html`));
+  }
   let indexHtml: string | null = null;
   const page = async (req: FastifyRequest, reply: FastifyReply) => {
     indexHtml ??= await readFile(join(root, 'index.html'), 'utf8').catch(() => '<!doctype html><html><head><title>Going Concern</title></head><body><div id="root"></div></body></html>');

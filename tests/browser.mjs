@@ -9,6 +9,7 @@ try{
  // Home page: the site menu, the running engine, and a ticker typed there opens that company's machine.
  await page.goto('http://gcm.test/going-concern-machine/');await page.getByRole('heading',{name:'See any business as a machine. Then run it.'}).waitFor();
  assert.ok(await page.getByRole('navigation',{name:'Site'}).getByRole('link',{name:'CEO mode'}).isVisible(),'site menu on the home page');
+ await page.locator('.site-how').scrollIntoViewIfNeeded();await page.locator('.site-plot.in').waitFor({timeout:5000}); // the mill drawing plots itself in
  await page.getByLabel('Company ticker').fill('wmt');await page.getByRole('button',{name:/Build the machine/}).click();
  await page.waitForURL(/#\/machine\/WMT$/);await page.getByRole('group',{name:/^WMT .* economic machine$/}).waitFor();
  await page.goto('http://gcm.test/going-concern-machine/#/machine');await page.getByRole('group',{name:'MSFT Software + cloud infrastructure economic machine'}).waitFor();await page.getByRole('button',{name:'Reduce motion',exact:true}).click();
