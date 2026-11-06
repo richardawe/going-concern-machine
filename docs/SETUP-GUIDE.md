@@ -21,8 +21,8 @@ DEPLOYMENT.md section 8 for when a second university signs.
 | 2. WHM (the server) | Done (Claude) | ☑ |
 | 3. GitHub secrets and the production environment | Done (Claude) | ☑ |
 | 4. Brevo (sign-in emails) | Done (Claude) | ☑ |
-| 5. Setup check, first deploy, your console account, nightly jobs | Claude, through GitHub Actions. You approve the deploy. | ☐ |
-| 6. Firewall | You, with Claude's steps | ☐ |
+| 5. Setup check, first deploy, your console account, nightly jobs | Done (Claude) | ☑ |
+| 6. Firewall | Done (Claude) | ☑ |
 | 7. Provision the first university | You, in the console | ☐ |
 
 Claude can't log in to the server directly: its sessions can't make SSH connections. It operates the server through
@@ -287,23 +287,31 @@ Install the **GitHub mobile app** and turn on notifications. Approving a deploy 
 
 Tell Claude when Parts 1–4 are done. Claude runs these in the repository's **Server task** workflow, and you can run any of them yourself from **Actions → Server task → Run workflow**:
 
-1. **`preflight`** checks every step above (Node, PM2, the settings file, both database roles, the Brevo key, the certificate, the Apache proxy, Cloudflare, disk space). It says exactly what still needs fixing. Repeat until it passes. ☐
-2. **First deploy:** Claude starts the deploy workflow, and **you tap Approve** in GitHub. The server takes a backup, sets up the database, starts the app and checks it's healthy. If the release isn't healthy, the server switches back to the previous one by itself. ☐
-3. **`add-admin`** with your email and name creates your platform console account. ☐
-4. **`install-cron`** sets up the nightly backup (02:15) and data clean-up (02:40). ☐
-5. **`status`** confirms the release, both app workers, backups and cron. ☐
+1. **`preflight`** checks every step above (Node, PM2, the settings file, both database roles, the Brevo key, the certificate, the Apache proxy, Cloudflare, disk space). It says exactly what still needs fixing. Repeat until it passes. ☑
+2. **First deploy:** Claude starts the deploy workflow, and **you tap Approve** in GitHub. The server takes a backup, sets up the database, starts the app and checks it's healthy. If the release isn't healthy, the server switches back to the previous one by itself. ☑
+3. **`add-admin`** with your email and name creates your platform console account. ☑
+4. **`install-cron`** sets up the nightly backup (02:15) and data clean-up (02:40). ☑
+5. **`status`** confirms the release, both app workers, backups and cron. ☑
 
 ---
 
-## Part 6 — Firewall (after Part 5 passes)
+## Part 6 — Firewall (done 6 November 2026)
 
-Only Cloudflare should reach the website ports (80 and 443) directly. The app trusts Cloudflare's visitor-address
-header for rate limiting, so direct connections could get around it.
+Only Cloudflare should reach the site directly: the app trusts Cloudflare's visitor-address header for rate limiting,
+so direct connections could get around it.
 
-1. Check whether you have **WHM → Plugins → ConfigServer Security & Firewall**. ☐
-2. Tell Claude which you have: CSF in WHM, or a firewall managed in the Liquid Web portal. Claude will give you the exact steps for that one. ☐
-3. Keep SSH open: GitHub deploys need it. Turn off SSH password logins only after confirming you can log in with a key. ☐
+This server hosts other sites, so ports 80 and 443 are **not** closed in CSF: that would cut off sites that aren't behind
+Cloudflare. And cPanel's NGINX sits in front of Apache, so Apache sees every request as coming from `127.0.0.1` and
+can't do the check. The check is in NGINX instead, and applies only to the `gcm` account:
 
+- `/etc/nginx/conf.d/gcm-cloudflare-geo.conf` lists Cloudflare's ranges (and the server itself), matched against
+  the address that actually connected (`$realip_remote_addr`), not the rewritten visitor address.
+- `/etc/nginx/conf.d/users/gcm/cloudflare-only.conf` returns 403 to anything else.
+- NGINX caching is **off** for `gcm` (`/usr/local/cpanel/scripts/ea-nginx cache gcm --enabled=0`), so it can never
+  serve one user's page to another. Cloudflare still caches the static files.
+
+Cloudflare rarely changes its ranges. If it does, rebuild the geo file from cloudflare.com/ips and run
+`nginx -t && systemctl reload nginx` as root. Keep SSH open: GitHub deploys need it.
 ---
 
 ## Part 7 — The first university

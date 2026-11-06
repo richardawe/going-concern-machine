@@ -56,12 +56,7 @@ Adding a university never needs a DNS change: the wildcard record and certificat
    /etc/apache2/conf.d/userdata/ssl/2_4/gcm/wildcard_safe.goingconcernlab.com/gcm-proxy.conf
    ```
    Then `/scripts/rebuildhttpdconf && /scripts/restartsrv_httpd`.
-7. **Firewall.** Only Cloudflare should reach ports 80 and 443. The app trusts Cloudflare's visitor-IP header for rate limits, so a direct connection could spoof it. In CSF, remove 80 and 443 from `TCP_IN` in `/etc/csf/csf.conf`, then allow Cloudflare's ranges:
-   ```bash
-   for ip in $(curl -fsS https://www.cloudflare.com/ips-v4) $(curl -fsS https://www.cloudflare.com/ips-v6); do
-     echo "tcp|in|d=80|s=$ip"; echo "tcp|in|d=443|s=$ip"; done >> /etc/csf/csf.allow
-   csf -r
-   ```
+7. **Firewall.** Only Cloudflare should reach the site. The app trusts Cloudflare's visitor-IP header for rate limits, so a direct connection could spoof it. On a server used only for this app, remove 80 and 443 from `TCP_IN` in `/etc/csf/csf.conf` and allow Cloudflare's ranges in `csf.allow`. **On a shared server (production is one), don't:** that cuts off the other sites. If cPanel's NGINX fronts Apache, restrict the `gcm` account in NGINX instead, checking `$realip_remote_addr` against Cloudflare's ranges, and turn NGINX caching off for `gcm`. SETUP-GUIDE.md Part 6 has production's exact files.
    Also: SSH by key only (`PasswordAuthentication no`), cPHulk on, and WHM's automatic updates on.
 8. **PM2 at boot** (as `gcm`, then the one root command it prints):
    ```bash
