@@ -22,14 +22,14 @@ export const authRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
 
   app.post('/api/auth/code', async req => {
     const tenant = needTenant(req);
-    if (tenant.status === 'suspended' || tenant.status === 'closed') return fail(403, `${tenant.name}'s access to Going Concern is paused. Ask your university's administrator.`);
+    if (tenant.status === 'suspended' || tenant.status === 'closed') return fail(403, `${tenant.name}'s access to Going Concern Lab is paused. Ask your university's administrator.`);
     const { email } = parse(Email, req.body), domain = emailDomain(email);
     const rules = await allowedDomains(tenant.id);
     if (!rules.some(r => domainMatches(domain, r))) return fail(400, `${tenant.name} only accepts addresses ending ${describe(rules)}. Use your university email.`, { reason: 'domain' });
     const code = sixDigits();
     await d.db.tenant(tenant.id, async q => {
       const user = await q.maybe<{ status: string }>('select status from users where tenant_id = $1 and email = $2', [tenant.id, email]);
-      if (user?.status === 'deactivated') return fail(403, 'This account has been deactivated. Ask your university’s Going Concern administrator.');
+      if (user?.status === 'deactivated') return fail(403, 'This account has been deactivated. Ask your university’s Going Concern Lab administrator.');
       const recent = await q.one<{ by_email: number; by_ip: number }>(
         `select count(*) filter (where email = $2 and created_at > now() - interval '15 minutes') as by_email,
                 count(*) filter (where ip = $3 and created_at > now() - interval '1 hour') as by_ip
@@ -46,7 +46,7 @@ export const authRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
 
   app.post('/api/auth/verify', async (req, reply) => {
     const tenant = needTenant(req);
-    if (tenant.status === 'suspended' || tenant.status === 'closed') return fail(403, `${tenant.name}'s access to Going Concern is paused.`);
+    if (tenant.status === 'suspended' || tenant.status === 'closed') return fail(403, `${tenant.name}'s access to Going Concern Lab is paused.`);
     const { email, code } = parse(Email.extend({ code: z.string().trim().regex(/^\d{6}$/, 'Enter the 6-digit code from the email.') }), req.body);
     const result = await d.db.tenant(tenant.id, async q => {
       const row = await q.maybe<{ id: string; code_hash: string; attempts: number }>(
@@ -70,7 +70,7 @@ export const authRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
         const { seat_limit: limit } = await q.one<{ seat_limit: number | null }>('select seat_limit from tenants where id = $1', [tenant.id]);
         if (limit) {
           const { n } = await q.one<{ n: number }>("select count(*) as n from users where tenant_id = $1 and role = 'student' and status = 'active'", [tenant.id]);
-          if (n >= limit) return { error: `${tenant.name} has used all its student places on Going Concern. Ask your lecturer to contact the university’s administrator.` };
+          if (n >= limit) return { error: `${tenant.name} has used all its student places on Going Concern Lab. Ask your lecturer to contact the university’s administrator.` };
         }
         user = await q.one<{ id: string; role: 'student' | 'lecturer' | 'admin'; status: string }>('insert into users (tenant_id, email) values ($1, $2) returning id, role, status', [tenant.id, email]);
       } else if (user.status === 'invited') {

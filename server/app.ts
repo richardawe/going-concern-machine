@@ -71,7 +71,7 @@ export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrade
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
       const origin = req.headers.origin;
       if (req.headers['x-gcm'] !== '1' || (origin && origin.replace(/^https?:\/\//, '').toLowerCase() !== String(req.headers.host).toLowerCase())) {
-        return reply.code(403).send({ error: 'This request did not come from a Going Concern page.' });
+        return reply.code(403).send({ error: 'This request did not come from a Going Concern Lab page.' });
       }
     }
     if (req.site.kind === 'tenant') {
@@ -125,7 +125,7 @@ export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrade
   }
   let indexHtml: string | null = null;
   const page = async (req: FastifyRequest, reply: FastifyReply) => {
-    indexHtml ??= await readFile(join(root, 'index.html'), 'utf8').catch(() => '<!doctype html><html><head><title>Going Concern</title></head><body><div id="root"></div></body></html>');
+    indexHtml ??= await readFile(join(root, 'index.html'), 'utf8').catch(() => '<!doctype html><html><head><title>Going Concern Lab</title></head><body><div id="root"></div></body></html>');
     const kind = req.site.kind === 'tenant' ? (req.tenant ? 'tenant' : 'missing') : req.site.kind === 'platform' ? 'platform' : req.site.kind === 'unknown' ? 'missing' : 'public';
     return reply.code(kind === 'missing' ? 404 : 200).header('content-type', 'text/html; charset=utf-8').header('cache-control', 'no-cache')
       .send(indexHtml.replace('</head>', `<meta name="gcm-host" content="${kind}"></head>`));

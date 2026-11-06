@@ -40,5 +40,5 @@ export function totpAt(secret: string, time = Date.now(), step = 0) {
 /** Accepts the current code and one step either side, for clock drift. */
 export const totpValid = (secret: string, code: string, time = Date.now()) =>
   /^\d{6}$/.test(code) && [-1, 0, 1].some(s => safeEqual(totpAt(secret, time, s), code));
-export const totpUri = (secret: string, account: string, issuer = 'Going Concern') =>
+export const totpUri = (secret: string, account: string, issuer = 'Going Concern Lab') =>
   `otpauth://totp/${encodeURIComponent(`${issuer}:${account}`)}?secret=${secret}&issuer=${encodeURIComponent(issuer)}&period=30&digits=6`;

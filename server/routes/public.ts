@@ -37,7 +37,7 @@ export const publicRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
       `select td.domain, td.include_subdomains, t.slug, t.name, t.status from tenant_domains td join tenants t on t.id = td.tenant_id
         where td.domain = $1 or $1 like '%.' || td.domain`, [domain]));
     const hit = rules.filter(r => domainMatches(domain, r) && (r.status === 'active' || r.status === 'trial')).sort((a, b) => b.domain.length - a.domain.length)[0];
-    if (!hit) return fail(404, `No university on Going Concern uses ${domain} yet. Check the address, or ask your lecturer for your university's link.`);
+    if (!hit) return fail(404, `No university on Going Concern Lab uses ${domain} yet. Check the address, or ask your lecturer for your university's link.`);
     return { name: hit.name, url: `${tenantOrigin(hit.slug, d.config.BASE_DOMAIN, d.config.SECURE_COOKIES, d.config.SECURE_COOKIES ? undefined : d.config.PORT)}/sign-in?email=${encodeURIComponent(email)}` };
   });
 };

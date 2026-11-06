@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { api } from '../api';
 import { match, navigate, query, usePath } from '../router';
 import SignIn from '../SignIn';
@@ -9,6 +9,9 @@ import { Activity, AdminOverview, People, SettingsPage, Terms } from './admin';
 import { CoursePages, JoinPage, MyCourses } from './student';
 import { CourseForm, CourseRoster, StudentWorkPage, TeachCourses } from './teach';
 
+// The CEO mode class tool, for lecturers and admins. Class links point at the public site, where students play.
+const ClassTool = lazy(() => import('../../ceo/ui/ClassTool'));
+
 // A university's portal at <slug>.<domain>. Students see their courses; lecturers also teach; admins also manage.
 
 export interface Me { id: string; email: string; name: string; studentId: string; role: 'student' | 'lecturer' | 'admin' }
@@ -17,7 +20,7 @@ const JOIN_KEY = 'gcm:portal:join';
 export default function TenantApp({ ctx, reload }: { ctx: Context; reload: () => void }) {
   const path = usePath(), t = ctx.tenant!, me = ctx.user as Me | null;
   const initials = t.name.replace(/^(The |University of )/, '').split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
-  useEffect(() => { document.title = `${t.name} · Going Concern`; }, [t.name]);
+  useEffect(() => { document.title = `${t.name} · Going Concern Lab`; }, [t.name]);
 
   // Remember a join link opened before signing in, and use it straight after.
   const join = match('/join/:code', path);
@@ -28,11 +31,11 @@ export default function TenantApp({ ctx, reload }: { ctx: Context; reload: () =>
     if (pending && !join) navigate(`/join/${pending}`, { replace: true });
   }, [me?.id]);
 
-  const shell = (nav: NavItem[], body: React.ReactNode) => <Shell brand="GOING CONCERN · MODULES" place={t.name} crest={initials} color={t.brandColor} nav={nav} who={me?.email}
+  const shell = (nav: NavItem[], body: React.ReactNode) => <Shell brand="Modules" place={t.name} crest={initials} color={t.brandColor} nav={nav} who={me?.email}
     role={me && me.role !== 'student' ? me.role[0].toUpperCase() + me.role.slice(1) : undefined}
     onSignOut={me ? () => void api('/api/auth/sign-out', { body: {} }).then(() => { navigate('/'); reload(); }) : undefined}>{body}</Shell>;
 
-  if (!t.open) return shell([], <Notice kind="warn">{t.name}’s access to Going Concern is paused. If you think this is a mistake, contact your university’s administrator.</Notice>);
+  if (!t.open) return shell([], <Notice kind="warn">{t.name}’s access to Going Concern Lab is paused. If you think this is a mistake, contact your university’s administrator.</Notice>);
   if (!me) return shell([], <SignIn title={<><span className="crest big" aria-hidden="true">{initials}</span><h1>{t.name}</h1><p className="muted">Strategic finance modules</p></>}
     emailLabel={`Your ${t.name} email`} placeholder={t.domains.map(d => `name@${d.domain}`).slice(0, 2).join(' or ')}
     initialEmail={query('email') ?? ''} codeUrl="/api/auth/code" verifyUrl="/api/auth/verify" onSignedIn={() => { reload(); if (path === '/sign-in') navigate('/', { replace: true }); }}
@@ -41,7 +44,8 @@ export default function TenantApp({ ctx, reload }: { ctx: Context; reload: () =>
 
   const staff = me.role !== 'student', isAdmin = me.role === 'admin';
   const nav: NavItem[] = [
-    staff ? { to: '/teach', label: 'Teaching', active: path === '/' || path.startsWith('/teach') } : { to: '/', label: 'My courses', active: path === '/' || path.startsWith('/courses') },
+    staff ? { to: '/teach', label: 'Teaching', active: path === '/' || (path.startsWith('/teach') && path !== '/teach/ceo-classes') } : { to: '/', label: 'My courses', active: path === '/' || path.startsWith('/courses') },
+    ...(staff ? [{ to: '/teach/ceo-classes', label: 'CEO mode classes', active: path === '/teach/ceo-classes' }] : []),
     ...(isAdmin ? [{ to: '/admin', label: 'Admin', active: path.startsWith('/admin') }] : []),
     { to: '/account', label: 'Account', active: path === '/account' },
   ];
@@ -57,6 +61,7 @@ export default function TenantApp({ ctx, reload }: { ctx: Context; reload: () =>
   else if (path.startsWith('/teach') && !staff) page = deny;
   else if (path === '/teach') page = <TeachCourses />;
   else if (path === '/teach/new') page = <CourseForm />;
+  else if (path === '/teach/ceo-classes') page = <Suspense fallback={<Loading />}><ClassTool playUrl={`${location.protocol}//${ctx.baseDomain}${location.port ? `:${location.port}` : ''}/`} /></Suspense>;
   else if ((m = match('/teach/:id', path))) page = <CourseRoster id={m.id} />;
   else if ((m = match('/teach/:id/edit', path))) page = <CourseForm id={m.id} />;
   else if ((m = match('/teach/:id/students/:userId', path))) page = <StudentWorkPage courseId={m.id} userId={m.userId} />;

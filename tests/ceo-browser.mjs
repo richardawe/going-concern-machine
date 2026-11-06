@@ -81,11 +81,17 @@ try {
   const serve = async ctx => { await ctx.route('http://gcm.test/**', async route => { const url = new URL(route.request().url()); const part = url.pathname.replace(/^\/going-concern-machine\//, '').replace(/^\//, ''); const file = path.resolve('dist', part || 'index.html'); try { const body = await readFile(file); await route.fulfill({ body, contentType: file.endsWith('.js') ? 'application/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.json') ? 'application/json' : 'text/html' }) } catch { await route.fulfill({ status: 404, body: 'Not found' }) } }); return ctx; };
   const fresh = async () => { const ctx = await serve(await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true })); const p = await ctx.newPage(); p.on('pageerror', e => errors.push(e.message)); return p; };
   const teacher = await fresh();
-  await teacher.goto('http://gcm.test/going-concern-machine/#/ceo'); await teacher.getByRole('link', { name: 'Instructor view' }).click();
-  await teacher.getByRole('heading', { name: 'Instructor view' }).waitFor();
+  // The class tool isn't public: #/ceo/instructor says so. Lecturers and the platform console have it; here the
+  // teacher opens it in the console (admin.<domain>/ceo-classes) as a signed-in admin.
+  await teacher.goto('http://gcm.test/going-concern-machine/#/ceo/instructor'); await teacher.getByRole('heading', { name: 'Class tools are for universities' }).waitFor();
+  const admin = { kind: 'platform', release: 'test', environment: 'production', baseDomain: 'gcm.test', admin: { id: 'a1', email: 'admin@example.com', name: 'Admin', totp_enabled: true, mfa: true } };
+  await teacher.context().route('http://gcm.test/api/context', r => r.fulfill({ body: JSON.stringify(admin), contentType: 'application/json' }));
+  await teacher.context().route('http://gcm.test/ceo-classes', async r => r.fulfill({ body: (await readFile('dist/index.html', 'utf8')).replace('</head>', '<meta name="gcm-host" content="platform"></head>'), contentType: 'text/html' }));
+  await teacher.goto('http://gcm.test/ceo-classes');
+  await teacher.getByRole('heading', { name: 'CEO mode classes' }).waitFor();
   await teacher.getByLabel('Assignment title').fill('Week 4: Price War'); await teacher.getByText(/Every student will run .* · Retail · fictional/).waitFor();
   await teacher.getByRole('button', { name: 'Create assignment link' }).click();
-  const assignmentLink = await teacher.getByLabel('Assignment link').inputValue(); assert.match(assignmentLink, /#\/ceo\?assignment=/);
+  const assignmentLink = await teacher.getByLabel('Assignment link').inputValue(); assert.match(assignmentLink, /^http:\/\/gcm\.test\/#\/ceo\?assignment=/, 'class links point at the public site');
   const handIn = async (name, firstCard) => {
    const s = await fresh(); await s.goto(assignmentLink); await s.getByRole('heading', { name: 'Class assignment: Week 4: Price War' }).waitFor();
    await s.getByRole('button', { name: 'Start the assignment' }).click(); await s.getByText(/Class assignment:.*Week 4: Price War/).waitFor();

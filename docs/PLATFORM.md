@@ -7,9 +7,9 @@ with university email. Deployment is in [DEPLOYMENT.md](DEPLOYMENT.md); the cour
 
 | Role | Where | Can |
 | --- | --- | --- |
-| Platform admin (you) | `admin.<domain>` | Show prospective universities the modules prototype (**Demo modules**). Provision universities from the UK directory, set email domains, places and contract dates, invite university admins, suspend, export, see the audit log and system health. Signs in with an emailed code **and** an authenticator app. |
+| Platform admin (you) | `admin.<domain>` | Show prospective universities the modules prototype (**Demo modules**) and the CEO mode class tool (**CEO class tool**). Provision universities from the UK directory, set email domains, places and contract dates, invite university admins, suspend, export, see the audit log and system health. Signs in with an emailed code **and** an authenticator app. |
 | University admin | `<slug>.<domain>/admin` | Accept the terms, invite lecturers and admins (one at a time or as a list), change roles, deactivate people, set the name and colour, export all the university's data, see its activity. |
-| Lecturer | `<slug>.<domain>/teach` | Create courses (modules, due date, late policy, co-lecturers), share a join link, follow every student's status, read their answers, give extensions, download CSV, each PDF or all PDFs as a zip. |
+| Lecturer | `<slug>.<domain>/teach` | Set CEO mode class assignments and grade them (**CEO mode classes**). Create courses (modules, due date, late policy, co-lecturers), share a join link, follow every student's status, read their answers, give extensions, download CSV, each PDF or all PDFs as a zip. |
 | Student | `<slug>.<domain>` | Anyone with an address on the university's domains. Join with a link or code, work through modules (saved to their account as they type), hand in, get a receipt and the PDF, download their own data. |
 
 ## How it fits together

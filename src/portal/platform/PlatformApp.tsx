@@ -10,17 +10,23 @@ import { Action, ago, CodeInput, Empty, Kpis, Loading, Notice, plural, Shell, uk
 
 // The modules prototype, for showing a university what its students would get before it signs up. Only here.
 const CourseApp = lazy(() => import('../../course/ui/CourseApp'));
+// The CEO mode class tool, to show lecturers; class links point at the public site, where students play.
+const ClassTool = lazy(() => import('../../ceo/ui/ClassTool'));
+
+/** The public site's home, on this protocol and port (local development runs on one port for every host). */
+const publicSite = (base: string) => `${location.protocol}//${base}${location.port ? `:${location.port}` : ''}/`;
 
 export default function PlatformApp({ ctx, reload }: { ctx: Context; reload: () => void }) {
   const path = usePath(), a = ctx.admin;
-  useEffect(() => { document.title = 'Platform · Going Concern'; }, []);
+  useEffect(() => { document.title = 'Platform · Going Concern Lab'; }, []);
   const nav: NavItem[] = a?.mfa ? [
     { to: '/', label: 'Universities', active: path === '/' || path.startsWith('/universities') },
     { to: '/system', label: 'System', active: path === '/system' },
     { to: '/audit', label: 'Audit log', active: path === '/audit' },
     { to: '/modules-demo', label: 'Demo modules', active: path === '/modules-demo' },
+    { to: '/ceo-classes', label: 'CEO class tool', active: path === '/ceo-classes' },
   ] : [];
-  const shell = (body: React.ReactNode) => <Shell brand="GOING CONCERN · PLATFORM" place={ctx.environment !== 'production' ? ctx.environment : undefined} crest="G" nav={nav} who={a?.email}
+  const shell = (body: React.ReactNode) => <Shell lab brand="Platform console" place={ctx.environment !== 'production' ? ctx.environment : undefined} crest="G" nav={nav} who={a?.email}
     onSignOut={a ? () => void api('/api/platform/auth/sign-out', { body: {} }).then(() => { navigate('/'); reload(); }) : undefined}>{body}</Shell>;
 
   if (!a) return shell(<SignIn title={<><span className="crest big plain" aria-hidden="true">G</span><h1>Platform console</h1></>} emailLabel="Your email" placeholder="you@example.com"
@@ -35,6 +41,7 @@ export default function PlatformApp({ ctx, reload }: { ctx: Context; reload: () 
   else if ((m = match('/universities/:id', path))) page = <University id={m.id} baseDomain={ctx.baseDomain} />;
   else if (path === '/system') page = <System />;
   else if (path === '/audit') page = <Audit />;
+  else if (path === '/ceo-classes') page = <Suspense fallback={<Loading />}><ClassTool playUrl={publicSite(ctx.baseDomain)} /></Suspense>;
   else page = <Notice kind="error">There’s no page here.</Notice>;
   return shell(page);
 }
@@ -136,7 +143,7 @@ function Provision({ baseDomain }: { baseDomain: string }) {
       {hits.length > 0 && <ul className="dir-hits" role="listbox" aria-label="Matching universities">{hits.map(u => <li key={u.id}>
         <button disabled={!!u.provisioned} onClick={() => choose(u)}>
           <b>{u.name}</b><span className="small muted">{u.nation} · {u.domains.join(', ')}{u.aliases.length ? ` · ${u.aliases.slice(0, 3).join(', ')}` : ''}</span>
-          {u.provisioned && <span className="c-tag good">Already on Going Concern</span>}
+          {u.provisioned && <span className="c-tag good">Already on Going Concern Lab</span>}
         </button>
         {u.provisioned && <Link className="small" to={`/universities/${u.provisioned.id}`}>Open</Link>}
       </li>)}</ul>}
