@@ -197,4 +197,10 @@ test('pages: the app shell knows which kind of host it is on, with security head
   assert.match((await call(h.app, { url: '/', host: `nowhere.${BASE}` })).res.body, /content="missing"/);
   assert.equal((await call(h.app, { url: '/x', host: `www.${BASE}` })).status, 301);
   assert.equal((await call(h.app, { url: '/healthz', host: '127.0.0.1' })).json.ok, true);
+  // The static pages are served from their folders, with the trailing slash their relative links need.
+  const uni = await call(h.app, { url: '/universities/', host: BASE });
+  assert.equal(uni.status, 200); assert.match(uni.res.body, /Going Concern Modules for universities/);
+  assert.equal((await call(h.app, { url: '/demo/', host: BASE })).status, 200);
+  const bare = await call(h.app, { url: '/universities', host: BASE });
+  assert.equal(bare.status, 301); assert.equal(bare.res.headers.location, '/universities/');
 });

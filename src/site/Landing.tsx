@@ -66,8 +66,9 @@ export default function Landing() {
 
     <section className="site-block">
       <div className="site-head"><div><div className="site-kicker">How it works</div><h2>From filings to a running machine</h2></div><p>Raw cane goes in on the left, the gears transmit, and the engine keeps it all turning. A company works the same way.</p></div>
-      <div className="site-how">
-        <div ref={plotRef} className={`site-plot ${plotted ? 'in' : ''}`}>
+      {/* Watch the frame, not the drawing: the drawing starts fully clipped, which browsers count as not visible. */}
+      <div className="site-how" ref={plotRef}>
+        <div className={`site-plot ${plotted ? 'in' : ''}`}>
           <Drawing name="caneMillLine" />
           {steps.map(([, , n, x, y]) => <span key={n} className="site-marker" style={{ left: `${x}%`, top: `${y}%` }}>{n}</span>)}
         </div>
