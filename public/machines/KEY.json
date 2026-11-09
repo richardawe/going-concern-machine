@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "KEY",
-  "name": "KEYCORP /NEW/",
-  "retrieved": "2026-11-02",
+  "name": "KeyCorp",
+  "retrieved": "2026-11-09",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {

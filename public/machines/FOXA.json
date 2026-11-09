@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "FOXA",
-  "name": "FOX CORPORATION",
-  "retrieved": "2026-11-02",
+  "name": "Fox Corp",
+  "retrieved": "2026-11-09",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
