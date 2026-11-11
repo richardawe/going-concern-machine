@@ -8,6 +8,9 @@ export const onPlatform = () => typeof document !== 'undefined' && !!document.qu
 const base = import.meta.env.BASE_URL;
 export const staticPage = (path: string) => `${base}${path}`;
 
+/** The company behind Going Concern Lab, as registered at Companies House. Shown in footers and the privacy notice. */
+export const COMPANY = { name: '3D7 Technologies Ltd', number: '09785441', address: '02 Universal Square, Devonshire Street North, Manchester M12 6JH', email: 'hello@goingconcernlab.com' };
+
 export type Section = 'home' | 'machine' | 'ceo' | 'live' | 'course' | 'universities' | 'credits';
 const links: [Section, string, string][] = [
   ['home', 'Home', '#/'], ['machine', 'Company machine', '#/machine'], ['ceo', 'CEO mode', '#/ceo'], ['live', 'Live 3D', '#/live'],
@@ -45,9 +48,9 @@ export function SiteFooter() {
     <div className="site-footer-cols">
       <div><a className="site-logo" href="#/"><i aria-hidden="true" />Going Concern Lab</a><p>A business is a machine that must keep capturing value to keep running. We make that machine visible.</p></div>
       <div><h4>Product</h4><a href="#/machine">Company machine</a><a href="#/ceo">CEO mode</a><a href="#/live">Live 3D company</a><a href={staticPage('universities/')}>Going Concern Modules</a><a href="#/machine/build">Build your own business</a><a href={staticPage('demo/')}>Demo video</a></div>
-      <div><h4>Universities</h4><a href={staticPage('universities/')}>University edition</a>{onPlatform() && <a href="/sign-in">University sign-in</a>}</div>
+      <div><h4>Universities</h4><a href={staticPage('universities/')}>University edition</a>{onPlatform() && <a href="/sign-in">University sign-in</a>}<a href={`${staticPage('universities/')}#contact`}>Contact us</a></div>
       <div><h4>About</h4><a href="#/credits">Drawings and credits</a>{onPlatform() && <><a href="/legal/privacy">Privacy</a><a href="/legal/accessibility">Accessibility</a></>}</div>
     </div>
-    <div className="site-legal"><span>© {new Date().getFullYear()} Going Concern Lab</span><span>A teaching and analysis tool. Not financial advice or a forecast of any real company. Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div>
+    <div className="site-legal"><span>© {new Date().getFullYear()} {COMPANY.name}. Going Concern Lab is a product of {COMPANY.name}, registered in England and Wales (no. {COMPANY.number}), {COMPANY.address}.</span><span>A teaching and analysis tool. Not financial advice or a forecast of any real company. Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div>
   </footer>;
 }

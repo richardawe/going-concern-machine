@@ -16,8 +16,20 @@
 | `#/credits` | Every drawing on the site, with its source |
 | `universities/`, `demo/` | Static pages (`public/`), sharing the site's menu, theme and stylesheet |
 
-Every page has the same menu and footer (`src/site/SiteNav.tsx`). The theme (System, Light, Dark) is stored in
-`localStorage` as `gcm:theme` and shared by the app and the static pages (`public/site-static.js`).
+Every page has the same menu and footer (`src/site/SiteNav.tsx`). The footer names the company behind the product,
+3D7 Technologies Ltd (`COMPANY` in `SiteNav.tsx`, also used by the privacy notice), and links to the contact form.
+
+**Contact.** `/universities/#contact` has the public address (hello@goingconcernlab.com) and a form (name, email,
+university, role, message; `public/universities/contact.js`) that posts to `/api/contact`, which emails it to
+`CONTACT_EMAIL` with Reply-To set to the sender. It is limited to 5 messages an hour per visitor.
+
+**Search and link previews.** `/robots.txt` and `/sitemap.xml` are served by `server/site.ts`: only the public host is
+indexed, and university portals and the console answer `Disallow: /`. Every page has a title, description, Open Graph
+and Twitter card tags with `public/og-image.png` (1200×630). The static pages carry their own; the app's pages share
+`index.html`, so the server rewrites the block between `<!--gcm:meta-->` markers for each path in `APP_PAGES`.
+
+The theme (System, Light, Dark) is stored in `localStorage` as `gcm:theme` and shared by the app and the static pages
+(`public/site-static.js`).
 
 ## Brand
 

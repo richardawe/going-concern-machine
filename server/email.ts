@@ -2,7 +2,7 @@ import type { Config } from './config';
 
 // Transactional email through Brevo's API. In development the message is printed; in tests it is kept in memory.
 
-export interface Mail { to: string; subject: string; text: string; html: string; tag: string }
+export interface Mail { to: string; subject: string; text: string; html: string; tag: string; replyTo?: { email: string; name?: string } }
 export interface Mailer { send(m: Mail): Promise<void>; outbox: Mail[] }
 
 const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -17,7 +17,7 @@ export function createMailer(c: Config): Mailer {
       const res = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: { 'api-key': c.BREVO_API_KEY!, 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ sender: { email: c.EMAIL_FROM, name: c.EMAIL_FROM_NAME }, to: [{ email: m.to }], subject: m.subject, textContent: m.text, htmlContent: m.html, tags: [m.tag] }),
+        body: JSON.stringify({ sender: { email: c.EMAIL_FROM, name: c.EMAIL_FROM_NAME }, to: [{ email: m.to }], ...(m.replyTo ? { replyTo: m.replyTo } : {}), subject: m.subject, textContent: m.text, htmlContent: m.html, tags: [m.tag] }),
         signal: AbortSignal.timeout(10_000),
       });
       if (!res.ok) throw new Error(`Brevo refused the email (${res.status}): ${(await res.text()).slice(0, 300)}`);
@@ -61,5 +61,14 @@ export function receiptMail(to: string, r: { course: string; code: string; when:
     to, tag: 'receipt', subject: `Handed in: ${r.course}`,
     text: `Your work for ${r.course} was handed in at ${r.when}${r.late ? ' (after the due date)' : ''}.\n\nVerification code: ${r.code}\n\nYour lecturer can see it now. Download the PDF at ${r.url}\n\n${footer}`,
     html: layout(`Handed in: ${r.course}`, [p(`Handed in at ${r.when}${r.late ? ', after the due date' : ''}. Your lecturer can see it now.`), p('Verification code'), big(r.code), button(r.url, 'Open your receipt')], footer),
+  };
+}
+export function contactMail(to: string, m: { name: string; email: string; university: string; role: string; message: string }): Mail {
+  const footer = 'Sent from the contact form on goingconcernlab.com/universities. Reply to this email to answer them.';
+  const rows: [string, string][] = [['Name', m.name], ['Email', m.email], ['University', m.university], ['Role', m.role]];
+  return {
+    to, tag: 'contact', replyTo: { email: m.email, name: m.name }, subject: `Pilot enquiry: ${m.university} (${m.name})`,
+    text: `${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\n${m.message}\n\n${footer}`,
+    html: layout(`Pilot enquiry from ${m.university}`, [...rows.map(([k, v]) => p(`${k}: ${v}`)), ...m.message.split(/\n{2,}/).map(p)], footer),
   };
 }

@@ -1,9 +1,22 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
+import { contactMail } from '../email';
 import { tenantOrigin } from '../hosts';
-import { domainMatches, emailDomain, fail, parse, type Deps } from '../http';
+import { domainMatches, emailDomain, fail, FREE_MAIL, parse, type Deps } from '../http';
 
-// Health, the context every page starts from, and "find your university" on the public site.
+// Health, the context every page starts from, "find your university" and the contact form on the public site.
+
+const line = (label: string, max: number) => z.string({ required_error: `Enter your ${label}.` }).trim().min(1, `Enter your ${label}.`).max(max, `Keep your ${label} under ${max} characters.`)
+  .transform(s => s.replace(/\s+/g, ' '));
+const Contact = z.object({
+  name: line('name', 120),
+  email: z.string({ required_error: 'Enter your email address, so we can reply.' }).trim().toLowerCase().email('Enter your email address, so we can reply.').max(254),
+  university: line('university', 200),
+  role: line('role', 120),
+  message: z.string({ required_error: 'Write a short message.' }).trim().min(10, 'Write a short message: at least a sentence.').max(4000, 'Keep the message under 4,000 characters.'),
+  website: z.string().optional(), // a field people never see: only bots fill it in
+});
+const CONTACT_PER_IP_HOUR = 5;
 
 export const publicRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
   const started = Date.now();
@@ -37,7 +50,23 @@ export const publicRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
       `select td.domain, td.include_subdomains, t.slug, t.name, t.status from tenant_domains td join tenants t on t.id = td.tenant_id
         where td.domain = $1 or $1 like '%.' || td.domain`, [domain]));
     const hit = rules.filter(r => domainMatches(domain, r) && (r.status === 'active' || r.status === 'trial')).sort((a, b) => b.domain.length - a.domain.length)[0];
+    if (!hit && FREE_MAIL.has(domain)) return fail(400, `Sign in with your university email address. Personal addresses such as ${domain} can’t be used.`);
     if (!hit) return fail(404, `No university on Going Concern Lab uses ${domain} yet. Check the address, or ask your lecturer for your university's link.`);
     return { name: hit.name, url: `${tenantOrigin(hit.slug, d.config.BASE_DOMAIN, d.config.SECURE_COOKIES, d.config.SECURE_COOKIES ? undefined : d.config.PORT)}/sign-in?email=${encodeURIComponent(email)}` };
+  });
+
+  // The contact form on /universities/. Sent by email to CONTACT_EMAIL, with Reply-To set to the sender.
+  const recent = new Map<string, number[]>();
+  app.post('/api/contact', async req => {
+    if (req.site.kind !== 'public') return fail(404, 'Not found.');
+    const now = Date.now(), times = (recent.get(req.clientIp) ?? []).filter(t => now - t < 3_600_000);
+    if (times.length >= CONTACT_PER_IP_HOUR) return fail(429, `You’ve sent several messages. Wait a while, or email us at ${d.config.CONTACT_EMAIL}.`);
+    const m = parse(Contact, req.body);
+    if (m.website) return { sent: true };
+    times.push(now); recent.set(req.clientIp, times);
+    if (recent.size > 10_000) recent.clear();
+    try { await d.mailer.send(contactMail(d.config.CONTACT_EMAIL, m)); }
+    catch (err) { req.log.error(err); return fail(502, `Your message couldn’t be sent just now. Email us at ${d.config.CONTACT_EMAIL} instead.`); }
+    return { sent: true };
   });
 };

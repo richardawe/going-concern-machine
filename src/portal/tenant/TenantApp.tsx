@@ -37,7 +37,8 @@ export default function TenantApp({ ctx, reload }: { ctx: Context; reload: () =>
 
   if (!t.open) return shell([], <Notice kind="warn">{t.name}’s access to Going Concern Lab is paused. If you think this is a mistake, contact your university’s administrator.</Notice>);
   if (!me) return shell([], <SignIn title={<><span className="crest big" aria-hidden="true">{initials}</span><h1>{t.name}</h1><p className="muted">Strategic finance modules</p></>}
-    emailLabel={`Your ${t.name} email`} placeholder={t.domains.map(d => `name@${d.domain}`).slice(0, 2).join(' or ')}
+    intro={<p className="muted">Use your {t.name} email address ({t.domains.map(d => `@${d.domain}`).slice(0, 3).join(', ')}). Personal addresses such as Gmail or Outlook can’t be used.</p>}
+    emailLabel={`Your ${t.name} email address`} placeholder={t.domains.map(d => `name@${d.domain}`).slice(0, 2).join(' or ')}
     initialEmail={query('email') ?? ''} codeUrl="/api/auth/code" verifyUrl="/api/auth/verify" onSignedIn={() => { reload(); if (path === '/sign-in') navigate('/', { replace: true }); }}
     footer={<p className="small muted center">At a different university? <a href={`${location.protocol}//${ctx.baseDomain}${location.port ? `:${location.port}` : ''}/sign-in`}>Find your university</a></p>} />);
   if (!me.name.trim()) return shell([], <div className="narrow"><Profile me={me} university={t.name} onSaved={reload} welcome /></div>);

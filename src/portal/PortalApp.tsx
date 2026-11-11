@@ -44,9 +44,9 @@ function FindUniversity() {
   };
   return <Shell lab brand="Sign in" crest="G" nav={[{ to: '/', label: 'Home', active: false }, { to: '/universities/', label: 'For universities', active: false }]}>
     <section className="signin">
-      <div className="signin-head"><h1>Sign in</h1><p className="muted">Enter your university email and we’ll take you to your university’s Going Concern Lab.</p></div>
+      <div className="signin-head"><h1>Sign in</h1><p className="muted">Enter your university email address and we’ll take you to your university’s Going Concern Lab. A university email is required: personal addresses such as Gmail or Outlook can’t be used.</p></div>
       <form className="stack" onSubmit={e => { e.preventDefault(); void go(); }}>
-        <div className="field"><label htmlFor="find-email">University email</label><input id="find-email" type="email" autoComplete="email" autoFocus value={email} onChange={e => setEmail(e.target.value)} placeholder="name@university.ac.uk" /></div>
+        <div className="field"><label htmlFor="find-email">University email address</label><input id="find-email" type="email" autoComplete="email" autoFocus value={email} onChange={e => setEmail(e.target.value)} placeholder="name@university.ac.uk" /></div>
         <button className="btn primary block" disabled={!email.includes('@')}>Continue</button>
       </form>
       {found && <Notice kind="good">Found {found.name}. Taking you there…</Notice>}
