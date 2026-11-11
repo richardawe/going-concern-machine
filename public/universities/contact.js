@@ -16,10 +16,10 @@
       fetch('/api/contact', { method: 'POST', headers: { 'content-type': 'application/json', 'x-gcm': '1' }, body: JSON.stringify(data) })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (r) {
-          if (r.ok) { form.reset(); say('Thanks. Your message is on its way, and we’ll reply within two working days.', 'good'); }
-          else say(r.j.error || 'Your message couldn’t be sent. Email us at hello@goingconcernlab.com instead.', 'bad');
+          if (r.ok) { form.reset(); say('Thanks. Your message is on its way, and we’ll reply soon.', 'good'); }
+          else say(r.j.error || 'Your message couldn’t be sent. Email us at Richard.Awe@3d7tech.com instead.', 'bad');
         })
-        .catch(function () { say('Your message couldn’t be sent. Email us at hello@goingconcernlab.com instead.', 'bad'); })
+        .catch(function () { say('Your message couldn’t be sent. Email us at Richard.Awe@3d7tech.com instead.', 'bad'); })
         .then(function () { button.disabled = false; });
     });
   });

@@ -40,7 +40,7 @@ export function Shell({ brand, place, crest, color, nav, who, role, children, on
       </div>
     </header>
     <main className="course-main">{children}</main>
-    <footer className="course-foot portal-foot"><span>{!lab && place ? `${place} · ` : ''}Going Concern Lab, a product of {COMPANY.name}</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a> · <a href={`mailto:${COMPANY.email}`}>Contact</a></span></footer>
+    <footer className="course-foot portal-foot"><span>{!lab && place ? `${place} · ` : ''}Going Concern Lab is a product of {COMPANY.name} (company no. {COMPANY.number})</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a> · <a href={`mailto:${COMPANY.email}`}>Contact</a></span></footer>
   </div>;
 }
 

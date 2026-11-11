@@ -55,7 +55,7 @@ test('the contact form emails us, with Reply-To set to the sender', async () => 
   assert.equal(r.status, 200, JSON.stringify(r.json));
   const mail = h.mailer.outbox.at(-1)!;
   assert.equal(h.mailer.outbox.length, before + 1);
-  assert.equal(mail.to, 'hello@goingconcernlab.com'); assert.equal(mail.tag, 'contact');
+  assert.equal(mail.to, 'Richard.Awe@3d7tech.com'); assert.equal(mail.tag, 'contact');
   assert.deepEqual(mail.replyTo, { email: 'ada@example.ac.uk', name: 'Ada Lovelace' });
   assert.match(mail.text, /University of Example/); assert.match(mail.text, /MBA cohort/);
 

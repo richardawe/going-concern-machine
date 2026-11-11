@@ -36,9 +36,7 @@ Adding a university never needs a DNS change: the wildcard record and certificat
    redirect to `concat("https://goingconcernlab.com", http.request.uri.path)` with status **301** and *Preserve query
    string* on. The app also redirects www (`server/app.ts`), but doing it at Cloudflare means a www request never
    reaches cPanel, whose own error pages (such as `/406.shtml`) can otherwise answer first.
-7. **Email → contact address**: the site shows `hello@goingconcernlab.com` and the contact form sends there, so it must
-   be delivered. The domain's MX records point at the registrar's email forwarding: forward `hello@` to a mailbox you read.
-8. **Speed → Optimization**: turn **Rocket Loader off**. **Scrape Shield**: turn **Email Address Obfuscation off**. Both inject scripts that the site's security policy blocks.
+7. **Speed → Optimization**: turn **Rocket Loader off**. **Scrape Shield**: turn **Email Address Obfuscation off**. Both inject scripts that the site's security policy blocks.
 
 ## 2. The server (WHM as root)
 

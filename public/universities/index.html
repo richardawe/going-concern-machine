@@ -82,11 +82,6 @@ tr:last-child td{border-bottom:0}
 .pdfs img{box-shadow:0 1px 2px #0000001a,0 8px 20px -10px #00000040}
 .note{font-size:14.5px;color:var(--muted)}
 .foot{margin-top:72px;padding-top:16px;border-top:1px solid var(--rule);font:12px var(--mono);color:var(--muted)}
-.pilot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
-.pilot div{background:var(--card);border-radius:12px;box-shadow:var(--lift);padding:16px 18px;display:grid;gap:4px;align-content:start}
-.pilot dt{font:500 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.pilot dd{margin:0;font-size:15px}
-.pilot dd b{color:var(--ink);font-weight:600}
 .contact{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:20px;align-items:start;scroll-margin-top:24px}
 .contact form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .contact label{display:grid;gap:6px;font-size:14px;font-weight:500;color:var(--ink)}
@@ -101,8 +96,8 @@ tr:last-child td{border-bottom:0}
 .form-status.good{color:var(--good)}
 .form-status.bad{color:#c02f1f}
 .mail{font:500 17px var(--mono);color:var(--accent);word-break:break-all}
-@media (max-width:960px){.hero,.two,.gallery,.contact{grid-template-columns:minmax(0,1fr)}.pilot{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.pilot,.contact form{grid-template-columns:minmax(0,1fr)}.steps{grid-template-columns:minmax(0,1fr)}.pdfs{grid-template-columns:minmax(0,1fr)}section{padding-top:48px}}
+@media (max-width:960px){.hero,.two,.gallery,.contact{grid-template-columns:minmax(0,1fr)}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.contact form{grid-template-columns:minmax(0,1fr)}.steps{grid-template-columns:minmax(0,1fr)}.pdfs{grid-template-columns:minmax(0,1fr)}section{padding-top:48px}}
 </style>
 </head>
 <body>
@@ -198,26 +193,12 @@ tr:last-child td{border-bottom:0}
     </div>
   </section>
 
-  <section id="pilot">
-    <span class="eyebrow">First-year pilot</span>
-    <h2>What the pilot includes</h2>
-    <dl class="pilot">
-      <div><dt>Length</dt><dd><b>One academic year</b>, so you can run it on a live course and judge it on real hand-ins.</dd></div>
-      <div><dt>Cohort size</dt><dd><b>One programme cohort</b> of up to 150 students, with as many lecturers as teach it.</dd></div>
-      <div><dt>Modules</dt><dd><b>All six modules</b> and the CEO mode class tool, with grades, PDF hand-ins and the lecturer view.</dd></div>
-      <div><dt>Support</dt><dd><b>A setup call</b> with your lecturers, help for your IT team to allow our sign-in emails, and email support with a reply within one working day.</dd></div>
-      <div><dt>How to start</dt><dd><b>Send the form below.</b> We reply within two working days, agree the dates, and set up your university’s own site, where students sign in with their university email.</dd></div>
-      <div><dt>Price</dt><dd><b>On request.</b> One annual licence covers every student in the programme, and the pilot terms are agreed for the first year.</dd></div>
-    </dl>
-  </section>
-
   <section class="contact" id="contact">
     <div class="card">
-      <span class="eyebrow">Licensing and pilots</span>
+      <span class="eyebrow">Pilots and licensing</span>
       <h3>Ask us about pricing and the first-year pilot terms</h3>
-      <p>Our pilot is running now with a number of universities. If your university would like to take part, email <a href="mailto:Richard.Awe@3d7tech.com">Richard.Awe@3d7tech.com</a>.</p>
-      <p>Annual licence covering every student in the programme, with the lecturer view included. Tell us about your programme and we’ll send the pilot terms and a price.</p>
-      <p>Email us at <a class="mail" href="mailto:hello@goingconcernlab.com">hello@goingconcernlab.com</a>, or use the form.</p>
+      <p><b>Pilot:</b> one module for one cohort for one term, free of charge, with set-up and support from us. After that, one annual licence covers the whole cohort. Ask us for pricing.</p>
+      <p>Email <a class="mail" href="mailto:Richard.Awe@3d7tech.com">Richard.Awe@3d7tech.com</a>, or use the form.</p>
       <p class="note">Already using Going Concern Lab? <a href="/sign-in" data-platform>Sign in with your university email</a>.</p>
     </div>
     <div class="card" data-platform>
@@ -238,8 +219,8 @@ tr:last-child td{border-bottom:0}
 <footer class="site-footer"><div class="site-footer-cols">
   <div><a class="site-logo" href="../#/"><i aria-hidden="true"></i>Going Concern Lab</a><p>A business is a machine that must keep capturing value to keep running. We make that machine visible.</p></div>
   <div><h4>Product</h4><a href="../#/machine">Company machine</a><a href="../#/ceo">CEO mode</a><a href="../#/live">Live 3D company</a><a href="../universities/">Going Concern Modules</a><a href="../#/machine/build">Build your own business</a><a href="../demo/">Demo video</a></div>
-  <div><h4>Universities</h4><a href="./">University edition</a><a href="/sign-in" data-platform>University sign-in</a><a href="#contact">Contact us</a></div>
+  <div><h4>Universities</h4><a href="./">University edition</a><a href="/sign-in" data-platform>University sign-in</a><a href="#contact">Contact form</a><a href="mailto:Richard.Awe@3d7tech.com">Richard.Awe@3d7tech.com</a></div>
   <div><h4>About</h4><a href="../#/credits">Drawings and credits</a><a href="/legal/privacy" data-platform>Privacy</a><a href="/legal/accessibility" data-platform>Accessibility</a></div>
-</div><div class="site-legal"><span>© 2026 3D7 Technologies Ltd. Going Concern Lab is a product of 3D7 Technologies Ltd, registered in England and Wales (no. 09785441), 02 Universal Square, Devonshire Street North, Manchester M12 6JH.</span><span>Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div></footer>
+</div><div class="site-legal"><span>Going Concern Lab is a product of 3D7 Technologies Ltd (company no. 09785441). © 2026 3D7 Technologies Ltd.</span><span>Drawings: Historic American Engineering Record and Diderot's <i>Encyclopédie</i>, public domain.</span></div></footer>
 </body>
 </html>

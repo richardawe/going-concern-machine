@@ -19,7 +19,7 @@
 Every page has the same menu and footer (`src/site/SiteNav.tsx`). The footer names the company behind the product,
 3D7 Technologies Ltd (`COMPANY` in `SiteNav.tsx`, also used by the privacy notice), and links to the contact form.
 
-**Contact.** `/universities/#contact` has the public address (hello@goingconcernlab.com) and a form (name, email,
+**Contact.** `/universities/#contact` has the public address (Richard.Awe@3d7tech.com) and a form (name, email,
 university, role, message; `public/universities/contact.js`) that posts to `/api/contact`, which emails it to
 `CONTACT_EMAIL` with Reply-To set to the sender. It is limited to 5 messages an hour per visitor.
 
