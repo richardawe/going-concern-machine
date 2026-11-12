@@ -141,8 +141,12 @@ email-setup)
   curl -fsS "http://127.0.0.1:${PORT:-3100}/healthz" >/dev/null 2>&1 && pass "The app restarted and sends from [email] by SMTP" || fail "The app isn't healthy after the switch: run email-use-brevo, then recent-errors"
   echo "── DNS records for $D (add in Cloudflare → DNS, all DNS only)"
   echo "This server's address: $(curl -fsS -m 10 https://api.ipify.org 2>/dev/null || hostname -I | awk '{print $1}')   host: $HOST"
-  uapi --output=json EmailAuth validate_current_spfs domain="$D" 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{for(const r of JSON.parse(s).result.data)console.log('SPF  (TXT @) expected by cPanel: '+r.expected_state.record)}catch{console.log('SPF: see cPanel → Email Deliverability')}})"
-  uapi --output=json EmailAuth validate_current_dkims domain="$D" 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{for(const r of JSON.parse(s).result.data)console.log('DKIM (TXT default._domainkey): '+r.expected_state.record)}catch{console.log('DKIM: see cPanel → Email Deliverability')}})";;
+  echo "Run the email-dns task for the exact SPF and DKIM records.";;
+email-dns)
+  # The DNS records cPanel expects for sending from this server (public information).
+  D=${BASE_DOMAIN:?BASE_DOMAIN is not set}
+  echo "── SPF records cPanel expects for $D"; uapi --output=json EmailAuth validate_current_spfs domain="$D" 2>&1 | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const m=[...new Set(s.replace(/\\\\/g,'').match(/v=(DKIM1|spf1)[^\"]*/g)||[])];console.log(m.length?m.join('\\n'):'(none found) '+s.slice(0,600))})"
+  echo "── DKIM record for default._domainkey.$D"; uapi --output=json EmailAuth validate_current_dkims domain="$D" 2>&1 | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const m=[...new Set(s.replace(/\\\\/g,'').match(/v=(DKIM1|spf1)[^\"]*/g)||[])];console.log(m.length?m.join('\\n'):'(none found) '+s.slice(0,600))})";;
 email-use-brevo)
   # Switch back to Brevo (once it has activated the account). The SMTP settings stay in .env for next time.
   ENVF="$ENV"; [ -n "${EMAIL_FROM_BREVO:-}" ] || { echo "✗ No saved Brevo sender (EMAIL_FROM_BREVO) in .env."; exit 1; }

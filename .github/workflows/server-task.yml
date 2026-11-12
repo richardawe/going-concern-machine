@@ -21,6 +21,7 @@ on:
           - recent-errors
           - email-setup
           - email-test
+          - email-dns
           - email-use-brevo
           - rollback
       email:
