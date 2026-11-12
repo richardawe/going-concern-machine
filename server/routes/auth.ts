@@ -40,7 +40,8 @@ export const authRoutes: FastifyPluginAsync<Deps> = async (app, d) => {
       await q.exec(`insert into login_codes (tenant_id, email, code_hash, ip, expires_at) values ($1, $2, $3, $4, now() + interval '${CODE_TTL_MIN} minutes')`,
         [tenant.id, email, hmac(d.config.SESSION_SECRET, `${tenant.id}:${email}:${code}`), req.clientIp]);
     });
-    await d.mailer.send(codeMail(email, code, tenant.name));
+    try { await d.mailer.send(codeMail(email, code, tenant.name)); }
+    catch (err) { req.log.error(err); return fail(503, 'We couldn’t send your sign-in email just now. Try again in a few minutes. If it keeps happening, tell your lecturer.'); }
     return { sent: true, minutes: CODE_TTL_MIN };
   });
 

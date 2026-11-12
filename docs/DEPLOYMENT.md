@@ -99,6 +99,26 @@ Adding a university never needs a DNS change: the wildcard record and certificat
 4. SMTP & API → API Keys → create a key for the server, and put it in `BREVO_API_KEY` .
 5. Set `EMAIL_FROM=sign-in@mail.goingconcernlab.com`. Give each university's IT team this address to allow (the university admin's Settings page shows the note to send).
 
+### 3a. Sending through another mail server (SMTP)
+
+If Brevo can't send (for example while it reviews the account), the app can send through any SMTP server. Set these
+in `shared/.env`, then reload (`pm2 startOrReload ~/app/current/ecosystem.config.cjs --update-env`, or approve a
+deploy, which does the same):
+
+```
+EMAIL_MODE=smtp
+SMTP_HOST=<the mail server, e.g. the cPanel server's hostname from cPanel → Email Accounts → Connect Devices>
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=<the mailbox, e.g. sign-in@goingconcernlab.com>
+SMTP_PASS=<its password>
+EMAIL_FROM=<the same mailbox>
+```
+
+The sending domain must authorise the server: in cPanel → **Email Deliverability**, add the SPF and DKIM records it
+shows to Cloudflare DNS (DNS only). Give universities' IT teams the new `EMAIL_FROM` address to allow. To go back to
+Brevo, set `EMAIL_MODE=brevo` and `EMAIL_FROM=sign-in@mail.goingconcernlab.com` again.
+
 ## 4. GitHub (CI/CD)
 
 **Settings → Secrets and variables → Actions.**

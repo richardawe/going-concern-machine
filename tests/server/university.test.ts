@@ -204,3 +204,12 @@ test('pages: the app shell knows which kind of host it is on, with security head
   const bare = await call(h.app, { url: '/universities', host: BASE });
   assert.equal(bare.status, 301); assert.equal(bare.res.headers.location, '/universities/');
 });
+
+test('sign-in: when the email can’t be sent, the student is told so plainly', async () => {
+  const send = h.mailer.send;
+  h.mailer.send = async () => { throw new Error('Brevo refused the email (403)'); };
+  try {
+    const r = await call(h.app, { url: '/api/auth/code', host: N, body: { email: 'z.mail@northgate.ac.uk' } });
+    assert.equal(r.status, 503); assert.match(r.json.error, /couldn’t send your sign-in email/);
+  } finally { h.mailer.send = send; }
+});

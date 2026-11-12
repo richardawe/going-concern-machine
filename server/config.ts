@@ -11,9 +11,16 @@ const schema = z.object({
   DATABASE_URL: z.string().min(1),
   /** Random, at least 32 characters. Keys the hashes of sign-in codes and session tokens. */
   SESSION_SECRET: z.string().min(32),
-  /** 'brevo' sends real mail; 'log' prints it (development); 'memory' keeps it for tests. */
-  EMAIL_MODE: z.enum(['brevo', 'log', 'memory']).default('log'),
+  /** 'brevo' sends through Brevo's API; 'smtp' through any SMTP server (the host's own mail server, Microsoft 365,
+   *  another provider); 'log' prints mail (development); 'memory' keeps it for tests. */
+  EMAIL_MODE: z.enum(['brevo', 'smtp', 'log', 'memory']).default('log'),
   BREVO_API_KEY: z.string().optional(),
+  SMTP_HOST: z.string().optional(),
+  /** 587 with STARTTLS (the default), or 465 with SMTP_SECURE=true. */
+  SMTP_PORT: z.coerce.number().int().default(587),
+  SMTP_SECURE: z.enum(['true', 'false']).default('false').transform(v => v === 'true'),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
   EMAIL_FROM: z.string().email().default('no-reply@example.com'),
   EMAIL_FROM_NAME: z.string().default('Going Concern Lab'),
   /** The public contact address: shown on the site, and where the universities page's contact form is sent. */
@@ -44,6 +51,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
   const c = parsed.data;
   if (c.EMAIL_MODE === 'brevo' && !c.BREVO_API_KEY) throw new Error('EMAIL_MODE=brevo needs BREVO_API_KEY.');
   if (c.NODE_ENV === 'production' && !c.SECURE_COOKIES) throw new Error('Production needs SECURE_COOKIES=true.');
-  if (c.NODE_ENV === 'production' && c.EMAIL_MODE !== 'brevo') throw new Error('Production needs EMAIL_MODE=brevo.');
+  if (c.EMAIL_MODE === 'smtp' && !c.SMTP_HOST) throw new Error('EMAIL_MODE=smtp needs SMTP_HOST (and usually SMTP_USER and SMTP_PASS).');
+  if (c.NODE_ENV === 'production' && c.EMAIL_MODE !== 'brevo' && c.EMAIL_MODE !== 'smtp') throw new Error('Production needs EMAIL_MODE=brevo or smtp.');
   return c;
 }

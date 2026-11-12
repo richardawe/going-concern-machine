@@ -91,3 +91,13 @@ test('the universities page invites universities to join the running pilot', () 
   assert.match(html, /Our pilot is running now with a number of universities\. If your university would like to take part, email <a href="mailto:Richard\.Awe@3d7tech\.com">/);
   assert.doesNotMatch(html, /free of charge/);
 });
+
+test('when the email service refuses, the contact form says so and points to the email address', async () => {
+  const send = h.mailer.send;
+  h.mailer.send = async () => { throw new Error('Brevo refused the email (403)'); };
+  try {
+    const r = await call(h.app, { url: '/api/contact', host: BASE, headers: { 'cf-connecting-ip': '203.0.113.9' }, body: { name: 'A', email: 'a@b.ac.uk', university: 'U', role: 'Lecturer', message: 'Hello there, a test.' } });
+    assert.ok([502, 429].includes(r.status), String(r.status));
+    if (r.status === 502) assert.match(r.json.error, /Richard\.Awe@3d7tech\.com/);
+  } finally { h.mailer.send = send; }
+});
