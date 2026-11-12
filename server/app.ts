@@ -24,7 +24,7 @@ import { pageHtml, robotsTxt, sitemapXml } from './site';
 // university's rows (see db.ts and the row-level security in migrations/001_init.sql).
 
 const CSP = [
-  "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", "font-src 'self' https://fonts.gstatic.com",
+  "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "font-src 'self'",
   "img-src 'self' data: blob:", "media-src 'self'", "connect-src 'self'", "worker-src 'self' blob:", "frame-ancestors 'none'", "base-uri 'self'",
   "form-action 'self'", "object-src 'none'",
 ].join('; ');

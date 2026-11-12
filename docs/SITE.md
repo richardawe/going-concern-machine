@@ -38,6 +38,12 @@ One name, **Going Concern Lab**, and one logo: the flywheel mark (`.site-logo` i
 crest and name, with Going Concern Lab beside them (`Shell` in `src/portal/ui.tsx`). Tool pages are headed by the
 tool's name under a GOING CONCERN LAB kicker. The theme switch is the same three icons everywhere.
 
+## Fonts
+
+Archivo, DM Sans, IBM Plex Mono and Libre Caslon Display (all SIL Open Font License, `public/fonts/OFL.txt`) are served
+from our own server, `public/fonts/fonts.css`, linked by `index.html` and the static pages. Nothing loads from Google,
+so the privacy notice doesn't list it and the security policy allows fonts from `'self'` only.
+
 ## Drawings
 
 The artwork is real measured drawings from the Historic American Engineering Record and a 1765 *Encyclopédie* plate,

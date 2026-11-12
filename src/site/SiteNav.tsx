@@ -9,7 +9,7 @@ const base = import.meta.env.BASE_URL;
 export const staticPage = (path: string) => `${base}${path}`;
 
 /** The company behind Going Concern Lab, as registered at Companies House. Shown in footers and the privacy notice. */
-export const COMPANY = { name: '3D7 Technologies Ltd', number: '09785441', address: '02 Universal Square, Devonshire Street North, Manchester M12 6JH', email: 'Richard.Awe@3d7tech.com' };
+export const COMPANY = { name: '3D7 Technologies Ltd', number: '09785441', address: '02 Universal Square, Devonshire Street North, Manchester, England, M12 6JH', email: 'Richard.Awe@3d7tech.com' };
 
 export type Section = 'home' | 'machine' | 'ceo' | 'live' | 'course' | 'universities' | 'credits';
 const links: [Section, string, string][] = [
