@@ -101,8 +101,8 @@ Adding a university never needs a DNS change: the wildcard record and certificat
 
 ### 3a. Sending through another mail server (SMTP)
 
-If Brevo can't send (for example while it reviews the account), the app can send through any SMTP server. Set these
-in `shared/.env`, then reload (`pm2 startOrReload ~/app/current/ecosystem.config.cjs --update-env`, or approve a
+If Brevo can't send (for example while it reviews the account), the app can send through any SMTP server. The **email-setup** server task does all of
+this for a mailbox on the server itself. By hand: set these in `shared/.env`, then reload (`pm2 startOrReload ~/app/current/ecosystem.config.cjs --update-env`, or approve a
 deploy, which does the same):
 
 ```
@@ -158,6 +158,9 @@ Without staging, take two extra precautions:
 | `add-admin`, `list-admins`, `reset-2fa` | Platform console accounts |
 | `install-cron` | Installs the nightly backup and maintenance jobs (section 6) |
 | `backup-now`, `maintenance-dry-run`, `recent-errors`, `rollback` | As named |
+| `email-setup` | Creates the `sign-in@<domain>` mailbox on this server (password generated and written only to `.env`), tests its login, switches the app to send by SMTP, and prints the SPF and DKIM records to add in Cloudflare |
+| `email-test` | Sends one test email to the address given, the way the app is set to send |
+| `email-use-brevo` | Switches back to Brevo, with the sender saved before `email-setup` |
 
 The repository is public, so Actions logs are public too. These tasks print no secrets, mask email addresses, and the server's logs leave out query strings.
 

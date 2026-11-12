@@ -32,7 +32,7 @@ preflight)
       [ -n "${!k:-}" ] && pass "$k is set" || fail "$k is empty"; done
     [ "${#SESSION_SECRET}" -ge 32 ] 2>/dev/null && pass "SESSION_SECRET is long enough" || fail "SESSION_SECRET must be at least 32 characters: openssl rand -base64 48"
     [ "${SECURE_COOKIES:-true}" = true ] && pass "SECURE_COOKIES=true" || fail "SECURE_COOKIES must be true in production"
-    [ "${EMAIL_MODE:-}" = brevo ] && pass "EMAIL_MODE=brevo" || fail "EMAIL_MODE must be brevo in production"
+    [[ "${EMAIL_MODE:-}" =~ ^(brevo|smtp)$ ]] && pass "EMAIL_MODE=$EMAIL_MODE" || fail "EMAIL_MODE must be brevo or smtp in production"
   fi
   echo "── Database"
   if [ -n "${DATABASE_URL:-}" ]; then
@@ -110,6 +110,60 @@ install-cron)
   echo "Installed:"; crontab -l | grep 'gcm-' | sed 's/^/  /';;
 maintenance-dry-run)
   need_release; node_env dist-server/maintenance.js --dry-run | mask;;
+email-setup)
+  # Send through a mailbox on this server instead of Brevo: sign-in@<domain>, made with cPanel's uapi. Its password
+  # is generated here and written only to .env, never printed. Then the login is tested, the app switched over and
+  # reloaded, and the DNS records the domain needs are printed (they are public).
+  need_release
+  D=${BASE_DOMAIN:?BASE_DOMAIN is not set}; BOX="sign-in@$D"; HOST=$(hostname -f)
+  command -v uapi >/dev/null || { echo "✗ cPanel's uapi isn't available to $(whoami)."; exit 1; }
+  grep -q '"brevo", "smtp"' current/dist-server/main.js || { echo "✗ The deployed release can't send by SMTP yet. Deploy the release that adds it first."; exit 1; }
+  setenv() { if grep -q "^$1=" "$ENV"; then sed -i "s|^$1=.*|$1=$2|" "$ENV"; else printf '%s=%s\n' "$1" "$2" >> "$ENV"; fi; }
+  cp -p "$ENV" "$ENV.before-email-setup-$(date -u +%Y%m%d%H%M%S)"
+  PASS=$(openssl rand -base64 33 | tr -dc 'A-Za-z0-9' | head -c 32)
+  if uapi --output=json Email list_pops regex="^sign-in@" 2>/dev/null | grep -q "\"$BOX\""; then
+    uapi --output=json Email passwd_pop email=sign-in domain="$D" password="$PASS" | grep -q '"status":1' && pass "Mailbox [email] exists; gave it a new password" || { fail "Couldn't set the mailbox password"; exit 1; }
+  else
+    uapi --output=json Email add_pop email=sign-in domain="$D" password="$PASS" quota=250 | grep -q '"status":1' && pass "Created the mailbox [email]" || { fail "Couldn't create the mailbox (uapi Email add_pop)"; exit 1; }
+  fi
+  uapi --output=json EmailAuth enable_dkim domain="$D" >/dev/null 2>&1 || true
+  # Remember Brevo's sender so email-use-brevo can switch back.
+  [ "${EMAIL_MODE:-}" = brevo ] && setenv EMAIL_FROM_BREVO "${EMAIL_FROM:-}"
+  setenv SMTP_HOST "$HOST"; setenv SMTP_PORT 465; setenv SMTP_SECURE true; setenv SMTP_USER "$BOX"; setenv SMTP_PASS "$PASS"
+  chmod 600 "$ENV"
+  echo "── Testing the login on $HOST:465"
+  if (cd current && SMTP_PASS="$PASS" node -e "require('nodemailer').createTransport({host:'$HOST',port:465,secure:true,auth:{user:'$BOX',pass:process.env.SMTP_PASS},connectionTimeout:10000}).verify().then(()=>process.exit(0),e=>{console.error(String(e.message).slice(0,200));process.exit(1)})" 2>&1 | mask); then
+    pass "The mailbox accepts the login"
+  else fail "The mailbox login failed; the app still sends with ${EMAIL_MODE:-its old setting}"; exit 1; fi
+  setenv EMAIL_FROM "$BOX"; setenv EMAIL_MODE smtp
+  pm2 startOrReload current/ecosystem.config.cjs --update-env >/dev/null && pm2 save >/dev/null
+  for i in $(seq 1 20); do curl -fsS "http://127.0.0.1:${PORT:-3100}/healthz" >/dev/null 2>&1 && break; sleep 1; done
+  curl -fsS "http://127.0.0.1:${PORT:-3100}/healthz" >/dev/null 2>&1 && pass "The app restarted and sends from [email] by SMTP" || fail "The app isn't healthy after the switch: run email-use-brevo, then recent-errors"
+  echo "── DNS records for $D (add in Cloudflare → DNS, all DNS only)"
+  echo "This server's address: $(curl -fsS -m 10 https://api.ipify.org 2>/dev/null || hostname -I | awk '{print $1}')   host: $HOST"
+  uapi --output=json EmailAuth validate_current_spfs domain="$D" 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{for(const r of JSON.parse(s).result.data)console.log('SPF  (TXT @) expected by cPanel: '+r.expected_state.record)}catch{console.log('SPF: see cPanel → Email Deliverability')}})"
+  uapi --output=json EmailAuth validate_current_dkims domain="$D" 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{for(const r of JSON.parse(s).result.data)console.log('DKIM (TXT default._domainkey): '+r.expected_state.record)}catch{console.log('DKIM: see cPanel → Email Deliverability')}})";;
+email-use-brevo)
+  # Switch back to Brevo (once it has activated the account). The SMTP settings stay in .env for next time.
+  ENVF="$ENV"; [ -n "${EMAIL_FROM_BREVO:-}" ] || { echo "✗ No saved Brevo sender (EMAIL_FROM_BREVO) in .env."; exit 1; }
+  cp -p "$ENVF" "$ENVF.before-brevo-$(date -u +%Y%m%d%H%M%S)"
+  sed -i "s|^EMAIL_MODE=.*|EMAIL_MODE=brevo|; s|^EMAIL_FROM=.*|EMAIL_FROM=$EMAIL_FROM_BREVO|" "$ENVF"
+  need_release; pm2 startOrReload current/ecosystem.config.cjs --update-env >/dev/null && pm2 save >/dev/null
+  for i in $(seq 1 20); do curl -fsS "http://127.0.0.1:${PORT:-3100}/healthz" >/dev/null 2>&1 && break; sleep 1; done
+  curl -fsS "http://127.0.0.1:${PORT:-3100}/healthz" >/dev/null 2>&1 && pass "The app sends through Brevo again" || fail "The app isn't healthy: run recent-errors";;
+email-test)
+  # Send one test sign-in style email to the address given, through whatever the app is set to use.
+  need_release
+  [ -n "$EMAIL" ] || { echo "✗ Enter the address to send the test to."; exit 1; }
+  out=$(cd current && TO="$EMAIL" node --env-file="$ENV" -e "
+    const nm = require('nodemailer'); const e = process.env;
+    const send = e.EMAIL_MODE === 'smtp'
+      ? nm.createTransport({ host: e.SMTP_HOST, port: +e.SMTP_PORT || 465, secure: e.SMTP_SECURE !== 'false', auth: { user: e.SMTP_USER, pass: e.SMTP_PASS } })
+          .sendMail({ from: { name: e.EMAIL_FROM_NAME || 'Going Concern Lab', address: e.EMAIL_FROM }, to: process.env.TO, subject: 'Going Concern Lab test email', text: 'This is a test from the Going Concern Lab server. Sign-in codes will come from this address.' })
+      : fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: { 'api-key': e.BREVO_API_KEY, 'content-type': 'application/json' }, body: JSON.stringify({ sender: { email: e.EMAIL_FROM, name: e.EMAIL_FROM_NAME || 'Going Concern Lab' }, to: [{ email: process.env.TO }], subject: 'Going Concern Lab test email', textContent: 'This is a test from the Going Concern Lab server.' }) }).then(async r => { if (!r.ok) throw new Error('Brevo ' + r.status + ': ' + (await r.text()).slice(0, 200)); });
+    send.then(() => console.log('sent via ' + e.EMAIL_MODE), err => { console.log('failed via ' + e.EMAIL_MODE + ': ' + String(err.message).slice(0, 300)); process.exit(1); });
+  " 2>&1); rc=$?
+  echo "$out" | mask; [ $rc = 0 ] && pass "Test email sent to [email]. Check the inbox and the junk folder." || fail "The test email wasn't sent";;
 rollback)
   need_release; bash current/deploy/rollback.sh "$APP" ${RELEASE:+"$RELEASE"};;
 recent-errors)
