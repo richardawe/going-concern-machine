@@ -19,9 +19,12 @@ on:
           - backup-now
           - maintenance-dry-run
           - recent-errors
+          - email-setup
+          - email-test
+          - email-use-brevo
           - rollback
       email:
-        description: Email (add-admin, reset-2fa)
+        description: Email (add-admin, reset-2fa, email-test)
         required: false
         default: ''
       name:
@@ -53,7 +56,7 @@ jobs:
           RELEASE: ${{ inputs.release }}
         run: |
           [ -n "$EMAIL" ] && echo "::add-mask::$EMAIL"
-          case "$TASK" in add-admin|reset-2fa) [[ "$EMAIL" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]] || { echo "Enter a valid email for $TASK."; exit 1; };; esac
+          case "$TASK" in add-admin|reset-2fa|email-test) [[ "$EMAIL" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]] || { echo "Enter a valid email for $TASK."; exit 1; };; esac
           [[ "$NAME" =~ ^[[:alnum:][:space:].\'()-]*$ ]] || { echo "Use letters, spaces and . ' ( ) - only in the name."; exit 1; }
           [[ "$RELEASE" =~ ^[A-Za-z0-9._-]*$ ]] || { echo "Invalid release id."; exit 1; }
       - name: Run on the server

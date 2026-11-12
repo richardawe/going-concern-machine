@@ -1,6 +1,8 @@
+import nodemailer from 'nodemailer';
 import type { Config } from './config';
 
-// Transactional email through Brevo's API. In development the message is printed; in tests it is kept in memory.
+// Transactional email through Brevo's API or any SMTP server. In development the message is printed; in tests it is
+// kept in memory.
 
 export interface Mail { to: string; subject: string; text: string; html: string; tag: string; replyTo?: { email: string; name?: string } }
 export interface Mailer { send(m: Mail): Promise<void>; outbox: Mail[] }
@@ -9,11 +11,26 @@ const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt
 
 export function createMailer(c: Config): Mailer {
   const outbox: Mail[] = [];
+  const smtp = c.EMAIL_MODE === 'smtp' ? nodemailer.createTransport({
+    host: c.SMTP_HOST, port: c.SMTP_PORT, secure: c.SMTP_SECURE,
+    // A remote server must upgrade to TLS before the password is sent; the host's own relay on localhost needn't.
+    requireTLS: !c.SMTP_SECURE && !/^(localhost|127\.0\.0\.1|::1)$/.test(c.SMTP_HOST ?? ''),
+    auth: c.SMTP_USER ? { user: c.SMTP_USER, pass: c.SMTP_PASS ?? '' } : undefined,
+    connectionTimeout: 10_000, greetingTimeout: 10_000, socketTimeout: 20_000,
+  }) : null;
   return {
     outbox,
     async send(m) {
       if (c.EMAIL_MODE === 'memory') { outbox.push(m); return; }
       if (c.EMAIL_MODE === 'log') { console.log(`\n✉  To ${m.to}: ${m.subject}\n${m.text}\n`); return; }
+      if (smtp) {
+        await smtp.sendMail({
+          from: { name: c.EMAIL_FROM_NAME, address: c.EMAIL_FROM }, to: m.to, subject: m.subject, text: m.text, html: m.html,
+          ...(m.replyTo ? { replyTo: m.replyTo.name ? { name: m.replyTo.name, address: m.replyTo.email } : m.replyTo.email } : {}),
+          headers: { 'X-GCM-Tag': m.tag },
+        });
+        return;
+      }
       const res = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: { 'api-key': c.BREVO_API_KEY!, 'content-type': 'application/json', accept: 'application/json' },
