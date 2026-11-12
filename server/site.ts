@@ -14,6 +14,16 @@ export const APP_PAGES: Record<string, PageMeta> = {
   '/legal/accessibility': { title: 'Accessibility · Going Concern Lab', description: 'The Going Concern Lab accessibility statement, and how to tell us about a problem.' },
 };
 
+/** Other addresses people type for these pages, sent to the real one with a 301 so link previews and search engines
+ *  see that page's own tags. Each page with a trailing slash is added too. */
+export const REDIRECTS: Record<string, string> = Object.fromEntries([
+  ...Object.keys(APP_PAGES).filter(p => p !== '/').map(p => [`${p}/`, p]),
+  ...['/privacy', '/privacy-policy', '/accessibility'].flatMap(p => {
+    const to = p === '/accessibility' ? '/legal/accessibility' : '/legal/privacy';
+    return [[p, to], [`${p}/`, to]];
+  }),
+]);
+
 /** Every page listed in sitemap.xml. The tools live behind #/ routes on the home page, which search engines treat as one page. */
 export const SITEMAP = ['/', '/universities/', '/demo/', '/sign-in', '/legal/privacy', '/legal/accessibility'];
 

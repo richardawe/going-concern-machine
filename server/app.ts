@@ -17,7 +17,7 @@ import { publicRoutes } from './routes/public';
 import { studentRoutes } from './routes/student';
 import { teachRoutes } from './routes/teach';
 import { readPlatformSession, readTenantSession } from './sessions';
-import { pageHtml, robotsTxt, sitemapXml } from './site';
+import { pageHtml, REDIRECTS, robotsTxt, sitemapXml } from './site';
 
 // One process serves every host. Each request is first classified by its Host header: the public site, the platform
 // console (admin.<domain>) or a university (<slug>.<domain>). University pages and API calls only ever see that
@@ -129,6 +129,14 @@ export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrade
   app.get('/robots.txt', (req, reply) => reply.type('text/plain; charset=utf-8').header('cache-control', 'public, max-age=3600').send(robotsTxt(origin, req.site.kind === 'public')));
   app.get('/sitemap.xml', (req, reply) => req.site.kind !== 'public' ? reply.code(404).send({ error: 'Not found.' })
     : reply.type('application/xml; charset=utf-8').header('cache-control', 'public, max-age=3600').send(sitemapXml(origin)));
+
+  for (const [from, to] of Object.entries(REDIRECTS)) {
+    app.get(from, (req, reply) => {
+      if (req.site.kind !== 'public') return page(req, reply);
+      const q = String(req.url).indexOf('?');
+      return reply.redirect(q < 0 ? to : to + String(req.url).slice(q), 301);
+    });
+  }
 
   let indexHtml: string | null = null;
   const page = async (req: FastifyRequest, reply: FastifyReply) => {
