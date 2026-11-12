@@ -75,3 +75,19 @@ test('finding a university with a personal address says a university email is re
   const r = await call(h.app, { url: '/api/find-university', host: BASE, body: { email: 'someone@gmail.com' } });
   assert.equal(r.status, 400); assert.match(r.json.error, /university email address/);
 });
+
+test('other privacy and accessibility addresses 301 to the page with its own tags', async () => {
+  for (const [from, to] of [['/privacy', '/legal/privacy'], ['/privacy/', '/legal/privacy'], ['/legal/privacy/', '/legal/privacy'],
+    ['/accessibility/', '/legal/accessibility'], ['/sign-in/?email=a%40b.ac.uk', '/sign-in?email=a%40b.ac.uk']]) {
+    const r = await call(h.app, { url: from, host: BASE });
+    assert.equal(r.status, 301, from); assert.equal(r.res.headers.location, to, from);
+  }
+  assert.equal((await call(h.app, { url: '/legal/privacy', host: BASE })).status, 200);
+});
+
+test('the universities page invites universities to join the running pilot', () => {
+  const html = readFileSync('public/universities/index.html', 'utf8');
+  assert.match(html, /Ask us about pricing and joining the pilot/);
+  assert.match(html, /Our pilot is running now with a number of universities\. If your university would like to take part, email <a href="mailto:Richard\.Awe@3d7tech\.com">/);
+  assert.doesNotMatch(html, /free of charge/);
+});
