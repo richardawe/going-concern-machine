@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ThemeIcons } from '../site/SiteNav';
+import { COMPANY, ThemeIcons } from '../site/SiteNav';
 import { Link } from './router';
 import { Drawing } from '../site/Drawing';
 
@@ -40,7 +40,7 @@ export function Shell({ brand, place, crest, color, nav, who, role, children, on
       </div>
     </header>
     <main className="course-main">{children}</main>
-    <footer className="course-foot portal-foot"><span>{!lab && place ? `${place} · ` : ''}Going Concern Lab</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a></span></footer>
+    <footer className="course-foot portal-foot"><span>{!lab && place ? `${place} · ` : ''}Going Concern Lab is a product of {COMPANY.name} (company no. {COMPANY.number})</span><span><a href="/legal/privacy">Privacy</a> · <a href="/legal/accessibility">Accessibility</a> · <a href={`mailto:${COMPANY.email}`}>Contact</a></span></footer>
   </div>;
 }
 

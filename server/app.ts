@@ -17,13 +17,14 @@ import { publicRoutes } from './routes/public';
 import { studentRoutes } from './routes/student';
 import { teachRoutes } from './routes/teach';
 import { readPlatformSession, readTenantSession } from './sessions';
+import { pageHtml, robotsTxt, sitemapXml } from './site';
 
 // One process serves every host. Each request is first classified by its Host header: the public site, the platform
 // console (admin.<domain>) or a university (<slug>.<domain>). University pages and API calls only ever see that
 // university's rows (see db.ts and the row-level security in migrations/001_init.sql).
 
 const CSP = [
-  "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", "font-src 'self' https://fonts.gstatic.com",
+  "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'", "font-src 'self'",
   "img-src 'self' data: blob:", "media-src 'self'", "connect-src 'self'", "worker-src 'self' blob:", "frame-ancestors 'none'", "base-uri 'self'",
   "form-action 'self'", "object-src 'none'",
 ].join('; ');
@@ -123,12 +124,18 @@ export async function buildApp(config: Config, db: Db, mailer: Mailer, kickGrade
     app.get(`/${dir}`, (_req, reply) => reply.redirect(`/${dir}/`, 301));
     app.get(`/${dir}/`, (_req, reply) => reply.header('cache-control', 'public, max-age=300').sendFile(`${dir}/index.html`));
   }
+  // Only the public site is indexed: universities' portals and the console tell search engines to stay out.
+  const origin = `${config.SECURE_COOKIES ? 'https' : 'http'}://${config.BASE_DOMAIN}`;
+  app.get('/robots.txt', (req, reply) => reply.type('text/plain; charset=utf-8').header('cache-control', 'public, max-age=3600').send(robotsTxt(origin, req.site.kind === 'public')));
+  app.get('/sitemap.xml', (req, reply) => req.site.kind !== 'public' ? reply.code(404).send({ error: 'Not found.' })
+    : reply.type('application/xml; charset=utf-8').header('cache-control', 'public, max-age=3600').send(sitemapXml(origin)));
+
   let indexHtml: string | null = null;
   const page = async (req: FastifyRequest, reply: FastifyReply) => {
     indexHtml ??= await readFile(join(root, 'index.html'), 'utf8').catch(() => '<!doctype html><html><head><title>Going Concern Lab</title></head><body><div id="root"></div></body></html>');
     const kind = req.site.kind === 'tenant' ? (req.tenant ? 'tenant' : 'missing') : req.site.kind === 'platform' ? 'platform' : req.site.kind === 'unknown' ? 'missing' : 'public';
     return reply.code(kind === 'missing' ? 404 : 200).header('content-type', 'text/html; charset=utf-8').header('cache-control', 'no-cache')
-      .send(indexHtml.replace('</head>', `<meta name="gcm-host" content="${kind}"></head>`));
+      .send(pageHtml(indexHtml, { origin, path: String(req.url).split('?')[0], indexable: kind === 'public', hostKind: kind }));
   };
   app.get('/', page);
   app.setNotFoundHandler(async (req, reply) => {

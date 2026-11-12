@@ -16,8 +16,20 @@
 | `#/credits` | Every drawing on the site, with its source |
 | `universities/`, `demo/` | Static pages (`public/`), sharing the site's menu, theme and stylesheet |
 
-Every page has the same menu and footer (`src/site/SiteNav.tsx`). The theme (System, Light, Dark) is stored in
-`localStorage` as `gcm:theme` and shared by the app and the static pages (`public/site-static.js`).
+Every page has the same menu and footer (`src/site/SiteNav.tsx`). The footer names the company behind the product,
+3D7 Technologies Ltd (`COMPANY` in `SiteNav.tsx`, also used by the privacy notice), and links to the contact form.
+
+**Contact.** `/universities/#contact` has the public address (Richard.Awe@3d7tech.com) and a form (name, email,
+university, role, message; `public/universities/contact.js`) that posts to `/api/contact`, which emails it to
+`CONTACT_EMAIL` with Reply-To set to the sender. It is limited to 5 messages an hour per visitor.
+
+**Search and link previews.** `/robots.txt` and `/sitemap.xml` are served by `server/site.ts`: only the public host is
+indexed, and university portals and the console answer `Disallow: /`. Every page has a title, description, Open Graph
+and Twitter card tags with `public/og-image.png` (1200×630). The static pages carry their own; the app's pages share
+`index.html`, so the server rewrites the block between `<!--gcm:meta-->` markers for each path in `APP_PAGES`.
+
+The theme (System, Light, Dark) is stored in `localStorage` as `gcm:theme` and shared by the app and the static pages
+(`public/site-static.js`).
 
 ## Brand
 
@@ -25,6 +37,12 @@ One name, **Going Concern Lab**, and one logo: the flywheel mark (`.site-logo` i
 `public/favicon.svg`). Products are labels beside it: Modules, Platform console. A university's own pages show its
 crest and name, with Going Concern Lab beside them (`Shell` in `src/portal/ui.tsx`). Tool pages are headed by the
 tool's name under a GOING CONCERN LAB kicker. The theme switch is the same three icons everywhere.
+
+## Fonts
+
+Archivo, DM Sans, IBM Plex Mono and Libre Caslon Display (all SIL Open Font License, `public/fonts/OFL.txt`) are served
+from our own server, `public/fonts/fonts.css`, linked by `index.html` and the static pages. Nothing loads from Google,
+so the privacy notice doesn't list it and the security policy allows fonts from `'self'` only.
 
 ## Drawings
 

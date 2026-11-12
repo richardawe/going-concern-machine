@@ -32,7 +32,11 @@ Adding a university never needs a DNS change: the wildcard record and certificat
 3. **SSL/TLS → Overview**: set the mode to **Full (strict)**.
 4. **SSL/TLS → Origin Server → Create certificate**: hostnames `goingconcernlab.com` and `*.goingconcernlab.com`, 15 years. Keep the certificate and private key for step 2.6.
 5. **SSL/TLS → Edge Certificates**: turn on **Always Use HTTPS**, and set the minimum TLS version to 1.2.
-6. **Speed → Optimization**: turn **Rocket Loader off**. **Scrape Shield**: turn **Email Address Obfuscation off**. Both inject scripts that the site's security policy blocks.
+6. **Rules → Redirect Rules**: add a rule "www to apex": when the hostname equals `www.goingconcernlab.com`, a dynamic
+   redirect to `concat("https://goingconcernlab.com", http.request.uri.path)` with status **301** and *Preserve query
+   string* on. The app also redirects www (`server/app.ts`), but doing it at Cloudflare means a www request never
+   reaches cPanel, whose own error pages (such as `/406.shtml`) can otherwise answer first.
+7. **Speed → Optimization**: turn **Rocket Loader off**. **Scrape Shield**: turn **Email Address Obfuscation off**. Both inject scripts that the site's security policy blocks.
 
 ## 2. The server (WHM as root)
 

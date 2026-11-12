@@ -16,6 +16,8 @@ const schema = z.object({
   BREVO_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().email().default('no-reply@example.com'),
   EMAIL_FROM_NAME: z.string().default('Going Concern Lab'),
+  /** The public contact address: shown on the site, and where the universities page's contact form is sent. */
+  CONTACT_EMAIL: z.string().email().default('Richard.Awe@3d7tech.com'),
   /** Where the built web app lives (Vite's dist). */
   STATIC_DIR: z.string().default('dist'),
   /** Commit the release was built from, reported by /healthz so a deploy can check it is live. */
