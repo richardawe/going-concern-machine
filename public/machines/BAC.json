@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "BAC",
-  "name": "BANK OF AMERICA CORP /DE/",
-  "retrieved": "2026-11-09",
+  "name": "BofA Finance LLC",
+  "retrieved": "2026-11-16",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {

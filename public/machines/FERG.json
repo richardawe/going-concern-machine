@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "ticker": "FERG",
-  "name": "Ferguson Enterprises Inc. /DE/",
-  "retrieved": "2026-11-09",
+  "name": "Ferguson Enterprises Inc.",
+  "retrieved": "2026-11-16",
   "provider": "SEC EDGAR XBRL company facts · automatic translation",
   "periods": [
     {
